@@ -1,0 +1,63 @@
+.main-content {
+    margin-top: 10px; /* Add some gap between Navbar and the box */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(85vh - 85px); /* Adjust based on Navbar height */
+  }
+  
+  .box {
+    width: 100%; /* Adjust the width as needed */
+    max-width: 1400px; /* Set a maximum width for the box */
+    height: 70vh; /* Adjust the height as needed */
+    border-radius: 59px 59px 350px 59px;
+    background: linear-gradient(115deg, rgba(0, 25, 255, 0.75), rgba(238, 154, 229, 1)); /* Use rgba for opacity */
+    border: 2.5px solid #000000;
+  }  
+  
+  .text {
+    font-size: 48px; /* Adjust the font size as needed */
+    font-weight: 800; /* Extrabold */
+    font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
+    color: #FFFCFC;
+    text-align: left; /* Align the text to the left */
+    padding: 20px; /* Add padding to the text for better spacing */
+  }
+
+  /* Existing styles remain the same */
+
+.secondary-text {
+    margin-top: 20px; /* Add some space between the texts */
+    text-align: center; /* Center the text */
+  }
+  
+  .secondary-heading {
+    font-size: 36px;
+    font-weight: 800; /* Extrabold */
+    font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
+    color: #FFFCFC;
+    text-align: left;
+  }
+  
+  .square {
+    display: inline-block;
+    width: 43px;
+    height: 39px;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+  }
+  
+  .side-text {
+    display: inline-block;
+    margin-left: 10px; /* Add some space between the square and text */
+  }
+  
+  .italic-text {
+    font-style: italic;
+    font-family: 'Jost', sans-serif;
+    color: #FFFCFC;
+    text-align: left;
+  }
+  
+  
