@@ -1,0 +1,53 @@
+/* InfoBox.css */
+.info-box {
+  width: 300px;
+  padding: 20px;
+  margin: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 20px 10px 50px rgba(238, 154, 229, 0.85);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s; /* Add a transition for transform and box-shadow */
+}
+
+.info-box-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 10%;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease, filter 0.3s ease; /* Add transition effects */
+}
+
+.info-box-image:hover {
+  transform: scale(1.2); /* Scale up the image on hover */
+  filter: brightness(1.2); /* Increase brightness on hover */
+}
+
+
+.info-box-title {
+  font-family: 'Jost', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #0a0909;
+}
+
+.info-box-description {
+  font-family: 'Jost', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.info-boxes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three boxes per row */
+  gap: 20px; /* Add some space between the info boxes */
+  margin-top: 300px; /* Adjust the margin to preference */
+  margin-bottom: 90px; /* Add a margin at the bottom */
+
+}
+
+.info-box:hover {
+  box-shadow: 10px 5px 25px rgba(238, 154, 229, 0.55);
+  transform: scale(1.05); /* Scale the box by 5% on hover */
+}
