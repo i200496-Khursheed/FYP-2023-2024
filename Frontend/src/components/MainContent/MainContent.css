@@ -4,13 +4,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(85vh - 85px); /* Adjust based on Navbar height */
+    height: calc(65vh - 85px); /* Adjust based on Navbar height */
   }
   
   .box {
     width: 100%; /* Adjust the width as needed */
     max-width: 1400px; /* Set a maximum width for the box */
-    height: 70vh; /* Adjust the height as needed */
+    height: 50vh; /* Adjust the height as needed */
     border-radius: 59px 59px 350px 59px;
     background: linear-gradient(115deg, rgba(0, 25, 255, 0.75), rgba(238, 154, 229, 1)); /* Use rgba for opacity */
     border: 2.5px solid #000000;
@@ -23,21 +23,27 @@
     color: #FFFCFC;
     text-align: left; /* Align the text to the left */
     padding: 20px; /* Add padding to the text for better spacing */
+    padding-left: 50px;
   }
 
   /* Existing styles remain the same */
+  .box {
+    position: relative;
+  }
 
-.secondary-text {
-    margin-top: 20px; /* Add some space between the texts */
-    text-align: center; /* Center the text */
+  .secondary-text {
+    position: absolute;
+    bottom: 55px;
+    left: 50px;
   }
   
   .secondary-heading {
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 800; /* Extrabold */
     font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
     color: #FFFCFC;
     text-align: left;
+    margin-bottom: 30px; /* Add some space between heading and square */
   }
   
   .square {
@@ -46,11 +52,12 @@
     height: 39px;
     background-color: #FFFFFF;
     border: 1px solid #000000;
+    margin-right: 10px; /* Add some space between square and text */
+    vertical-align: middle;
   }
   
   .side-text {
     display: inline-block;
-    margin-left: 10px; /* Add some space between the square and text */
   }
   
   .italic-text {
@@ -59,5 +66,72 @@
     color: #FFFCFC;
     text-align: left;
   }
+
+  /* Existing styles remain the same */
+
+.buttons {
+  margin-top: 30px; /* Add some space between text and buttons */
+}
+
+.explore-button, .about-button {
+  font-size: 16px;
+  font-weight: 800; /* Extrabold */
+  font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
+  color: #FFFFFF;
+  background-color: #ED80FD;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 26px;
+  margin-right: 40px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /* Drop down shadow */
+}
+
+.about-button {
+  background-color: transparent;
+  border: 2px solid #000000;
+  background: transparent;
+  color: #000000;
+}
+
+.about-button:hover {
+  background-color: #473849;
+  color: #FFFFFF;
+}
+
+.explore-button:hover {
+  background-color: #ee78c0;
+  color: #FFFFFF;
+}
+
+.about-button:focus {
+  outline: none;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.box-image {
+  position: absolute;
+  top: 6%;
+  right: 150px; /* Adjust the right distance as needed */
+  transform: translateY(-50%);
+  max-height: 300px;
+  max-width: 200%;
+  border-radius: 20%;
+  opacity: 0.65;
+  animation: pulsate 2s infinite; /* Apply the pulsating animation */
+}
+
   
   
