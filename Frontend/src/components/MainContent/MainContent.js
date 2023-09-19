@@ -27,18 +27,18 @@ function MainContent() {
         
         <div className="info-boxes">
           <InfoBox 
-            title="Verse Search" 
+            title="Verse" 
             description="Explore Tafseer Al-Tabari for verse commentary" 
             imageSrc={require('../../assets/verse_search.png')}
           />
           <InfoBox 
-            title="Hadith Search" 
+            title="Hadith" 
             description="Examine hadith for narrator chain & more information" 
             imageSrc={require('../../assets/hadith_search.png')}
           />
           <InfoBox 
-            title="People Search" 
-            description="In Al-Tabari, find & learn about people" 
+            title="Rawi" 
+            description="In Al-Tabari, find & learn about Rawi" 
             imageSrc={require('../../assets/people_search.png')}
           />
           <InfoBox 
