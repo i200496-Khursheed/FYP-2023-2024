@@ -1,0 +1,72 @@
+/* HadithQueryBuilder.css */
+
+.hadith-query-builder {
+    position: relative;
+  }
+  
+  .back-button img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: -50px; /* Adjusted position */
+    left: 30px; /* Adjusted position */
+    cursor: pointer;
+  }
+  
+  .radio-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 300px;
+    margin-top: 60px; /* Increased margin */
+  }
+  
+  .radio-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .radio-button input {
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .radio-button span {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .radio-button::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-sizing: border-box;
+  }
+  
+  .radio-button.selected::before {
+    background-color: #EE9AE5;
+    border-color: #EE9AE5;
+  }
+  
+  .radio-button input:checked + span::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background-color: transparent; /* Set the background color to transparent */
+    border-radius: 50%; /* Ensure border-radius for the circle */
+  }
+  
+  
