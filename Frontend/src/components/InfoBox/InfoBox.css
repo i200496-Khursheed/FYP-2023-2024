@@ -51,3 +51,7 @@
   box-shadow: 10px 5px 25px rgba(238, 154, 229, 0.55);
   transform: scale(1.05); /* Scale the box by 5% on hover */
 }
+
+.info-box a {
+  text-decoration: none;
+}

@@ -35,6 +35,7 @@ function MainContent() {
             title="Hadith" 
             description="Examine hadith for narrator chain & more information" 
             imageSrc={require('../../assets/hadith_search.png')}
+            linkTo="/hadith-query-builder" 
           />
           <InfoBox 
             title="Rawi" 
