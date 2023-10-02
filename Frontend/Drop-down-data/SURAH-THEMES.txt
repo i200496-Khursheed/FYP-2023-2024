@@ -1,0 +1,11 @@
+SURAH-THEMES
+lugha
+rajeh
+kalam
+takrar
+qiraat
+adyan
+kalalm
+sufism
+fiqh
+science
