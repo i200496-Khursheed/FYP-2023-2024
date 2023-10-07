@@ -91,6 +91,9 @@ function HadithQueryBuilder() {
             isSearchable={true}
             onChange={(selectedOption) => console.log(selectedOption)}
           />
+       <div className="insert-logic-button">
+          <button>+</button>
+        </div>
         </div>
       </div>
     </div>

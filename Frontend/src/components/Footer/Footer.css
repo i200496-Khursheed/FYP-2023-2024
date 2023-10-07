@@ -9,8 +9,8 @@
     justify-content: space-between;
     border-top: 5px solid rgba(0, 0, 0, 0.1);
     padding: 4px;
-    background-color: #da91911c; /* Optional: Add a background color */
-    width: 100%; /* Add this to make the footer fill the entire horizontal space */
+    background-color: #da91911c; /* Optional: Adding a background color */
+    width: 100%; /* Adding this to make the footer fill the entire horizontal space */
   }
     
   
@@ -19,8 +19,8 @@
   }
   
   .footer-image {
-    width: 100%; /* Adjust the size as needed */
+    width: 100%; /* Adjusting the size as needed */
     height: 50px;
-    margin-right: 60%; /* Add some space between the images */
+    margin-right: 60%; /* Adding some space between the images */
   }
   
