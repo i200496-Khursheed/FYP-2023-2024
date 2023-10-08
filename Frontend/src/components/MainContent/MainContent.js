@@ -38,8 +38,8 @@ function MainContent() {
             linkTo="/hadith-query-builder" 
           />
           <InfoBox 
-            title="Rawi" 
-            description="In Al-Tabari, find & learn about Rawi" 
+            title="Commentary" 
+            description="In Al-Tabari, explore commentary for verses" 
             imageSrc={require('../../assets/people_search.png')}
           />
           <InfoBox 
