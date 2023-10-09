@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
 import './HadithQueryBuilder.css';
+import { Link } from 'react-router-dom'; // Import the Link component
 
 const themeOptions = [
   { value: 'theme1', label: 'Theme 1' },
@@ -22,11 +23,15 @@ const narratorNameOptions = [
   { value: 'name3', label: 'Name 3' },
 ];
 
-function HadithQueryBuilder() {
+function HadithQueryBuilder({ onRunQuery }) {
   const [selectedOption, setSelectedOption] = useState('hadith');
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
+  };
+
+  const handleRunHadithQuery = () => {
+    onRunQuery(); // Call the prop function to handle the query
   };
 
   return (
@@ -91,9 +96,12 @@ function HadithQueryBuilder() {
             isSearchable={true}
             onChange={(selectedOption) => console.log(selectedOption)}
           />
-       <div className="insert-logic-button">
-          <button>+</button>
-        </div>
+          <div className="insert-logic-button">
+            <button>+</button>
+          </div>
+          <div className="run-query-button">
+            <button onClick={handleRunHadithQuery}>Run Query</button>
+          </div>
         </div>
       </div>
     </div>
