@@ -11,6 +11,8 @@ const themeOptions = [
   { value: 'theme3', label: 'Theme 3' },
 ];
 
+const hadithNo = [{}];
+
 const narratorTitleOptions = [
   { value: 'title1', label: 'Title 1' },
   { value: 'title2', label: 'Title 2' },
@@ -81,6 +83,16 @@ function HadithQueryBuilder({ onRunQuery }) {
             onChange={(selectedOption) => console.log(selectedOption)}
           />
         </div>
+
+        <div className="dropdown">
+          <label htmlFor="hadithNo">HadithNo</label>
+          <Select
+            options={hadithNo}
+            isSearchable={true}
+            onChange={(selectedOption) => console.log(selectedOption)}
+          />
+        </div>
+
         <div className="dropdown">
           <label htmlFor="narratorTitle">Narrator Title</label>
           <Select
