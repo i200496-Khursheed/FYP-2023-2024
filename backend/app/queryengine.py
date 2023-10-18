@@ -4,19 +4,6 @@ from rdflib.plugins.sparql import prepareQuery
 from django.conf import settings
 import urllib.parse
 
-# Configure Django settings
-settings.configure(
-    DEBUG=True,  # Set to True or False based on your project settings
-    DATABASES={
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db.sqlite3',  # Adjust the database configuration
-        }
-    },
-    # GRAPHDB_ENDPOINT='http://HafuzTunn:7200/repositories/tafsir?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',  # Set your GraphDB endpoint here
-    # Add any other Django settings you need
-)
-
 def Sparql_Endpoint(query: str, prefix: str = "") -> dict:
     x = requests.get( 
         'http://Sameer:7200/repositories/FYP?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
