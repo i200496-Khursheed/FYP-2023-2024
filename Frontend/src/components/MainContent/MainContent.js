@@ -1,3 +1,4 @@
+/* MainContent.js */
 import React from 'react';
 import './MainContent.css';
 import InfoBox from '../InfoBox/InfoBox'; // Adjusting the path to match the actual file structure
