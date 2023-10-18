@@ -1,17 +1,14 @@
-// HadithQueryBuilder.js
+//HadithQueryBuilder.js
 
 import React, { useState } from 'react';
 import Select from 'react-select';
 import './HadithQueryBuilder.css';
-import { Link } from 'react-router-dom'; // Import the Link component
 
 const themeOptions = [
   { value: 'theme1', label: 'Theme 1' },
   { value: 'theme2', label: 'Theme 2' },
   { value: 'theme3', label: 'Theme 3' },
 ];
-
-const hadithNo = [{}];
 
 const narratorTitleOptions = [
   { value: 'title1', label: 'Title 1' },
@@ -25,23 +22,69 @@ const narratorNameOptions = [
   { value: 'name3', label: 'Name 3' },
 ];
 
-function HadithQueryBuilder({ onRunQuery }) {
-  const [selectedOption, setSelectedOption] = useState('hadith');
+const HadithQueryBuilder = () => {
 
+  const [selectedOption, setSelectedOption] = useState('hadith');
+  
   const handleRadioChange = (option) => {
     setSelectedOption(option);
   };
 
-  const handleRunHadithQuery = () => {
-    onRunQuery(); // Call the prop function to handle the query
+  const [data, setData] = useState({
+    theme: '',
+    narratortitle: '',
+    narratorname: ''
+  });
+
+  const handleThemeChange = (selectedOption) => {
+    setData({
+      ...data,
+      theme: selectedOption.value
+    });
+  };
+
+  const handleTitleChange = (selectedOption) => {
+    setData({
+      ...data,
+      narratortitle: selectedOption.value
+    });
+  };
+
+  const handleNameChange = (selectedOption) => {
+    setData({
+      ...data,
+      narratorname: selectedOption.value
+    });
+  };
+
+  const SendDataToBackend = () => {
+    fetch('http://127.0.0.1:8000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+
+      // Redirect to HadithQueryResultsPage
+      window.location.href = '/hadith-query-results';
+    })
+    
+    .catch(error => {
+      console.error('Error:', error);
+    });
   };
 
   return (
     <div className="hadith-query-builder">
-      <div className="back-button" onClick={() => window.history.back()}>
-        <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      <div className="back-button">
+        <img src={require('../../assets/back_button.png')} alt="Back Button" onClick={() => window.history.back()} />
       </div>
       <div className="radio-buttons">
+        {/* (radio button code) */}
         <label className={`radio-button ${selectedOption === 'hadith' ? 'selected' : ''}`}>
           <input
             type="radio"
@@ -73,6 +116,7 @@ function HadithQueryBuilder({ onRunQuery }) {
           <span>Commentary</span>
         </label>
       </div>
+
       <div className="query-box">
         <div className="search-text">Search for Hadith with:</div>
         <div className="dropdown">
@@ -80,25 +124,15 @@ function HadithQueryBuilder({ onRunQuery }) {
           <Select
             options={themeOptions}
             isSearchable={true}
-            onChange={(selectedOption) => console.log(selectedOption)}
+            onChange={handleThemeChange}
           />
         </div>
-
-        <div className="dropdown">
-          <label htmlFor="hadithNo">HadithNo</label>
-          <Select
-            options={hadithNo}
-            isSearchable={true}
-            onChange={(selectedOption) => console.log(selectedOption)}
-          />
-        </div>
-
         <div className="dropdown">
           <label htmlFor="narratorTitle">Narrator Title</label>
           <Select
             options={narratorTitleOptions}
             isSearchable={true}
-            onChange={(selectedOption) => console.log(selectedOption)}
+            onChange={handleTitleChange}
           />
         </div>
         <div className="dropdown">
@@ -106,18 +140,15 @@ function HadithQueryBuilder({ onRunQuery }) {
           <Select
             options={narratorNameOptions}
             isSearchable={true}
-            onChange={(selectedOption) => console.log(selectedOption)}
+            onChange={handleNameChange}
           />
-          <div className="insert-logic-button">
-            <button>+</button>
-          </div>
-          <div className="run-query-button">
-            <button onClick={handleRunHadithQuery}>Run Query</button>
-          </div>
+        </div>
+        <div className="run-query-button">
+            <button onClick={SendDataToBackend}>Send Data</button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default HadithQueryBuilder;

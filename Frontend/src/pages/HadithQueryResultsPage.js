@@ -1,6 +1,6 @@
 //HadithQueryResultsPage.js
 import React from 'react';
-import HadithQueryResults from '../components/HadithQueryResults/HadithQueryResults'; // Import HadithQueryResults component
+import HadithQueryResults from '../components/HadithQueryResults/HadithQueryResults';
 
 function HadithQueryResultsPage() {
   return (

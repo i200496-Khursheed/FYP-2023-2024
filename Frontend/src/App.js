@@ -8,10 +8,6 @@ import HadithQueryBuilderPage from './pages/HadithQueryBuilderPage';
 import HadithQueryResultsPage from './pages/HadithQueryResultsPage';
 
 function App() {
-  const handleRunHadithQuery = () => {
-    // Adding the logic to handle the query results here later on
-    // I can navigate to the results page using a similar approach as below
-  };
 
   return (
     <Router>
@@ -24,10 +20,10 @@ function App() {
           />
           <Route
             path="/hadith-query-builder"
-            element={<HadithQueryBuilderPage onRunQuery={handleRunHadithQuery} />} 
+            element={<HadithQueryBuilderPage />} 
           />
           <Route
-            path="/hadith-query-results" // Define the route for results page
+            path="/hadith-query-results"
             element={<HadithQueryResultsPage />} 
           />
         </Routes>

@@ -19,13 +19,13 @@
   padding: 10px;
   padding-bottom: 1.5%;
   font-size: 18px;
-  position: relative; /* Added position relative */
-  font-family: 'Jost', sans-serif; /* Added font-family */
+  position: relative;
+  font-family: 'Jost', sans-serif;
   font-weight: bold;
 }
 
 .query-text-box.expanded {
-  height: 250px; /* Adjust the height when expanded */
+  height: 250px;
 }
 
 .details-swipe-bar {
@@ -41,10 +41,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: width 0.3s ease;
 }
 
 .details-swipe-bar:hover {
-  background-color: #381f6c; /* Change color on hover */
+  background-color: #381f6c;
+  width: 900px;
 }
 
 .arrow {
@@ -55,26 +57,16 @@
   border-color: transparent transparent #EE9AE5 transparent;
   stroke: #000000;
   stroke-width: 2px;
-  transition: transform 0.3s ease; /* Add transition for smooth animation */
+  transition: transform 0.3s ease;
 }
 
 .expanded .arrow {
-  transform: rotate(180deg); /* Rotate arrow when expanded */
+  transform: rotate(180deg);
 }
 
 .arrow.expanded {
   transform: rotate(180deg);
 }
-
-.details-swipe-bar {
-  /* ... your existing styles ... */
-  transition: width 0.3s ease; /* Added transition for smooth animation */
-}
-
-.details-swipe-bar:hover {
-  width: 900px; /* Increase width on hover */
-}
-
 
 .details-table {
   margin-top: 60px;
@@ -83,8 +75,8 @@
 table {
   border-collapse: collapse;
   width: 250%;
-  border-radius: 20px; /* Added border-radius */
-  border: 2px solid #000; /* Added border */
+  border-radius: 20px;
+  border: 2px solid #000;
   margin-left: -75.5%;
 
 }
@@ -93,12 +85,12 @@ th, td {
   border: 1px solid #000000;
   padding: 8px;
   text-align: center;
-  font-family: 'Jost', sans-serif; /* Added font-family */
+  font-family: 'Jost', sans-serif;
 }
 
 th {
   background-color: #b4b0b0;
-  font-weight: bold; /* Added font-weight */
+  font-weight: bold;
 }
 
 tbody tr:nth-child(even) {
@@ -121,7 +113,7 @@ tbody tr:hover {
 }
 
 .expand-icon img {
-  width: 20px; /* Adjust icon size as needed */
+  width: 20px;
 }
 
 .back-button-HQR img {
@@ -131,13 +123,13 @@ tbody tr:hover {
   top: 60px;
   left: 30px;
   cursor: pointer;
-  transition: transform 0.3s, filter 0.3s; /* Adding transition effects */
+  transition: transform 0.3s, filter 0.3s;
 }
 
 .back-button-HQR img:hover {
-  transform: scale(1.2); /* Scaling up on hover */
-  filter: brightness(1.2); /* Increasing brightness on hover */
-  background-color: transparent; /* Removing white background */
+  transform: scale(1.2);
+  filter: brightness(1.2);
+  background-color: transparent;
 }
 
 .wide-column {
