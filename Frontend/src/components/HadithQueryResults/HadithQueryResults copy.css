@@ -24,8 +24,6 @@
   position: relative;
   font-family: 'Jost', sans-serif;
   font-weight: bold;
-  bottom: 70px; /* Adjust as needed to create a gap */
-  transition: height 0.3s; /* Add smooth transition */
 }
 
 .query-text-box.expanded {
@@ -38,7 +36,7 @@
   bottom: -20.5%;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(to right, #4639E3, #381f6c); /* Adjust the gradient colors */
+  background-color: #4639E3;
   height: 50px;
   width: 848px;
   border-radius: 50px;
@@ -49,9 +47,8 @@
 }
 
 .details-swipe-bar:hover {
-  background: linear-gradient(to right, #4639E3, #381f6c); /* Adjust the gradient colors */
+  background-color: #381f6c;
   width: 900px;
-  top: calc(100% - 100px -10px); /* Maintain the bottom position */
 }
 
 .arrow {
@@ -73,61 +70,59 @@
   transform: rotate(180deg);
 }
 
-details-table {
-  max-width: 100%;
-  overflow-x: hidden;
-  position: relative;
-  bottom: -20px; /* Adjust this value to create a gap between swipe bar and table */
-  max-height: 400px; /* Set a fixed max-height to limit the table's height */
-  overflow: auto; /* Add overflow: auto to enable scrolling */
+.details-table {
+  max-width: 100%; /* Limit the table's width */
+  overflow: auto; /* Add horizontal scrollbar if content overflows */
+  margin-top: 60px; /* Adjust the margin */
 }
 
-details-table table {
+.details-table table {
   border-collapse: collapse;
-  width: 100%;
+  width: 100%; /* Make the table occupy 100% of the container width */
   border-radius: 20px;
   border: 2px solid #000;
-  background-color: #f3f3f3;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  border-collapse: collapse;
+  width: 150%;
+  border-radius: 20px;
+  border: 2px solid #000;
+  margin-left: 0.1%;
+
 }
 
 th,
 td {
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: 1px solid #000000;
+  padding: 8px;
   text-align: center;
   font-family: 'Jost', sans-serif;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-width: 700px;
+  white-space: pre-wrap; /* Allow text to wrap to a new line */
+  word-wrap: break-word; /* Break long words when necessary */
+  max-width: 700px; /* Adjust the maximum width as needed */
+}
+
+/* Add a rule to reduce font size for specific cells */
+td.text-cell {
+  font-size: 20px; /* Adjust the font size as needed */
 }
 
 th {
-  background-color: #4639E3;
-  color: #fff;
+  background-color: #b4b0b0;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
-tr {
-  background-color: #fff;
+tbody tr:nth-child(even) {
+  background-color: #efcbcb;
 }
 
-tr:nth-child(even) {
-  background-color: #f7f7f7;
+tbody tr:nth-child(odd) {
+  background-color: #efcbcb;
 }
 
 tbody tr:hover {
   background-color: #EE9AE5;
-}
-
-td.text-cell {
-  font-size: 18px;
-  color: #333;
-}
-
-.expand-icon img {
-  width: 20px;
 }
 
 .expand-icon {
@@ -137,9 +132,8 @@ td.text-cell {
   cursor: pointer;
 }
 
-h2 {
-  color: #4639E3;
-  font-size: 24px;
+.expand-icon img {
+  width: 20px;
 }
 
 .back-button-HQR img {
@@ -156,4 +150,8 @@ h2 {
   transform: scale(1.2);
   filter: brightness(1.2);
   background-color: transparent;
+}
+
+.wide-column {
+  height: 80px;
 }
