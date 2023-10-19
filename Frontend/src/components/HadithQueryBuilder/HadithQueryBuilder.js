@@ -15,12 +15,26 @@ const hadithNumberOptions = [
   { value: '136', label: 'Hadith 136' },
 ];
 
+// const narratorTitleOptions = [
+//   { value: 'sahabi', label: 'sahabi' },
+//   { value: 'rawi', label: 'rawi' },
+//   { value: 'any', label: 'any' },
+// ];
+
+// const narratorNameOptions = [
+//   { value: 'ابن عباس', label: 'ابن عباس' },
+//   { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
+//   { value: 'أبو روق', label: 'أبو روق' },
+// ];
+
 const HadithQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('hadith');
   const [data, setData] = useState({
     theme: '',
     hadith_number: '',
+    narrator_title: '', // Initialize narrator_title
+    narrator_name: '',  // Initialize narrator_name
   });
 
   const handleRadioChange = (option) => {
@@ -41,13 +55,36 @@ const HadithQueryBuilder = () => {
     });
   };
 
+  const handleNarratorTitleChange = (selectedOption) => {
+    setData({
+      ...data,
+      narrator_title: selectedOption.value,
+    });
+  };
+
+  const handleNarratorNameChange = (selectedOption) => {
+    setData({
+      ...data,
+      narrator_name: selectedOption.value,
+    });
+  };
+
   const SendDataToBackend = () => {
     let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
-  
+
     if (data.hadith_number) {
       url += `&hadith_number=${data.hadith_number}`;
     }
-  
+
+    // Add narrator_title and narrator_name to the URL
+    // if (data.narrator_title) {
+    //   url += `&narrator_title=${data.narrator_title}`;
+    // }
+
+    // if (data.narrator_name) {
+    //   url += `&narrator_name=${data.narrator_name}`;
+    // }
+
     fetch(url, {
       method: 'GET',
       headers: {
@@ -66,7 +103,7 @@ const HadithQueryBuilder = () => {
         console.error('Error:', error);
       });
   };
-  
+
   return (
     <div className="hadith-query-builder">
       <div className="back-button">
@@ -103,6 +140,22 @@ const HadithQueryBuilder = () => {
             onChange={handleHadithNumberChange}
           />
         </div>
+        {/* <div className="dropdown">
+          <label htmlFor="narrator_title">Narrator Title</label>
+          <Select
+            options={narratorTitleOptions}
+            isSearchable={true}
+            onChange={handleNarratorTitleChange}
+          />
+        </div>
+        <div className="dropdown">
+          <label htmlFor="narrator_name">Narrator Name</label>
+          <Select
+            options={narratorNameOptions}
+            isSearchable={true}
+            onChange={handleNarratorNameChange}
+          />
+        </div> */}
         <div className="run-query-button">
           <button onClick={SendDataToBackend}>Run Query</button>
         </div>
