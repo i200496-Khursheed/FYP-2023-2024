@@ -1,3 +1,4 @@
+#queryengine.py
 import requests
 from rdflib import Graph
 from rdflib.plugins.sparql import prepareQuery
@@ -211,7 +212,7 @@ def constructSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verse
 def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
                              theme='?theme',hadith_number='?hadith_number', narrator = '?narrator',narratortitle='narrator-title', reffered_chapNo='?refferedChapNo',
                              reffered_vNo='?refferedVerseNo', refrences_chapNo='?refrencesChapNo',
-                             refrences_vNo='?refrencesVerseNo', applyLimit=False, limit=None,
+                             refrences_vNo='?refrencesVerseNo', applyLimit=True, limit="",
                              ):
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
@@ -254,7 +255,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     if narratortitle!='narrator-title':
         baseQueryString += f'''\n     ?NarratorName :hasNarratorType {narratortitle} .'''
     if hadith_number != '?hadith_number':
-        baseQueryString += f'''\n     ?HadithNo1 :hasHadithNo  {hadith_number} .'''
+        baseQueryString += f'''\n     ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
     
     if reffered_chapNo != '?refferedChapNo' or reffered_vNo != '?refferedVerseNo':
         baseQueryString += f'''\n  
@@ -273,7 +274,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     #baseQueryString += constructDynamicFilterString(relationlst, categorylst, valuelst)
 
     baseQueryString += '}'
-    if applyLimit and limit is not None and limit != '' and int(limit) > 1:
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
         baseQueryString += f'''
         limit {limit}
         '''

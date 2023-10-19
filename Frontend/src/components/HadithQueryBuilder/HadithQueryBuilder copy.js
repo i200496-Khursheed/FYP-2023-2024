@@ -1,3 +1,4 @@
+// HadithQueryBuilder.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
@@ -5,14 +6,8 @@ import './HadithQueryBuilder.css';
 
 const themeOptions = [
   { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
-];
-
-const hadithNumberOptions = [
-  { value: '134', label: 'Hadith 134' },
-  { value: '135', label: 'Hadith 135' },
-  { value: '136', label: 'Hadith 136' },
+  { value: 'theme2', label: 'Theme 2' },
+  { value: 'theme3', label: 'Theme 3' },
 ];
 
 const HadithQueryBuilder = () => {
@@ -20,7 +15,6 @@ const HadithQueryBuilder = () => {
   const [selectedOption, setSelectedOption] = useState('hadith');
   const [data, setData] = useState({
     theme: '',
-    hadith_number: '',
   });
 
   const handleRadioChange = (option) => {
@@ -34,20 +28,9 @@ const HadithQueryBuilder = () => {
     });
   };
 
-  const handleHadithNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      hadith_number: selectedOption.value,
-    });
-  };
-
   const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
-  
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
-    }
-  
+    const url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
+
     fetch(url, {
       method: 'GET',
       headers: {
@@ -59,6 +42,7 @@ const HadithQueryBuilder = () => {
         console.log('Success:', data);
         if (data.result) {
           console.log('Result from backend:', data.result);
+          // Navigate to HadithQueryResultsPage and pass data as state
           navigate('/hadith-query-results', { state: { resultsData: data.result } });
         }
       })
@@ -66,7 +50,7 @@ const HadithQueryBuilder = () => {
         console.error('Error:', error);
       });
   };
-  
+
   return (
     <div className="hadith-query-builder">
       <div className="back-button">
@@ -94,14 +78,6 @@ const HadithQueryBuilder = () => {
         <div className="dropdown">
           <label htmlFor="theme">Theme</label>
           <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
-        </div>
-        <div className="dropdown">
-          <label htmlFor="hadith_number">Hadith Number</label>
-          <Select
-            options={hadithNumberOptions}
-            isSearchable={true}
-            onChange={handleHadithNumberChange}
-          />
         </div>
         <div className="run-query-button">
           <button onClick={SendDataToBackend}>Run Query</button>
