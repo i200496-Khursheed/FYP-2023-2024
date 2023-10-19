@@ -31,7 +31,7 @@ class ReactView(APIView):
 
 @csrf_exempt
 def query_hadith(request):
-    print(request)
+    print('popo',request)
     if request.method == 'GET':
         theme = request.GET.get('theme', '')  # Assuming 'theme' is a parameter you want to pass
 

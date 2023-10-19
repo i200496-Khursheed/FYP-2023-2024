@@ -6,7 +6,7 @@ import urllib.parse
 
 def Sparql_Endpoint(query: str, prefix: str = "") -> dict:
     x = requests.get( 
-        'http://Sameer:7200/repositories/FYP?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
+        'http://khursheed:7200/repositories/kg?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
         headers={
             'Accept' : 'application/sparql-results+json', 
             'Host' : 'localhost:7200'
@@ -212,7 +212,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
                              theme='?theme',hadith_number='?hadith_number', narrator = '?narrator',narratortitle='narrator-title', reffered_chapNo='?refferedChapNo',
                              reffered_vNo='?refferedVerseNo', refrences_chapNo='?refrencesChapNo',
                              refrences_vNo='?refrencesVerseNo', applyLimit=False, limit=None,
-                             relationlst=None, categorylst=None, valuelst=None):
+                             ):
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>

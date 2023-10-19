@@ -5,7 +5,7 @@ import Select from 'react-select';
 import './HadithQueryBuilder.css';
 
 const themeOptions = [
-  { value: 'theme1', label: 'Theme 1' },
+  { value: 'lugha', label: 'lugha' },
   { value: 'theme2', label: 'Theme 2' },
   { value: 'theme3', label: 'Theme 3' },
 ];
@@ -58,25 +58,27 @@ const HadithQueryBuilder = () => {
   };
 
   const SendDataToBackend = () => {
-    fetch('http://127.0.0.1:8000/', {
+    console.log('Data to be sent:', data); // Debugging line
+  
+    fetch('http://127.0.0.1:8000/api/query_hadith/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-
-      // Redirect to HadithQueryResultsPage
-      window.location.href = '/hadith-query-results';
-    })
-    
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+  
+        // Redirect to HadithQueryResultsPage
+        //window.location.href = '/hadith-query-results';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
+  
 
   return (
     <div className="hadith-query-builder">
@@ -127,7 +129,7 @@ const HadithQueryBuilder = () => {
             onChange={handleThemeChange}
           />
         </div>
-        <div className="dropdown">
+        {/* <div className="dropdown">
           <label htmlFor="narratorTitle">Narrator Title</label>
           <Select
             options={narratorTitleOptions}
@@ -142,7 +144,7 @@ const HadithQueryBuilder = () => {
             isSearchable={true}
             onChange={handleNameChange}
           />
-        </div>
+        </div> */}
         <div className="run-query-button">
             <button onClick={SendDataToBackend}>Send Data</button>
         </div>
