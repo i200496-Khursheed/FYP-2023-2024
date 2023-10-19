@@ -250,12 +250,13 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
 
     if theme != '?theme'   :
         baseQueryString += f'''\n     ?Theme :hasName "{theme}" .''' 
+        
     if narrator != '?narrator':
-        baseQueryString += f'''\n     ?NarratorName :hasName {narrator} .'''
+        baseQueryString += f'''\n     ?NarratorName :hasName "{narrator}" .'''
     if narratortitle!='narrator-title':
-        baseQueryString += f'''\n     ?NarratorName :hasNarratorType {narratortitle} .'''
+        baseQueryString += f'''\n     ?NarratorName :hasNarratorType "{narratortitle}" .'''
     if hadith_number != '?hadith_number':
-        baseQueryString += f'''\n     ?HadithNo1 :hasHadithNo  {hadith_number} .'''
+        baseQueryString += f'''\n     ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
     
     if reffered_chapNo != '?refferedChapNo' or reffered_vNo != '?refferedVerseNo':
         baseQueryString += f'''\n  
@@ -271,7 +272,6 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
             ?Refferingverse :hasChapterNo {refrences_chapNo} .
             ?Refferingverse :hasVerseNo  {refrences_vNo}.
             '''
-    #baseQueryString += constructDynamicFilterString(relationlst, categorylst, valuelst)
 
     baseQueryString += '}'
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
@@ -316,7 +316,7 @@ if __name__ == "__main__":
         print(theme)
         
     print("\nQuery")
-    query = constructHadithSparQLQueryString(theme='lugha')
+    query = constructHadithSparQLQueryString(theme='lugha', hadith_number='134', narratortitle='sahabi', narrator='ابْنُ عَبَّاسٍ')
 
     print(query)
     results = []
