@@ -134,17 +134,6 @@ td.text-cell {
   width: 20px;
 }
 
-th.sortable {
-  cursor: pointer; /* Add a pointer cursor to indicate it's clickable */
-  user-select: none; /* Prevent text selection while clicking */
-  transition: color 0.3s; /* Add a smooth color transition effect */
-}
-
-th.sortable:hover {
-  color: #c5e3c0; /* Change text color when hovered (adjust to your preferred color) */
-}
-
-
 .expand-icon {
   position: absolute;
   top: 10px;

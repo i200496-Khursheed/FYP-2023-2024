@@ -29,15 +29,19 @@ class ReactView(APIView):
             return Response({"message": "Data saved successfully"})
         else:
             return Response(serializer.errors, status=400)
-
+        
 @csrf_exempt
 def query_hadith(request):
     print('popo',request)
     if request.method == 'GET':
-        theme = request.GET.get('theme', '')  # Assuming 'theme' is a parameter you want to pass
+        theme = request.GET.get('theme', '')  
+        hadith_number = request.GET.get('hadith_number', None)  # Corrected to use `None` instead of `null`
 
         # Generate the SPARQL query based on the provided parameters
-        query = constructHadithSparQLQueryString(theme=theme)
+        if hadith_number is None:  # Corrected condition to check for `None`
+            query = constructHadithSparQLQueryString(theme=theme)
+        else:
+            query = constructHadithSparQLQueryString(theme=theme, hadith_number=hadith_number)
 
         # Execute the SPARQL query and get the result
         prefix = "http://www.tafsirtabari.com/ontology"
@@ -48,3 +52,4 @@ def query_hadith(request):
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+
