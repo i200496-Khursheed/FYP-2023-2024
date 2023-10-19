@@ -1,5 +1,4 @@
 //HadithQueryResults.js
-
 import React, { useState } from 'react';
 import './HadithQueryResults.css';
 
