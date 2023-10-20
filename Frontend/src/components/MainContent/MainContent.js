@@ -44,8 +44,8 @@ function MainContent() {
             imageSrc={require('../../assets/people_search.png')}
           />
           <InfoBox 
-            title="Top Tabari Queries" 
-            description="Explore popular queries of Tafseer Al-Tabari" 
+            title="Al-Tabari Knowledge Queries" 
+            description="Explore pre-built queries of Tafseer Al-Tabari" 
             imageSrc={require('../../assets/top_queries.png')}
           />
           <InfoBox 
