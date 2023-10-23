@@ -7,10 +7,22 @@ const HadithQueryResults = () => {
   const { resultsData } = location.state;
 
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
+  
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+    // Function to handle sorting by Hadith Number
+    const handleSort = () => {
+      if (sortOrder === 'asc') {
+        resultsData.HadithNo.sort((a, b) => a - b); // Sort in ascending order
+        setSortOrder('desc');
+      } else {
+        resultsData.HadithNo.sort((a, b) => b - a); // Sort in descending order
+        setSortOrder('asc');
+      }
+    };
 
   return (
     <div className={`hadith-query-results ${isExpanded ? 'expanded' : ''}`}>
@@ -29,7 +41,9 @@ const HadithQueryResults = () => {
           <table>
             <tbody>
               <tr>
-                <th className="sortable">Hadith Number</th>
+                <th className="sortable" onClick={handleSort}>
+                  Hadith Number {sortOrder === 'asc' ? '▲' : '▼'} 
+                </th>
                 <th>Theme</th>
                 <th>Text</th>
               </tr>
