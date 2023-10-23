@@ -122,7 +122,7 @@ const HadithQueryBuilder = () => {
             onChange={() => handleRadioChange('hadith')}
             checked={selectedOption === 'hadith'}
           />
-          <span>Hadith</span>
+          <span> <p>Hadith</p> </span>
         </label>
       </div>
 

@@ -6,18 +6,33 @@ const HadithQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state;
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false); // Start with details collapsed
+  const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  // Function to handle sorting by Hadith Number
+  const handleSort = () => {
+    if (sortOrder === 'asc') {
+      resultsData.HadithNo.sort((a, b) => a - b); // Sort in ascending order
+      setSortOrder('desc');
+    } else {
+      resultsData.HadithNo.sort((a, b) => b - a); // Sort in descending order
+      setSortOrder('asc');
+    }
+  };
+
   return (
-    <div className={`hadith-query-results ${isExpanded ? 'expanded' : ''}`}>
+    <div className="hadith-query-results">
       <div className="back-button-HQR" onClick={() => window.history.back()}>
         <img src={require('../../assets/back_button.png')} alt="Back Button" />
       </div>
       <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
+        <div className="expand-icon" onClick={toggleExpand}>
+          <img src={require('../../assets/expand_icon.png')} alt="Expand Icon" />
+        </div>
 
         <div className="details-swipe-bar" onClick={toggleExpand}>
           <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
@@ -29,7 +44,9 @@ const HadithQueryResults = () => {
           <table>
             <tbody>
               <tr>
-                <th className="sortable">Hadith Number</th>
+                <th className="sortable" onClick={handleSort}>
+                  Hadith Number {sortOrder === 'asc' ? '▲' : '▼'}
+                </th>
                 <th>Theme</th>
                 <th>Text</th>
               </tr>
