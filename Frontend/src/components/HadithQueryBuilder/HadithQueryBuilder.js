@@ -15,17 +15,32 @@ const hadithNumberOptions = [
   { value: '136', label: 'Hadith 136' },
 ];
 
-// const narratorTitleOptions = [
-//   { value: 'sahabi', label: 'sahabi' },
-//   { value: 'rawi', label: 'rawi' },
-//   { value: 'any', label: 'any' },
-// ];
+const narratorTitleOptions = [
+  { value: 'sahabi', label: 'sahabi' },
+  { value: 'rawi', label: 'rawi' },
+  { value: 'any', label: 'any' },
+];
 
-// const narratorNameOptions = [
-//   { value: 'ابن عباس', label: 'ابن عباس' },
-//   { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-//   { value: 'أبو روق', label: 'أبو روق' },
-// ];
+const narratorNameOptions = [
+  { value: 'ابن عباس', label: 'ابن عباس' },
+  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
+  { value: 'أبو روق', label: 'أبو روق' },
+];
+
+const organizationOptions = [
+  { value: 'org1', label: 'Organization 1' },
+  { value: 'org2', label: 'Organization 2' },
+];
+
+const timeOptions = [
+  { value: 'time1', label: 'Time 1' },
+  { value: 'time2', label: 'Time 2' },
+];
+
+const placeOptions = [
+  { value: 'place1', label: 'Place 1' },
+  { value: 'place2', label: 'Place 2' },
+];
 
 const HadithQueryBuilder = () => {
   const navigate = useNavigate();
@@ -33,8 +48,10 @@ const HadithQueryBuilder = () => {
   const [data, setData] = useState({
     theme: '',
     hadith_number: '',
-    narrator_title: '', // Initialize narrator_title
-    narrator_name: '',  // Initialize narrator_name
+    narrators: [{ title: '', name: '' }],
+    organization: '',
+    time: '',
+    place: '',
   });
 
   const handleRadioChange = (option) => {
@@ -55,17 +72,48 @@ const HadithQueryBuilder = () => {
     });
   };
 
-  const handleNarratorTitleChange = (selectedOption) => {
+  const handleNarratorChange = (index, type, value) => {
+    const updatedNarrators = [...data.narrators];
+    updatedNarrators[index][type] = value;
     setData({
       ...data,
-      narrator_title: selectedOption.value,
+      narrators: updatedNarrators,
     });
   };
 
-  const handleNarratorNameChange = (selectedOption) => {
+  const handleAddNarrator = () => {
     setData({
       ...data,
-      narrator_name: selectedOption.value,
+      narrators: [...data.narrators, { title: '', name: '' }],
+    });
+  };
+
+  const handleRemoveNarrator = (index) => {
+    const updatedNarrators = data.narrators.filter((_, i) => i !== index);
+    setData({
+      ...data,
+      narrators: updatedNarrators,
+    });
+  };
+
+  const handleOrganizationChange = (selectedOption) => {
+    setData({
+      ...data,
+      organization: selectedOption.value,
+    });
+  };
+
+  const handleTimeChange = (selectedOption) => {
+    setData({
+      ...data,
+      time: selectedOption.value,
+    });
+  };
+
+  const handlePlaceChange = (selectedOption) => {
+    setData({
+      ...data,
+      place: selectedOption.value,
     });
   };
 
@@ -76,14 +124,17 @@ const HadithQueryBuilder = () => {
       url += `&hadith_number=${data.hadith_number}`;
     }
 
-    // Add narrator_title and narrator_name to the URL
-    // if (data.narrator_title) {
-    //   url += `&narrator_title=${data.narrator_title}`;
-    // }
+    if (data.organization) {
+      url += `&organization=${data.organization}`;
+    }
 
-    // if (data.narrator_name) {
-    //   url += `&narrator_name=${data.narrator_name}`;
-    // }
+    if (data.time) {
+      url += `&time=${data.time}`;
+    }
+
+    if (data.place) {
+      url += `&place=${data.place}`;
+    }
 
     fetch(url, {
       method: 'GET',
@@ -103,6 +154,20 @@ const HadithQueryBuilder = () => {
         console.error('Error:', error);
       });
   };
+
+  const [limitValue, setLimitValue] = useState(0);
+
+const incrementValue = () => {
+  setLimitValue(Math.min(limitValue + 1, MAX_LIMIT));
+};
+
+const decrementValue = () => {
+  setLimitValue(Math.max(limitValue - 1, 0));
+};
+
+// Define MAX_LIMIT constant if needed
+const MAX_LIMIT = 2000; // Example value
+
 
   return (
     <div className="hadith-query-builder">
@@ -124,41 +189,110 @@ const HadithQueryBuilder = () => {
           />
           <span> <p>Hadith</p> </span>
         </label>
+        <label className={`radio-button ${selectedOption === 'verse' ? 'selected' : ''}`}>
+          <input
+            type="radio"
+            name="queryType"
+            value="verse"
+            onChange={() => handleRadioChange('verse')}
+            checked={selectedOption === 'verse'}
+          />
+          <span> <p>Verse</p> </span>
+        </label>
+        <label className={`radio-button ${selectedOption === 'commentary' ? 'selected' : ''}`}>
+          <input
+            type="radio"
+            name="queryType"
+            value="commentary"
+            onChange={() => handleRadioChange('commentary')}
+            checked={selectedOption === 'commentary'}
+          />
+          <span> <p>Commentary</p> </span>
+        </label>
       </div>
 
       <div className="query-box">
         <div className="search-text">Search for Hadith with:</div>
-        <div className="dropdown">
-          <label htmlFor="theme">Theme</label>
-          <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+        <div className="dropdown-container">
+            <div className="dropdown">
+              <label htmlFor="theme">Theme</label>
+              <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+            </div>
+            <div className="dropdown">
+              <label htmlFor="hadith_number">Hadith Number</label>
+              <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
+            </div>
+          </div>
+        <div className="add-narrator-button">
+          <button className="add-button" onClick={handleAddNarrator}>
+            + Add Narrator
+          </button>
         </div>
-        <div className="dropdown">
-          <label htmlFor="hadith_number">Hadith Number</label>
-          <Select
-            options={hadithNumberOptions}
-            isSearchable={true}
-            onChange={handleHadithNumberChange}
-          />
+        <div className="narrators">
+          {data.narrators.map((narrator, index) => (
+            <div key={index} className="narrator">
+              <div className="dropdown">
+                <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
+                <Select
+                  options={narratorTitleOptions}
+                  isSearchable={true}
+                  onChange={(selectedOption) =>
+                    handleNarratorChange(index, 'title', selectedOption.value)
+                  }
+                />
+              </div>
+              <div className="dropdown">
+                <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
+                <Select
+                  options={narratorNameOptions}
+                  isSearchable={true}
+                  onChange={(selectedOption) =>
+                    handleNarratorChange(index, 'name', selectedOption.value)
+                  }
+                />
+              </div>
+              <div className="remove-narrator-button">
+                <button className="remove-button" onClick={() => handleRemoveNarrator(index)}>
+                  - Remove
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-        {/* <div className="dropdown">
-          <label htmlFor="narrator_title">Narrator Title</label>
-          <Select
-            options={narratorTitleOptions}
-            isSearchable={true}
-            onChange={handleNarratorTitleChange}
-          />
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="organization">Organization</label>
+            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
+          </div>
+          <div className="dropdown">
+            <label htmlFor="time">Time</label>
+            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
+          </div>
+          <div className="dropdown">
+            <label htmlFor="place">Place</label>
+            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
+          </div>
         </div>
-        <div className="dropdown">
-          <label htmlFor="narrator_name">Narrator Name</label>
-          <Select
-            options={narratorNameOptions}
-            isSearchable={true}
-            onChange={handleNarratorNameChange}
-          />
-        </div> */}
         <div className="run-query-button">
-          <button onClick={SendDataToBackend}>Run Query</button>
+          <button className="run-button" onClick={SendDataToBackend}>
+            Run Query
+          </button>
         </div>
+
+        <div className="limit-results-box">
+          <label htmlFor="limit-results">Limit Search Results</label>
+          <div className="limit-input">
+            <button className="decrement" onClick={decrementValue}>-</button>
+            <input
+              type="number"
+              id="limit-results"
+              value={limitValue}
+              onChange={(e) => setLimitValue(Math.max(0, parseInt(e.target.value)))}
+            />
+            <button className="increment" onClick={incrementValue}>+</button>
+          </div>
+      </div>
       </div>
     </div>
   );
