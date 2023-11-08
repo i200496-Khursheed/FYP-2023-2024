@@ -31,6 +31,7 @@ function MainContent() {
             title="Verse" 
             description="Explore Tafseer Al-Tabari for verse commentary" 
             imageSrc={require('../../assets/verse_search.png')}
+            linkTo="/verse-query-builder"
           />
           <InfoBox 
             title="Hadith" 

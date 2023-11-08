@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import LandingPage from './pages/LandingPage';
+
 import HadithQueryBuilderPage from './pages/HadithQueryBuilderPage';
 import HadithQueryResultsPage from './pages/HadithQueryResultsPage';
+
+import VerseQueryBuilderPage from './pages/VerseQueryBuilderPage';
 
 function App() {
 
@@ -25,6 +28,11 @@ function App() {
           <Route
             path="/hadith-query-results"
             element={<HadithQueryResultsPage />} 
+          />
+
+          <Route
+            path="/verse-query-builder"
+            element={<VerseQueryBuilderPage />} 
           />
         </Routes>
       </div>
