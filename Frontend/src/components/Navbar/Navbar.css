@@ -1,3 +1,4 @@
+/* Navbar.css */
 body, html {
     margin: 0;
     padding: 0;
@@ -16,8 +17,8 @@ body, html {
   .brand {
     font-size: 1.5em;
     color: #BFA181;
-    font-weight: bold; /* Added font-weight */
-    font-family: 'Open Sans', sans-serif; /* Added font-family */
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
   }
   
   .links {
@@ -30,8 +31,8 @@ body, html {
     border-radius: 50px;
     color: #BFA181;
     text-decoration: none;
-    font-weight: bold; /* Added font-weight */
-    font-family: 'Open Sans', sans-serif; /* Added font-family */
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
   }
   
   .nav-link:hover {

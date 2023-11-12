@@ -1,5 +1,6 @@
+//HadithQueryBuilderPage.js
 import React from 'react';
-import HadithQueryBuilder from '../components/HadithQueryBuilder/HadithQueryBuilder'; // Import HadithQueryBuilder component
+import HadithQueryBuilder from '../components/HadithQueryBuilder/HadithQueryBuilder';
 
 function HadithQueryBuilderPage() {
   return (

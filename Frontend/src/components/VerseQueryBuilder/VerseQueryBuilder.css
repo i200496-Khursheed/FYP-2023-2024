@@ -1,9 +1,9 @@
-/* HadithQueryBuilder.css */
+/* VerseQueryBuilder.css */
 body, p{
   font-family: 'Lexend Deca', 'Jost', sans-serif;
 }
 
-.hadith-query-builder {
+.verse-query-builder {
   position: relative;
   display: flex;
   flex-direction: column;

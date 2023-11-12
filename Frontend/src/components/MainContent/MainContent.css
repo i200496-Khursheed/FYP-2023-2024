@@ -1,140 +1,165 @@
+/* MainContent.css */
+
 .main-content {
-    margin-top: 10px; /* Add some gap between Navbar and the box */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(65vh - 85px); /* Adjust based on Navbar height */
-  }
-  
-  .box {
-    width: 100%; /* Adjust the width as needed */
-    max-width: 1400px; /* Set a maximum width for the box */
-    height: 50vh; /* Adjust the height as needed */
-    border-radius: 59px 59px 350px 59px;
-    background: linear-gradient(115deg, rgba(0, 25, 255, 0.75), rgba(238, 154, 229, 1)); /* Use rgba for opacity */
-    border: 2.5px solid #000000;
-  }  
-  
-  .text {
-    font-size: 48px; /* Adjust the font size as needed */
-    font-weight: 800; /* Extrabold */
-    font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
-    color: #FFFCFC;
-    text-align: left; /* Align the text to the left */
-    padding: 20px; /* Add padding to the text for better spacing */
-    padding-left: 50px;
-  }
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(65vh - 85px); 
+}
 
-  /* Existing styles remain the same */
-  .box {
-    position: relative;
-  }
+.animated {
+  animation: slideIn 2s forwards;
+}
 
-  .secondary-text {
-    position: absolute;
-    bottom: 55px;
-    left: 50px;
-  }
-  
-  .secondary-heading {
-    font-size: 26px;
-    font-weight: 800; /* Extrabold */
-    font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
-    color: #FFFCFC;
-    text-align: left;
-    margin-bottom: 30px; /* Add some space between heading and square */
-  }
-  
-  .square {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    
-    background-color: #FFFFFF;
-    border: 1px solid #000000;
-    margin-right: 10px; /* Add some space between square and text */
-    vertical-align: middle;
-  }
-  
-  .side-text {
-    display: inline-block;
-  }
-  
-  .italic-text {
-    font-style: italic;
-    font-family: 'Jost', sans-serif;
-    color: #FFFCFC;
-    text-align: left;
-    font-size: 120%;
-  }
+.info-boxes {
+  animation: slideInFromRight 2.0s forwards;
+}
 
-  /* Existing styles remain the same */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.text, .secondary-text, .box-image {
+  animation: slideInLeft 2s forwards;
+  opacity: 0;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.box {
+  width: 100%;
+  max-width: 1400px;
+  height: 50vh;
+  border-radius: 59px 59px 350px 59px;
+  background: linear-gradient(115deg, rgba(0, 25, 255, 0.75), rgba(238, 154, 229, 1));
+  border: 2.5px solid #000000;
+}  
+
+.text {
+  font-size: 48px;
+  font-weight: 800;
+  font-family: 'Jost', sans-serif;
+  color: #FFFCFC;
+  text-align: left;
+  padding: 20px;
+  padding-left: 50px;
+}
+
+.box {
+  position: relative;
+}
+
+.secondary-text {
+  position: absolute;
+  bottom: 55px;
+  left: 50px;
+}
+
+.secondary-heading {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: 'Jost', sans-serif;
+  color: #FFFCFC;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.square {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  
+  background-color: #FFFFFF;
+  border: 1px solid #000000;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.side-text {
+  display: inline-block;
+}
+
+.italic-text {
+  font-style: italic;
+  font-family: 'Jost', sans-serif;
+  color: #FFFCFC;
+  text-align: left;
+  font-size: 120%;
+}
 
 .buttons {
-  margin-top: 30px; /* Add some space between text and buttons */
+margin-top: 30px;
 }
 
 .explore-button, .about-button {
-  font-size: 16px;
-  font-weight: 800; /* Extrabold */
-  font-family: 'Jost', sans-serif; /* Assuming 'Jost' is available */
-  color: #FFFFFF;
-  background-color: #01257D;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 26px;
-  margin-right: 40px;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /* Drop down shadow */
+font-size: 16px;
+font-weight: 800;
+font-family: 'Jost', sans-serif;
+color: #FFFFFF;
+background-color: #01257D;
+border: none;
+border-radius: 10px;
+padding: 13px 26px;
+margin-right: 40px;
+text-align: center;
+cursor: pointer;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .about-button {
-  background-color: transparent;
-  border: 2px solid #000000;
-  background: transparent;
-  color: #000000;
+background-color: transparent;
+border: 2px solid #000000;
+background: transparent;
+color: #000000;
 }
 
 .about-button:hover {
-  background-color: #473849;
-  color: #FFFFFF;
+background-color: #473849;
+color: #FFFFFF;
 }
 
 .explore-button:hover {
-  background-color: #ee78c0;
-  color: #FFFFFF;
+background-color: #ee78c0;
+color: #FFFFFF;
 }
 
 .about-button:focus {
-  outline: none;
+outline: none;
 }
 
 @keyframes pulsate {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+0% {
+  transform: scale(1);
+}
+50% {
+  transform: scale(1.05);
+}
+100% {
+  transform: scale(1);
+}
 }
 
 .box-image {
-  position: absolute;
-  top: 6%;
-  right: 150px; /* Adjust the right distance as needed */
-  transform: translateY(-50%);
-  max-height: 300px;
-  max-width: 200%;
-  border-radius: 20%;
-  opacity: 0.65;
-  animation: pulsate 2s infinite; /* Apply the pulsating animation */
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5); /* Add a 3D shadow effect */
+position: absolute;
+top: 6%;
+right: 150px;
+transform: translateY(-50%);
+max-height: 300px;
+max-width: 200%;
+border-radius: 20%;
+opacity: 0.65;
+animation: pulsate 2s infinite;
+box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
-
-  
-  

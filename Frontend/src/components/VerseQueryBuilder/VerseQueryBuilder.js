@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import './HadithQueryBuilder.css';
+import './VerseQueryBuilder.css';
+
+const ayatNumberOptions = [
+  { value: '15', label: 'Verse 015' },
+  { value: '6', label: 'Verse 006' },
+  { value: '13', label: 'Verse 013' },
+];
+
+const surahNumberOptions = [
+  { value: '12', label: 'يوسف 12' },
+  { value: '10', label: 'يونس 10' },
+  { value: '19', label: 'مريم 19' },
+];
 
 const themeOptions = [
   { value: 'lugha', label: 'lugha' },
   { value: 'kalam', label: 'kalam' },
   { value: 'science', label: 'science' },
-];
-
-const hadithNumberOptions = [
-  { value: '134', label: 'Hadith 134' },
-  { value: '135', label: 'Hadith 135' },
-  { value: '136', label: 'Hadith 136' },
 ];
 
 const narratorTitleOptions = [
@@ -42,12 +48,13 @@ const placeOptions = [
   { value: 'place2', label: 'Place 2' },
 ];
 
-const HadithQueryBuilder = () => {
+const VerseQueryBuilder = () => {
   const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState('hadith');
+  const [selectedOption, setSelectedOption] = useState('verse');
   const [data, setData] = useState({
+    surah_number: '',
+    verse_number: '',
     theme: '',
-    hadith_number: '',
     narrators: [{ title: '', name: '' }],
     organization: '',
     time: '',
@@ -58,17 +65,24 @@ const HadithQueryBuilder = () => {
     setSelectedOption(option);
   };
 
+  const handleSurahNumberChange = (selectedOption) => {
+    setData({
+      ...data,
+      surah_number: selectedOption.value,
+    });
+  };
+
+  const handleAyatNumberChange = (selectedOption) => {
+    setData({
+      ...data,
+      verse_number: selectedOption.value,
+    });
+  };
+
   const handleThemeChange = (selectedOption) => {
     setData({
       ...data,
       theme: selectedOption.value,
-    });
-  };
-
-  const handleHadithNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      hadith_number: selectedOption.value,
     });
   };
 
@@ -147,7 +161,7 @@ const HadithQueryBuilder = () => {
         console.log('Success:', data);
         if (data.result) {
           console.log('Result from backend:', data.result);
-          navigate('/hadith-query-results', { state: { resultsData: data.result } });
+          navigate('/verse-query-results', { state: { resultsData: data.result } });
         }
       })
       .catch((error) => {
@@ -170,7 +184,7 @@ const MAX_LIMIT = 2000; // Example value
 
 
   return (
-    <div className="hadith-query-builder">
+    <div className="verse-query-builder">
       <div className="back-button">
         <img
           src={require('../../assets/back_button.png')}
@@ -212,17 +226,24 @@ const MAX_LIMIT = 2000; // Example value
       </div>
 
       <div className="query-box">
-        <div className="search-text">Search for Hadith with:</div>
+        <div className="search-text">Search for Verse with:</div>
         <div className="dropdown-container">
+            <div className="dropdown">
+              <label htmlFor="surah_number">Surah Number</label>
+              <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+            </div>
+            <div className="dropdown">
+              <label htmlFor="ayat_number">Ayat Number</label>
+              <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+            </div>
+
             <div className="dropdown">
               <label htmlFor="theme">Theme</label>
               <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
             </div>
-            <div className="dropdown">
-              <label htmlFor="hadith_number">Hadith Number</label>
-              <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
-            </div>
           </div>
+
+
         <div className="add-narrator-button">
           <button className="add-button" onClick={handleAddNarrator}>
             + Add Narrator
@@ -298,4 +319,4 @@ const MAX_LIMIT = 2000; // Example value
   );
 };
 
-export default HadithQueryBuilder;
+export default VerseQueryBuilder;

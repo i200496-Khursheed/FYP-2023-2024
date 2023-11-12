@@ -1,3 +1,4 @@
+/* MainContent.js */
 import React from 'react';
 import './MainContent.css';
 import InfoBox from '../InfoBox/InfoBox'; // Adjusting the path to match the actual file structure
@@ -30,6 +31,7 @@ function MainContent() {
             title="Verse" 
             description="Explore Tafseer Al-Tabari for verse commentary" 
             imageSrc={require('../../assets/verse_search.png')}
+            linkTo="/verse-query-builder"
           />
           <InfoBox 
             title="Hadith" 
@@ -43,8 +45,8 @@ function MainContent() {
             imageSrc={require('../../assets/people_search.png')}
           />
           <InfoBox 
-            title="Top Tabari Queries" 
-            description="Explore popular queries of Tafseer Al-Tabari" 
+            title="Al-Tabari Knowledge Queries" 
+            description="Explore pre-built queries of Tafseer Al-Tabari" 
             imageSrc={require('../../assets/top_queries.png')}
           />
           <InfoBox 
