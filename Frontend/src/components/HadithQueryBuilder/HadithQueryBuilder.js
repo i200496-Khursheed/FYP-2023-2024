@@ -81,21 +81,32 @@ const HadithQueryBuilder = () => {
     });
   };
 
-  const handleAddNarrator = () => {
-    setData({
-      ...data,
-      narrators: [...data.narrators, { title: '', name: '' }],
-    });
-  };
+ const handleAddNarrator = () => {
+  setData((prevData) => ({
+    ...prevData,
+    narrators: [...prevData.narrators, { title: '', name: '' }],
+  }));
+
+  setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
+};
+
 
   const handleRemoveNarrator = (index) => {
-    const updatedNarrators = data.narrators.filter((_, i) => i !== index);
+    const updatedNarrators = [...data.narrators];
+    const updatedLogic = [...narratorLogic];
+  
+    updatedNarrators.splice(index, 1);
+    updatedLogic.splice(index, 1);
+  
     setData({
       ...data,
       narrators: updatedNarrators,
     });
+  
+    setNarratorLogic(updatedLogic);
   };
-
+  
+  
   const handleOrganizationChange = (selectedOption) => {
     setData({
       ...data,
@@ -168,6 +179,16 @@ const decrementValue = () => {
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
 
+// Logic Gates
+const [narratorLogic, setNarratorLogic] = useState(Array(data.narrators.length).fill('AND'));
+
+const handleNarratorLogicChange = (index) => {
+  setNarratorLogic((prevLogic) => {
+    const updatedLogic = [...prevLogic];
+    updatedLogic[index] = updatedLogic[index] === 'AND' ? 'OR' : 'AND';
+    return updatedLogic;
+  });
+};
 
   return (
     <div className="hadith-query-builder">
@@ -223,14 +244,38 @@ const MAX_LIMIT = 2000; // Example value
               <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
             </div>
           </div>
-        <div className="add-narrator-button">
-          <button className="add-button" onClick={handleAddNarrator}>
-            + Add Narrator
-          </button>
+
+          <div className="add-narrator-button">
+            <div className="add-content" onClick={handleAddNarrator}>
+              <img
+                src={require('../../assets/add.png')} 
+                alt="Add Narrator"
+                className="add-image"
+              />
+              <p id="add-narrator-text">Add Narrator</p>
+            </div>
         </div>
+
+
         <div className="narrators">
           {data.narrators.map((narrator, index) => (
             <div key={index} className="narrator">
+
+              <div className="narrator-logic-buttons">
+                <button
+                  className={`logic-button ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
+                  onClick={() => handleNarratorLogicChange(index)}
+                >
+                  AND
+                </button>
+                <button
+                  className={`logic-button ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
+                  onClick={() => handleNarratorLogicChange(index)}
+                >
+                  OR
+                </button>
+              </div>
+
               <div className="dropdown">
                 <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
                 <Select
@@ -251,11 +296,16 @@ const MAX_LIMIT = 2000; // Example value
                   }
                 />
               </div>
+
               <div className="remove-narrator-button">
-                <button className="remove-button" onClick={() => handleRemoveNarrator(index)}>
-                  - Remove
-                </button>
+                <img
+                  src={require('../../assets/remove.png')} // Updated image path
+                  alt="Remove Narrator"
+                  className="remove-image"
+                  onClick={() => handleRemoveNarrator(index)}
+                />
               </div>
+              
             </div>
           ))}
         </div>
