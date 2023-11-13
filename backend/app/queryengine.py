@@ -324,3 +324,4 @@ if __name__ == "__main__":
     get_query = urllib.parse.quote(query)
     result = Sparql_Endpoint(get_query,prefix)
     print(result)
+    print("finish")
