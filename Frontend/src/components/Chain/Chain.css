@@ -1,0 +1,142 @@
+.hadith-query-results-chain {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+  font-size: 18px;
+  font-family: 'Lexend Deca', 'Jost', sans-serif;
+  font-weight: bold;
+  transition: height 0.3s;
+  margin-top: 5%;
+}
+
+.hadith-query-results-chain.expanded {
+  height: auto;
+}
+
+.query-text-box-chain {
+  text-align: center;
+  left: 45%;
+  width: 850px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: 1px solid #EE9AE5;
+  box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  margin-top: -6.5%;
+  padding-bottom: 0.5%;
+  position: relative;
+}
+
+.details-swipe-bar-chain {
+  cursor: pointer;
+  position: absolute;
+  bottom: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #4639E3, #381f6c);
+  height: 50px;
+  width: 100%;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.3s ease, background 0.3s ease;
+}
+
+.details-swipe-bar-chain:hover {
+  height: 55px;
+  width: 855px;
+  background: linear-gradient(to right, #4639E3, #381f6c);
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 20px 10px;
+  border-color: transparent transparent #EE9AE5 transparent;
+  stroke: #000000;
+  stroke-width: 2px;
+  transition: transform 0.3s ease;
+}
+
+.expanded .arrow {
+  transform: rotate(180deg);
+}
+
+.arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.expand-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.back-button-HQR img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 60px;
+  left: 30px;
+  cursor: pointer;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.back-button-HQR img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+  background-color: transparent;
+}
+
+.details-chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20%;
+  margin-left: 90%;
+}
+
+.chain-container {
+  display: flex;
+  flex-direction: column; /* Adjust to make blocks appear one below another */
+}
+
+.narrator-block {
+  border-radius: 2%;
+  width: 300px;
+  background-color: #381f6c;
+  color: white;
+  padding: 30px; /* Adjust as needed */
+  margin: 80px; /* Adjust as needed */
+  margin-top: -40px;
+  text-align: center;
+  position: relative;
+  z-index: 2; /* Set a higher z-index for narrator-block */
+}
+
+.chain-links {
+  display: flex;
+  flex-direction: column; /* Adjust to make links appear one below another */
+  align-items: center;
+}
+
+.link-line {
+  position: absolute;
+  top: 80%;
+  bottom: 0;
+  left: 50%;
+  background-color: #381f6c;
+  width: 2px; /* Adjust as needed */
+  height: 285px; /* Adjust as needed */
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 1; /* Set a lower z-index for link-line */
+}

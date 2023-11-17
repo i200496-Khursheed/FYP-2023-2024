@@ -10,6 +10,9 @@ import HadithQueryResultsPage from './pages/HadithQueryResultsPage';
 
 import VerseQueryBuilderPage from './pages/VerseQueryBuilderPage';
 
+import ChainPage from './pages/ChainPage';
+
+
 function App() {
 
   return (
@@ -34,6 +37,12 @@ function App() {
             path="/verse-query-builder"
             element={<VerseQueryBuilderPage />} 
           />
+
+          <Route
+            path="/chain-page"
+            element={<ChainPage />} 
+          />
+
         </Routes>
       </div>
     </Router>
