@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import './VerseQueryBuilder.css';
+import './CommentaryQueryBuilder.css';
 
-// Verse Contents
+// Commentary Contents
 const ayatNumberOptions = [
   { value: '15', label: 'Verse 015' },
   { value: '6', label: 'Verse 006' },
@@ -21,6 +21,12 @@ const themeOptions = [
   { value: 'kalam', label: 'kalam' },
   { value: 'science', label: 'science' },
 ];
+
+const subThemeOptions = [
+    { value: 'afaalibad', label: 'afaalibad' },
+    { value: 'khairshar', label: 'khairshar' },
+    { value: 'sifatilahi', label: 'sifatilahi' },
+  ];
 
 const narratorTitleOptions = [
   { value: 'sahabi', label: 'sahabi' },
@@ -49,13 +55,14 @@ const placeOptions = [
   { value: 'place2', label: 'Place 2' },
 ];
 
-const VerseQueryBuilder = () => {
+const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('verse');
   const [data, setData] = useState({
     surah_number: '',
     verse_number: '',
     theme: '',
+    sub_theme: '',
     narrators: [{ title: '', name: '' }],
     organization: '',
     time: '',
@@ -64,25 +71,19 @@ const VerseQueryBuilder = () => {
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
-    switch (option) {
-      case 'verse':
-        navigate('/verse-query-builder');
-        break;
-      case 'hadith':
-        navigate('/hadith-query-builder');
-        break;
-      case 'commentary':
-        navigate('/commentary-query-builder');
-        break;
-      default:
-        break;
-    }
   };
 
   const handleThemeChange = (selectedOption) => {
     setData({
       ...data,
       theme: selectedOption.value,
+    });
+  };
+
+  const handleSubThemeChange = (selectedOption) => {
+    setData({
+      ...data,
+      sub_theme: selectedOption.value,
     });
   };
 
@@ -186,7 +187,7 @@ const VerseQueryBuilder = () => {
         console.log('Success:', data);
         if (data.result) {
           console.log('Result from backend:', data.result);
-          navigate('/verse-query-results', { state: { resultsData: data.result } });
+          navigate('/commentary-query-results', { state: { resultsData: data.result } });
         }
       })
       .catch((error) => {
@@ -219,16 +220,16 @@ const handleNarratorLogicChange = (index) => {
 };
 
   return (
-    <div className="verse-query-builder">
-      <div className="back-button-verse">
+    <div className="commentary-query-builder">
+      <div className="back-button-commentary">
         <img
           src={require('../../assets/back_button.png')}
           alt="Back Button"
           onClick={() => window.history.back()}
         />
       </div>
-      <div className="radio-buttons-verse">
-        <label className={`radio-button-verse ${selectedOption === 'hadith' ? 'selected' : ''}`}>
+      <div className="radio-buttons-commentary">
+        <label className={`radio-button-commentary ${selectedOption === 'hadith' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="queryType"
@@ -238,7 +239,7 @@ const handleNarratorLogicChange = (index) => {
           />
           <span> <p>Hadith</p> </span>
         </label>
-        <label className={`radio-button-verse ${selectedOption === 'verse' ? 'selected' : ''}`}>
+        <label className={`radio-button-commentary ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="queryType"
@@ -248,7 +249,7 @@ const handleNarratorLogicChange = (index) => {
           />
           <span> <p>Verse</p> </span>
         </label>
-        <label className={`radio-button-verse ${selectedOption === 'commentary' ? 'selected' : ''}`}>
+        <label className={`radio-button-commentary ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="queryType"
@@ -260,56 +261,61 @@ const handleNarratorLogicChange = (index) => {
         </label>
       </div>
 
-      <div className="query-box-verse">
-      <div className="search-text-verse">Search for Verse with:</div>
-      <div className="dropdown-container-verse">
-            <div className="dropdown-verse">
-              <label htmlFor="surah_number">Surah Number</label>
-              <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
-            </div>
-            <div className="dropdown-verse">
-              <label htmlFor="ayat_number">Ayat Number</label>
-              <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
-            </div>
+      <div className="query-box-commentary">
+      <div className="search-text-commentary">Find Commentary About:</div>
+      <div className="dropdown-container-commentary">
+        <div className="dropdown-commentary">
+            <label htmlFor="surah_number">Surah Number</label>
+            <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+        </div>
+        <div className="dropdown-commentary">
+            <label htmlFor="ayat_number">Ayat Number</label>
+            <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+        </div>
 
-            <div className="dropdown-verse">
-              <label htmlFor="theme">Where its commentary has Theme</label>
-              <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
-            </div>
-          </div>
+        <div className="dropdown-commentary">
+            <label htmlFor="theme">Which has Theme</label>
+            <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+        </div>
 
-          <div className="add-narrator-button-verse">
-            <div className="add-content-verse" onClick={handleAddNarrator}>
-              <img
-                src={require('../../assets/add.png')} 
-                alt="Add Narrator"
-                className="add-image-verse"
-              />
-              <p id="add-narrator-text-verse">Add Condition</p>
-            </div>
+        <div className="dropdown-commentary">
+            <label htmlFor="sub_theme">Which has the Sub-Theme</label>
+            <Select options={subThemeOptions} isSearchable={true} onChange={handleSubThemeChange} />
+        </div>
         </div>
 
 
-        <div className="narrators-verse">
+          {/* <div className="add-narrator-button-commentary">
+            <div className="add-content-commentary" onClick={handleAddNarrator}>
+              <img
+                src={require('../../assets/add.png')} 
+                alt="Add Narrator"
+                className="add-image-commentary"
+              />
+              <p id="add-narrator-text-commentary">Add Condition</p>
+            </div>
+        </div>
+
+        <div className="narrators-commentary">
           {data.narrators.map((narrator, index) => (
-            <div key={index} className="narrator-verse">
+            <div key={index} className="narrator-commentary">
               <p> Where the verse is referenced by Hadith</p>
-              <div className="narrator-logic-buttons-verse">
+              <div className="narrator-logic-buttons-commentary">
                 <button
-                  className={`logic-button-verse ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
+                  className={`logic-button-commentary ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
                   onClick={() => handleNarratorLogicChange(index)}
                 >
                   AND
                 </button>
                 <button
-                  className={`logic-button-verse ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
+                  className={`logic-button-commentary ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
                   onClick={() => handleNarratorLogicChange(index)}
                 >
                   OR
                 </button>
               </div>
 
-              <div className="dropdown-verse">
+              <div className="dropdown-commentary">
                 <label htmlFor={`theme_${index}`}>Theme</label>
                 <Select
                   options={themeOptions}
@@ -320,7 +326,7 @@ const handleNarratorLogicChange = (index) => {
                 />
               </div>
 
-              <div className="dropdown-verse">
+              <div className="dropdown-commentary">
                 <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
                 <Select
                   options={narratorTitleOptions}
@@ -330,7 +336,7 @@ const handleNarratorLogicChange = (index) => {
                   }
                 />
               </div>
-              <div className="dropdown-verse">
+              <div className="dropdown-commentary">
                 <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
                 <Select
                   options={narratorNameOptions}
@@ -341,50 +347,70 @@ const handleNarratorLogicChange = (index) => {
                 />
               </div>
 
-              <div className="remove-narrator-button-verse">
+              <div className="remove-narrator-button-commentary">
                 <img
                   src={require('../../assets/remove.png')} // Updated image path
                   alt="Remove Narrator"
-                  className="remove-image-verse"
+                  className="remove-image-commentary"
                   onClick={() => handleRemoveNarrator(index)}
                 />
               </div>
               
             </div>
           ))}
-        </div>
-        <div className="that-mentions-verse">
-          <div className="search-text-verse">That Mentions:</div>
-          <div className="dropdown-verse">
+        </div> */}
+
+        <div className="that-mentions-commentary">
+          <div className="search-text-commentary">That Mentions:</div>
+          <div className="dropdown-commentary">
             <label htmlFor="organization">Organization</label>
             <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
           </div>
-          <div className="dropdown-verse">
+          <div className="dropdown-commentary">
             <label htmlFor="time">Time</label>
             <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
           </div>
-          <div className="dropdown-verse">
+          <div className="dropdown-commentary">
             <label htmlFor="place">Place</label>
             <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
           </div>
         </div>
-        <div className="run-query-button-verse">
+
+
+        <div className="dropdown-container-commentary-2">
+            <div className="dropdown-commentary-2">
+                <label htmlFor="surah_number">Surah Number</label>
+                <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+            </div>
+            <div className="dropdown-commentary-2">
+                <label htmlFor="ayat_number">Ayat Number</label>
+                <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+            </div>
+
+            <div className="dropdown-commentary-2">
+                <label htmlFor="theme">Which has Theme</label>
+                <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+            </div>
+
+        </div>
+
+        <div className="run-query-button-commentary">
           <button className="run-button" onClick={SendDataToBackend}>
             Run Query
           </button>
         </div>
 
-        <div className="limit-results-box-verse">
+        <div className="limit-results-box-commentary">
           <label htmlFor="limit-results">Limit Search Results</label>
-          <div className="limit-input-verse">
-            <button className="decrement-verse" onClick={decrementValue}>-</button>
+          <div className="limit-input-commentary">
+            <button className="decrement-commentary" onClick={decrementValue}>-</button>
             <input
               type="number"
               id="limit-results"
               value={limitValue}
               onChange={(e) => setLimitValue(Math.max(0, parseInt(e.target.value)))}
             />
-            <button className="increment-verse" onClick={incrementValue}>+</button>
+            <button className="increment-commentary" onClick={incrementValue}>+</button>
           </div>
       </div>
       </div>
@@ -392,4 +418,4 @@ const handleNarratorLogicChange = (index) => {
   );
 };
 
-export default VerseQueryBuilder;
+export default CommentaryQueryBuilder;

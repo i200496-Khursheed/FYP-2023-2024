@@ -10,7 +10,7 @@ body, p{
   align-items: center;
 }
 
-.back-button-verse img {
+.back-button img {
   width: 40px;
   height: 40px;
   position: absolute;
@@ -20,20 +20,20 @@ body, p{
   transition: transform 0.3s, filter 0.3s;
 }
 
-.back-button-verse img:hover {
+.back-button img:hover {
   transform: scale(1.2);
   filter: brightness(1.2);
   background-color: transparent;
 }
 
-.radio-buttons-verse {
+.radio-buttons {
   display: flex;
   justify-content: center;
   gap: 300px;
   margin-top: 60px;
 }
 
-.radio-button-verse {
+.radio-button {
   position: relative;
   display: flex;
   align-items: center;
@@ -41,13 +41,13 @@ body, p{
   cursor: pointer;
 }
 
-.radio-button-verse input {
+.radio-button input {
   margin: 0;
   opacity: 0;
   position: absolute;
 }
 
-.radio-button-verse span {
+.radio-button span {
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   font-style: italic;
@@ -55,7 +55,7 @@ body, p{
   color: #000000;
 }
 
-.radio-button-verse::before {
+.radio-button::before {
   content: '';
   width: 20px;
   height: 20px;
@@ -65,12 +65,12 @@ body, p{
   box-sizing: border-box;
 }
 
-.radio-button-verse.selected::before {
+.radio-button.selected::before {
   background-color: #EE9AE5;
   border-color: #EE9AE5;
 }
 
-.radio-button-verse input:checked + span::before {
+.radio-button input:checked + span::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -82,7 +82,7 @@ body, p{
   border-radius: 50%;
 }
 
-.query-box-verse {
+.query-box {
   width: 1200px;
   min-height: 1200px; /* Using min-height to prevent the container from shrinking */
   border-radius: 50px;
@@ -96,7 +96,7 @@ body, p{
   flex-wrap: wrap; /* Allowing items to wrap to the next line */
 }
 
-.search-text-verse {
+.search-text {
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   font-style: italic;
@@ -108,7 +108,7 @@ body, p{
   width: 100%; /* Making sure text takes full width */
 }
 
-.dropdown-verse {
+.dropdown {
   flex: 1; /* Allow each dropdown to take up equal space */
   width: 500px;
   height: 4%;
@@ -117,13 +117,13 @@ body, p{
   margin: 10px; /* Adding margin to create spacing */
 }
 
-.dropdown-verse label {
+.dropdown label {
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
 }
 
-.dropdown-container-verse {
+.dropdown-container {
   display: flex;
   gap: 20px; /* Adjusting as needed to control the space between dropdowns */
   align-items: flex-start;
@@ -207,13 +207,13 @@ body, p{
   transform: rotate(0deg);
 }
 
-.run-query-button-verse {
+.run-query-button {
   text-align: center;
   margin-top: 10px; /* Adjust the margin as needed */
   width: 100%; /* Make the button full width */
 }
 
-.run-query-button-verse button {
+.run-query-button button {
   width: 150px;
   height: 50px;
   border-radius: 30px;
@@ -225,22 +225,23 @@ body, p{
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.run-query-button-verse button:hover {
+.run-query-button button:hover {
   transform: scale(1.1);
   box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5);
 }
 
-.add-narrator-button-verse {
+.add-narrator-button {
   text-align: center;
   margin-top: 20px; /* Adjust the margin as needed */
   align-self: center; /* Center align the button */
 }
 
-.add-button-verse,
-.remove-button-verse {
+.add-button,
+.remove-button {
   width: 150px;
   height: 50px;
   border-radius: 30px;
+  background-color: #6a4ffe;
   color: #ffffff;
   font-size: 19px;
   border: none;
@@ -249,75 +250,25 @@ body, p{
   margin: 10px;
 }
 
-.add-button-verse:hover,
-.remove-button-verse:hover {
+.add-button:hover,
+.remove-button:hover {
   transform: scale(1.1);
   box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5);
 }
 
-.add-narrator-button-verse:hover .add-image-verse {
-  transform: scale(1.1); /* Scale effect on hover */
-  box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5); /* Box shadow on hover */
-}
-
-.add-narrator-button-verse .add-image-verse {
-  width: 50px; /* Width as needed */
-  height: 50px; /* Height as needed */
-  border-radius: 50px;
-  color: #ffffff;
-  font-size: 19px;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+.narrators {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
   justify-content: center;
-  margin-right: 50px;
-}
-
-.add-narrator-button-verse .add-image-verse:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5);
-}
-
-.add-content-verse {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  cursor: pointer;
 }
 
-#add-narrator-text-verse {
-  margin-top: 10px; /* Adjust the top margin as needed */
-  margin-right: 40px;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 16px;
-  color: #000000;
-  text-align: center; /* Center-align the text */
-}
-
-.narrator-verse {
+.narrator {
   display: flex;
-  flex-wrap: wrap;
   margin: 10px;
 }
 
-.narrator-verse p {
-  flex-basis: 100%;
-  margin-bottom: 20px; /* Add margin to separate the "Where the verse is referenced by Hadith" text */
-  font-size: 20px;
-  font-weight: bold;
-  margin-left: 50px;
-}
-
-.narrator-verse .narrator-logic-buttons-verse {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.that-mentions-verse {
+.that-mentions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -326,7 +277,7 @@ body, p{
   margin-left: 120px;
 }
 
-.that-mentions-verse .dropdown-verse {
+.that-mentions .dropdown {
   width: 250px;
   height: 4%;
   border-radius: 20px;
@@ -334,14 +285,14 @@ body, p{
   margin: 10px;
 }
 
-.that-mentions-verse label {
+.that-mentions label {
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
 }
 
 
-.limit-results-box-verse {
+.limit-results-box {
   border-radius: 20px;
   border: 1px solid #000000;
   padding: 10px;
@@ -349,25 +300,25 @@ body, p{
   margin-top: 20px;
 }
 
-.limit-results-box-verse label {
+.limit-results-box label {
   font-size: 22px;
   font-weight: bold;
 }
 
-.limit-input-verse {
+.limit-input {
   display: flex;
   align-items: center;
   margin-top: 20px;
 }
 
-.limit-input-verse span {
+.limit-input span {
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
   margin: 0 20px;
 }
 
-.limit-input-verse input {
+.limit-input input {
   font-size: 16px;
   padding: 20px;
   width: 50px;
@@ -378,7 +329,7 @@ body, p{
   box-shadow: 0px 4px 4px 0px rgba(238, 154, 229, 1);
 }
 
-.limit-input-verse button {
+.limit-input button {
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
@@ -396,64 +347,18 @@ body, p{
   align-items: center;
 }
 
-.limit-input-verse button:focus {
+.limit-input button:focus {
   outline: none;
 }
 
-.limit-input-verse button:hover {
+.limit-input button:hover {
   transform: scale(1.4);
   opacity: 0.7;
 }
 
-.decrement-verse, .increment-verse {
+.decrement, .increment {
   font-size: 40px;
   margin: 0 20px;
 }
 
-/* Logic */
-.logic-button-verse {
-  color: #202122;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Lato, Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  font-size: 1em;
-  line-height: 1.25;
-  box-sizing: border-box;
-  height: 40px;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-  border-color: #a2a9b1;
-  background-color: #f8f9fa;
-  padding: 0.313em 0.75em;
-  padding-inline: 0.75em;
-  padding-block: 0.313em;
-  transition-property: color, background-color, border-color, box-shadow;
-  transition-duration: 0.1s;
-  transition-timing-function: ease;
-  margin: 0px; /* Adjusting as needed */
-  cursor: pointer;
-}
 
-.logic-button-verse.selected {
-  background-color: #202122;
-  color: #f8f9fa;
-}
-
-.remove-narrator-button-verse {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin-top: 10px; /* needed to align with text fields */
-}
-
-.remove-narrator-button-verse .remove-image-verse {
-  width: 55px; /* width as needed */
-  height: 55px; /* height as needed */
-  margin-right: 10px; /* needed for spacing */
-  transition: width 0.3s ease, height 0.3s ease;
-}
-
-.remove-narrator-button-verse:hover .remove-image-verse {
-  width: 65px; /* expanded width as needed */
-  height: 65px; /* expanded height as needed */
-}

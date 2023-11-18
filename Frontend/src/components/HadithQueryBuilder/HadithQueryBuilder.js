@@ -56,6 +56,19 @@ const HadithQueryBuilder = () => {
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
+    switch (option) {
+      case 'verse':
+        navigate('/verse-query-builder');
+        break;
+      case 'hadith':
+        navigate('/hadith-query-builder');
+        break;
+      case 'commentary':
+        navigate('/commentary-query-builder');
+        break;
+      default:
+        break;
+    }
   };
 
   const handleThemeChange = (selectedOption) => {
