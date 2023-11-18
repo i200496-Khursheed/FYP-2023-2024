@@ -9,9 +9,13 @@ import HadithQueryBuilderPage from './pages/HadithQueryBuilderPage';
 import HadithQueryResultsPage from './pages/HadithQueryResultsPage';
 
 import VerseQueryBuilderPage from './pages/VerseQueryBuilderPage';
+import VerseQueryResultsPage from './pages/VerseQueryResultsPage';
 
 
-import CommentaryQueryBuilderPage from './pages/CommentaryQuilderPage';
+
+import CommentaryQueryBuilderPage from './pages/CommentaryQueryBuilderPage';
+import CommentaryQueryResultsPage from './pages/CommentaryQueryResultsPage';
+
 
 
 import ChainPage from './pages/ChainPage';
@@ -43,6 +47,11 @@ function App() {
           />
 
           <Route
+            path="/verse-query-results"
+            element={<VerseQueryResultsPage />} 
+          />
+
+          <Route
             path="/chain-page"
             element={<ChainPage />} 
           />
@@ -50,6 +59,11 @@ function App() {
           <Route
             path="/commentary-query-builder"
             element={<CommentaryQueryBuilderPage />} 
+          />
+
+          <Route
+            path="/commentary-query-results"
+            element={<CommentaryQueryResultsPage />} 
           />
 
         </Routes>
