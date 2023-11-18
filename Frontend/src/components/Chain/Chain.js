@@ -78,20 +78,23 @@ const Chain = () => {
         <img src={require('../../assets/back_button.png')} alt="Back Button" />
       </div>
       <div className={`query-text-box-chain ${isExpanded ? 'expanded' : ''}`}>
-        <p> Dummy text Box </p>
+        <p>Dummy Text</p>
         <div className="details-swipe-bar-chain" onClick={toggleExpand}>
           <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
         </div>
       </div>
 
+
       {isExpanded && narrators && narrators.length > 0 && (
         <div className="details-chain">
           <div className="chain-container">
+          <div className="container-with-stroke">
             {narrators.map((narrator, index) => (
               <div key={index} className="narrator-block" id={`narrator-block-${index}`}>
                 {narrator.name}
               </div>
             ))}
+          </div>
           </div>
           <div className="chain-links">
             {narrators.length > 1 &&

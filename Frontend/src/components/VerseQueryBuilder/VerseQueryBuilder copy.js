@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './VerseQueryBuilder.css';
 
-// Verse Contents
 const ayatNumberOptions = [
   { value: '15', label: 'Verse 015' },
   { value: '6', label: 'Verse 006' },
@@ -64,19 +63,20 @@ const VerseQueryBuilder = () => {
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
-    switch (option) {
-      case 'verse':
-        navigate('/verse-query-builder');
-        break;
-      case 'hadith':
-        navigate('/hadith-query-builder');
-        break;
-      case 'commentary':
-        navigate('/commentary-query-builder');
-        break;
-      default:
-        break;
-    }
+  };
+
+  const handleSurahNumberChange = (selectedOption) => {
+    setData({
+      ...data,
+      surah_number: selectedOption.value,
+    });
+  };
+
+  const handleAyatNumberChange = (selectedOption) => {
+    setData({
+      ...data,
+      verse_number: selectedOption.value,
+    });
   };
 
   const handleThemeChange = (selectedOption) => {
@@ -95,32 +95,21 @@ const VerseQueryBuilder = () => {
     });
   };
 
- const handleAddNarrator = () => {
-  setData((prevData) => ({
-    ...prevData,
-    narrators: [...prevData.narrators, { title: '', name: '' }],
-  }));
-
-  setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
-};
-
+  const handleAddNarrator = () => {
+    setData({
+      ...data,
+      narrators: [...data.narrators, { title: '', name: '' }],
+    });
+  };
 
   const handleRemoveNarrator = (index) => {
-    const updatedNarrators = [...data.narrators];
-    const updatedLogic = [...narratorLogic];
-  
-    updatedNarrators.splice(index, 1);
-    updatedLogic.splice(index, 1);
-  
+    const updatedNarrators = data.narrators.filter((_, i) => i !== index);
     setData({
       ...data,
       narrators: updatedNarrators,
     });
-  
-    setNarratorLogic(updatedLogic);
   };
-  
-  
+
   const handleOrganizationChange = (selectedOption) => {
     setData({
       ...data,
@@ -139,20 +128,6 @@ const VerseQueryBuilder = () => {
     setData({
       ...data,
       place: selectedOption.value,
-    });
-  };
-
-  const handleSurahNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      surah_number: selectedOption.value,
-    });
-  };
-  
-  const handleAyatNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      verse_number: selectedOption.value,
     });
   };
 
@@ -207,28 +182,18 @@ const decrementValue = () => {
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
 
-// Logic Gates
-const [narratorLogic, setNarratorLogic] = useState(Array(data.narrators.length).fill('AND'));
-
-const handleNarratorLogicChange = (index) => {
-  setNarratorLogic((prevLogic) => {
-    const updatedLogic = [...prevLogic];
-    updatedLogic[index] = updatedLogic[index] === 'AND' ? 'OR' : 'AND';
-    return updatedLogic;
-  });
-};
 
   return (
     <div className="verse-query-builder">
-      <div className="back-button-verse">
+      <div className="back-button">
         <img
           src={require('../../assets/back_button.png')}
           alt="Back Button"
           onClick={() => window.history.back()}
         />
       </div>
-      <div className="radio-buttons-verse">
-        <label className={`radio-button-verse ${selectedOption === 'hadith' ? 'selected' : ''}`}>
+      <div className="radio-buttons">
+        <label className={`radio-button ${selectedOption === 'hadith' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="queryType"
@@ -238,7 +203,7 @@ const handleNarratorLogicChange = (index) => {
           />
           <span> <p>Hadith</p> </span>
         </label>
-        <label className={`radio-button-verse ${selectedOption === 'verse' ? 'selected' : ''}`}>
+        <label className={`radio-button ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="queryType"
@@ -248,7 +213,7 @@ const handleNarratorLogicChange = (index) => {
           />
           <span> <p>Verse</p> </span>
         </label>
-        <label className={`radio-button-verse ${selectedOption === 'commentary' ? 'selected' : ''}`}>
+        <label className={`radio-button ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
             type="radio"
             name="queryType"
@@ -260,67 +225,34 @@ const handleNarratorLogicChange = (index) => {
         </label>
       </div>
 
-      <div className="query-box-verse">
-      <div className="search-text-verse">Search for Verse with:</div>
-      <div className="dropdown-container-verse">
-            <div className="dropdown-verse">
+      <div className="query-box">
+        <div className="search-text">Search for Verse with:</div>
+        <div className="dropdown-container">
+            <div className="dropdown">
               <label htmlFor="surah_number">Surah Number</label>
               <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
             </div>
-            <div className="dropdown-verse">
+            <div className="dropdown">
               <label htmlFor="ayat_number">Ayat Number</label>
               <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
             </div>
 
-            <div className="dropdown-verse">
-              <label htmlFor="theme">Where its commentary has Theme</label>
+            <div className="dropdown">
+              <label htmlFor="theme">Theme</label>
               <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
             </div>
           </div>
 
-          <div className="add-narrator-button-verse">
-            <div className="add-content-verse" onClick={handleAddNarrator}>
-              <img
-                src={require('../../assets/add.png')} 
-                alt="Add Narrator"
-                className="add-image-verse"
-              />
-              <p id="add-narrator-text-verse">Add Condition</p>
-            </div>
+
+        <div className="add-narrator-button">
+          <button className="add-button" onClick={handleAddNarrator}>
+            + Add Narrator
+          </button>
         </div>
-
-
-        <div className="narrators-verse">
+        <div className="narrators">
           {data.narrators.map((narrator, index) => (
-            <div key={index} className="narrator-verse">
-              <p> Where the verse is referenced by Hadith</p>
-              <div className="narrator-logic-buttons-verse">
-                <button
-                  className={`logic-button-verse ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
-                  onClick={() => handleNarratorLogicChange(index)}
-                >
-                  AND
-                </button>
-                <button
-                  className={`logic-button-verse ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
-                  onClick={() => handleNarratorLogicChange(index)}
-                >
-                  OR
-                </button>
-              </div>
-
-              <div className="dropdown-verse">
-                <label htmlFor={`theme_${index}`}>Theme</label>
-                <Select
-                  options={themeOptions}
-                  isSearchable={true}
-                  onChange={(selectedOption) =>
-                    handleThemeChange(index, 'theme', selectedOption.value)
-                  }
-                />
-              </div>
-
-              <div className="dropdown-verse">
+            <div key={index} className="narrator">
+              <div className="dropdown">
                 <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
                 <Select
                   options={narratorTitleOptions}
@@ -330,7 +262,7 @@ const handleNarratorLogicChange = (index) => {
                   }
                 />
               </div>
-              <div className="dropdown-verse">
+              <div className="dropdown">
                 <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
                 <Select
                   options={narratorNameOptions}
@@ -340,51 +272,46 @@ const handleNarratorLogicChange = (index) => {
                   }
                 />
               </div>
-
-              <div className="remove-narrator-button-verse">
-                <img
-                  src={require('../../assets/remove.png')} // Updated image path
-                  alt="Remove Narrator"
-                  className="remove-image-verse"
-                  onClick={() => handleRemoveNarrator(index)}
-                />
+              <div className="remove-narrator-button">
+                <button className="remove-button" onClick={() => handleRemoveNarrator(index)}>
+                  - Remove
+                </button>
               </div>
-              
             </div>
           ))}
         </div>
-        <div className="that-mentions-verse">
-          <div className="search-text-verse">That Mentions:</div>
-          <div className="dropdown-verse">
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
             <label htmlFor="organization">Organization</label>
             <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
           </div>
-          <div className="dropdown-verse">
+          <div className="dropdown">
             <label htmlFor="time">Time</label>
             <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
           </div>
-          <div className="dropdown-verse">
+          <div className="dropdown">
             <label htmlFor="place">Place</label>
             <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
           </div>
         </div>
-        <div className="run-query-button-verse">
+        <div className="run-query-button">
           <button className="run-button" onClick={SendDataToBackend}>
             Run Query
           </button>
         </div>
 
-        <div className="limit-results-box-verse">
+        <div className="limit-results-box">
           <label htmlFor="limit-results">Limit Search Results</label>
-          <div className="limit-input-verse">
-            <button className="decrement-verse" onClick={decrementValue}>-</button>
+          <div className="limit-input">
+            <button className="decrement" onClick={decrementValue}>-</button>
             <input
               type="number"
               id="limit-results"
               value={limitValue}
               onChange={(e) => setLimitValue(Math.max(0, parseInt(e.target.value)))}
             />
-            <button className="increment-verse" onClick={incrementValue}>+</button>
+            <button className="increment" onClick={incrementValue}>+</button>
           </div>
       </div>
       </div>

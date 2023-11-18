@@ -1,0 +1,492 @@
+/* CommentaryQueryBuilder.css */
+body, p{
+    font-family: 'Lexend Deca', 'Jost', sans-serif;
+  }
+  
+  .commentary-query-builder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .back-button-commentary img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    cursor: pointer;
+    transition: transform 0.3s, filter 0.3s;
+  }
+  
+  .back-button-commentary img:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
+    background-color: transparent;
+  }
+  
+  .radio-buttons-commentary {
+    display: flex;
+    justify-content: center;
+    gap: 300px;
+    margin-top: 60px;
+  }
+  
+  .radio-button-commentary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .radio-button-commentary input {
+    margin: 0;
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .radio-button-commentary span {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .radio-button-commentary::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-sizing: border-box;
+  }
+  
+  .radio-button-commentary.selected::before {
+    background-color: #EE9AE5;
+    border-color: #EE9AE5;
+  }
+  
+  .radio-button-commentary input:checked + span::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    border-radius: 50%;
+  }
+  
+  .query-box-commentary {
+    width: 1200px;
+    min-height: 1200px; /* Using min-height to prevent the container from shrinking */
+    border-radius: 50px;
+    background-color: #ffffff;
+    box-shadow: 0px 10px 50px 0px rgba(238, 154, 229, 0.55);
+    border: 1px solid #EE9AE5;
+    display: flex;
+    flex-direction: column; /* Changing to column layout to stack items vertically */
+    align-items: flex-start; /* Aligning items to the start (left) */
+    padding: 20px;
+    flex-wrap: wrap; /* Allowing items to wrap to the next line */
+  }
+  
+  .search-text-commentary {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 5px;
+    margin-left: 5%;
+    margin-top: 1%;
+    width: 100%; /* Making sure text takes full width */
+  }
+  
+  .dropdown-commentary {
+    flex: 1; /* Allow each dropdown to take up equal space */
+    width: 500px;
+    height: 4%;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px 0px rgba(238, 154, 229, 0.55);
+    margin: 10px; /* Adding margin to create spacing */
+  }
+  
+  .dropdown-commentary label {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+  }
+  
+  .dropdown-container-commentary {
+    display: flex;
+    gap: 20px; /* Adjusting as needed to control the space between dropdowns */
+    align-items: flex-start;
+    width: 100%; /* Ensuring the container takes up the full width */
+  }
+  
+  .select-styles {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .select-styles input {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .select-styles__control {
+    border: none;
+    border-radius: 20px;
+    background-color: #FFFCFC;
+    box-shadow: 0px 4px 4px 0px rgba(238, 154, 229, 1);
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .select-styles__indicator-separator {
+    display: none;
+  }
+  
+  .select-styles__indicator {
+    color: #4639E3;
+  }
+  
+  .select-styles__value-container {
+    padding: 0;
+  }
+  
+  .select-styles__menu {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .select-styles__menu-list {
+    padding: 0;
+  }
+  
+  .select-styles__option {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .select-styles__single-value {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .select-styles__input {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+  }
+  
+  .select-styles__dropdown-indicator {
+    transform: rotate(0deg);
+  }
+  
+  .run-query-button-commentary {
+    text-align: center;
+    margin-top: 10px; /* Adjust the margin as needed */
+    width: 100%; /* Make the button full width */
+  }
+  
+  .run-query-button-commentary button {
+    width: 150px;
+    height: 50px;
+    border-radius: 30px;
+    background-color: #01257d;
+    color: #ffffff;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .run-query-button-commentary button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5);
+  }
+  
+  .add-narrator-button-commentary {
+    text-align: center;
+    margin-top: 20px; /* Adjust the margin as needed */
+    align-self: center; /* Center align the button */
+  }
+  
+  .add-button-commentary,
+  .remove-button-commentary {
+    width: 150px;
+    height: 50px;
+    border-radius: 30px;
+    color: #ffffff;
+    font-size: 19px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 10px;
+  }
+  
+  .add-button-commentary:hover,
+  .remove-button-commentary:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5);
+  }
+  
+  .add-narrator-button-commentary:hover .add-image-commentary {
+    transform: scale(1.1); /* Scale effect on hover */
+    box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5); /* Box shadow on hover */
+  }
+  
+  .add-narrator-button-commentary .add-image-commentary {
+    width: 50px; /* Width as needed */
+    height: 50px; /* Height as needed */
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 19px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 50px;
+  }
+  
+  .add-narrator-button-commentary .add-image-commentary:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px 0px rgba(1, 37, 125, 0.5);
+  }
+  
+  .add-content-commentary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  #add-narrator-text-commentary {
+    margin-top: 10px; /* Adjust the top margin as needed */
+    margin-right: 40px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 16px;
+    color: #000000;
+    text-align: center; /* Center-align the text */
+  }
+  
+  .narrator-commentary {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+  }
+  
+  .narrator-commentary p {
+    flex-basis: 100%;
+    margin-bottom: 20px; /* Add margin to separate the "Where the verse is referenced by Hadith" text */
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 50px;
+  }
+  
+  .narrator-commentary .narrator-logic-buttons-commentary {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .that-mentions-commentary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 120px;
+  }
+  
+  .that-mentions-commentary .dropdown-commentary {
+    width: 250px;
+    height: 4%;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px 0px rgba(238, 154, 229, 0.55);
+    margin: 10px;
+  }
+  
+  .that-mentions-commentary label {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+  }
+  
+  
+  .limit-results-box-commentary {
+    border-radius: 20px;
+    border: 1px solid #000000;
+    padding: 10px;
+    box-shadow: 0px 4px 4px 0px rgba(238, 154, 229, 1);
+    margin-top: 20px;
+  }
+  
+  .limit-results-box-commentary label {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .limit-input-commentary {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .limit-input-commentary span {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 20px;
+  }
+  
+  .limit-input-commentary input {
+    font-size: 16px;
+    padding: 20px;
+    width: 50px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    background-color: #FFFCFC;
+    box-shadow: 0px 4px 4px 0px rgba(238, 154, 229, 1);
+  }
+  
+  .limit-input-commentary button {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    transition: transform 0.2s, opacity 0.2s;
+    border: 1px solid #050505; /* Add a 1px solid border */
+    color: rgb(1, 1, 1);
+    background-color: #dfbcbc;
+    width: 25px; /* Set a fixed width */
+    height: 25px; /* Set a fixed height */
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .limit-input-commentary button:focus {
+    outline: none;
+  }
+  
+  .limit-input-commentary button:hover {
+    transform: scale(1.4);
+    opacity: 0.7;
+  }
+  
+  .decrement-commentary, .increment-commentary {
+    font-size: 40px;
+    margin: 0 20px;
+  }
+  
+  /* Logic */
+  .logic-button-commentary {
+    color: #202122;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Lato, Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1em;
+    line-height: 1.25;
+    box-sizing: border-box;
+    height: 40px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    border-color: #a2a9b1;
+    background-color: #f8f9fa;
+    padding: 0.313em 0.75em;
+    padding-inline: 0.75em;
+    padding-block: 0.313em;
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-duration: 0.1s;
+    transition-timing-function: ease;
+    margin: 0px; /* Adjusting as needed */
+    cursor: pointer;
+  }
+  
+  .logic-button-commentary.selected {
+    background-color: #202122;
+    color: #f8f9fa;
+  }
+  
+  .remove-narrator-button-commentary {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px; /* needed to align with text fields */
+  }
+  
+  .remove-narrator-button-commentary .remove-image-commentary {
+    width: 55px; /* width as needed */
+    height: 55px; /* height as needed */
+    margin-right: 10px; /* needed for spacing */
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+  
+  .remove-narrator-button-commentary:hover .remove-image-commentary {
+    width: 65px; /* expanded width as needed */
+    height: 65px; /* expanded height as needed */
+  }
+  
+  .dropdown-container-commentary-2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px; /* Adjust the gap between items */
+    margin-top: 40px;
+    margin-left: 130px;
+  }
+  
+  .dropdown-commentary-2 {
+    flex: 1;
+    max-width: 300px; /* Adjust the maximum width as needed */
+    margin-bottom: 20px; /* Add spacing between dropdowns */
+  }
+  
+  .search-text-commentary-2 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 10px; /* Adjust spacing between this text and dropdowns */
+    width: 100%;
+  }
+
+  .dropdown-commentary-2 {
+    box-shadow: 0px 10px 10px 0px rgba(238, 154, 229, 0.55); /* Match box shadow */
+    width: 500px; /* Match width */
+  }
+  
+  

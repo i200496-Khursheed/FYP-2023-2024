@@ -10,6 +10,10 @@ import HadithQueryResultsPage from './pages/HadithQueryResultsPage';
 
 import VerseQueryBuilderPage from './pages/VerseQueryBuilderPage';
 
+
+import CommentaryQueryBuilderPage from './pages/CommentaryQuilderPage';
+
+
 import ChainPage from './pages/ChainPage';
 
 
@@ -41,6 +45,11 @@ function App() {
           <Route
             path="/chain-page"
             element={<ChainPage />} 
+          />
+
+          <Route
+            path="/commentary-query-builder"
+            element={<CommentaryQueryBuilderPage />} 
           />
 
         </Routes>
