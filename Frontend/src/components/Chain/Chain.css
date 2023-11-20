@@ -1,0 +1,295 @@
+.hadith-query-results-chain {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+  font-size: 18px;
+  font-family: 'Lexend Deca', 'Jost', sans-serif;
+  font-weight: bold;
+  transition: height 0.3s;
+  margin-top: 5%;
+}
+
+.hadith-query-results-chain.expanded {
+  height: auto;
+}
+
+.query-text-box-chain {
+  text-align: center;
+  left: 45%;
+  width: 850px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: 1px solid #EE9AE5;
+  box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  margin-top: -6.5%;
+  padding-bottom: 0.5%;
+  position: relative;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Updated styles for the text */
+.query-text-box-chain p {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Lexend Deca', 'Jost', sans-serif;
+  margin: 0;
+}
+
+/* Hover effect for a subtle change */
+.query-text-box-chain:hover {
+  background-color: #f2f2f2; /* Lighter background on hover */
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.details-swipe-bar-chain {
+  cursor: pointer;
+  position: absolute;
+  bottom: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #4639E3, #381f6c);
+  height: 50px;
+  width: 100%;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.3s ease, background 0.3s ease;
+}
+
+.details-swipe-bar-chain:hover {
+  height: 55px;
+  width: 855px;
+  background: linear-gradient(to right, #4639E3, #381f6c);
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 20px 10px;
+  border-color: transparent transparent #EE9AE5 transparent;
+  stroke: #000000;
+  stroke-width: 2px;
+  transition: transform 0.3s ease;
+}
+
+.expanded .arrow {
+  transform: rotate(180deg);
+}
+
+.arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.expand-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.back-button-HQR img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 60px;
+  left: 30px;
+  cursor: pointer;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.back-button-HQR img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+  background-color: transparent;
+}
+
+.details-chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15%;
+  margin-left: 90%;
+}
+
+.chain-container {
+  display: flex;
+  flex-direction: column; /* Adjust to make blocks appear one below another */
+}
+
+.narrator-block {
+  border-radius: 10px; /* Increased border-radius for a smoother look */
+  width: 300px;
+  background-color: #381f6c;
+  color: white;
+  padding: 30px;
+  margin: 80px;
+  margin-top: -40px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s, box-shadow 0.3s; /* Adding transitions */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3); /* Adding box shadow for depth */
+  overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+
+  /* Adding dynamic border animation */
+  background: linear-gradient(45deg, #f06, #9f6);
+  background-size: 400% 400%;
+  animation: gradientBorder 10s ease infinite;
+}
+
+/* Keyframes for dynamic border animation */
+@keyframes gradientBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Adding hover effect */
+.narrator-block:hover {
+  transform: translateY(-5px); /* Lift the block on hover */
+  box-shadow: 0px 20px 30px rgba(3, 21, 223, 0.9); /* Adjusted box shadow on hover */
+}
+
+.chain-links {
+  display: flex;
+  flex-direction: column; /* Adjust to make links appear one below another */
+  align-items: center;
+}
+
+.link-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: 3px;
+  height: 250px;
+  background: linear-gradient(to bottom, #4639E3, #381f6c);
+  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: height 0.3s, background 0.5s ease-in-out, transform 0.5s;
+
+  /* Animation for more noticeable movement */
+  animation: chainMove 3s ease-in-out infinite alternate;
+}
+
+/* Keyframes for more noticeable movement animation */
+@keyframes chainMove {
+  0% {
+    transform: translate(-50%, -50%) rotate(-3deg); /* Initial position */
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(3deg); /* Enhanced movement */
+  }
+}
+
+/* Hover effect */
+.link-line:hover {
+  height: 280px;
+  transform: translate(-50%, -60%) rotate(5deg); /* Enhanced lift and rotation on hover */
+  background: linear-gradient(to bottom, #381f6c, #4639E3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.container-with-stroke {
+  margin-top: -5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f7f7f7;
+  box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+  transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  position: relative;
+  overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+}
+
+.container-with-stroke::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-radius: 12px;
+  z-index: -1;
+  animation: dynamicStroke 5s linear infinite; /* Animation for dynamic RGB stroke */
+}
+
+/* Animation for dynamic RGB stroke */
+@keyframes dynamicStroke {
+  0% {
+    border: 2px solid #f00; /* Red border */
+  }
+  25% {
+    border: 2px solid #0f0; /* Green border */
+  }
+  50% {
+    border: 2px solid #00f; /* Blue border */
+  }
+  75% {
+    border: 2px solid #ff0; /* Yellow border */
+  }
+  100% {
+    border: 2px solid #f00; /* Back to Red border */
+  }
+}
+
+.container-with-stroke .narrator-block {
+  border-radius: 20px;
+  width: 700px;
+  background-color: #381f6c;
+  color: white;
+  padding: 40px;
+  margin: 5px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+
+  /* Gradient background animation */
+  background: linear-gradient(45deg, #f06, #9f6);
+  background-size: 400% 400%;
+  animation: gradientBackground 10s ease infinite;
+}
+
+/* Gradient animation keyframes */
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.container-with-stroke .narrator-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 20px 30px rgba(3, 21, 223, 0.9);
+  background-color: #3d267a; /* Darker background color on hover */
+}
+
+
+
