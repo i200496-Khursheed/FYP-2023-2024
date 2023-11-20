@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import './HadithQueryBuilder.css';
-import Footer from '../Footer/Footer'; // Import Footer component
+import './VerseQueryBuilder.css';
 
+const ayatNumberOptions = [
+  { value: '15', label: 'Verse 015' },
+  { value: '6', label: 'Verse 006' },
+  { value: '13', label: 'Verse 013' },
+];
+
+const surahNumberOptions = [
+  { value: '12', label: 'يوسف 12' },
+  { value: '10', label: 'يونس 10' },
+  { value: '19', label: 'مريم 19' },
+];
 
 const themeOptions = [
   { value: 'lugha', label: 'lugha' },
   { value: 'kalam', label: 'kalam' },
   { value: 'science', label: 'science' },
-];
-
-const hadithNumberOptions = [
-  { value: '134', label: 'Hadith 134' },
-  { value: '135', label: 'Hadith 135' },
-  { value: '136', label: 'Hadith 136' },
 ];
 
 const narratorTitleOptions = [
@@ -44,12 +48,13 @@ const placeOptions = [
   { value: 'place2', label: 'Place 2' },
 ];
 
-const HadithQueryBuilder = () => {
+const VerseQueryBuilder = () => {
   const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState('hadith');
+  const [selectedOption, setSelectedOption] = useState('verse');
   const [data, setData] = useState({
+    surah_number: '',
+    verse_number: '',
     theme: '',
-    hadith_number: '',
     narrators: [{ title: '', name: '' }],
     organization: '',
     time: '',
@@ -58,32 +63,26 @@ const HadithQueryBuilder = () => {
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
-    switch (option) {
-      case 'verse':
-        navigate('/verse-query-builder');
-        break;
-      case 'hadith':
-        navigate('/hadith-query-builder');
-        break;
-      case 'commentary':
-        navigate('/commentary-query-builder');
-        break;
-      default:
-        break;
-    }
+  };
+
+  const handleSurahNumberChange = (selectedOption) => {
+    setData({
+      ...data,
+      surah_number: selectedOption.value,
+    });
+  };
+
+  const handleAyatNumberChange = (selectedOption) => {
+    setData({
+      ...data,
+      verse_number: selectedOption.value,
+    });
   };
 
   const handleThemeChange = (selectedOption) => {
     setData({
       ...data,
       theme: selectedOption.value,
-    });
-  };
-
-  const handleHadithNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      hadith_number: selectedOption.value,
     });
   };
 
@@ -96,32 +95,21 @@ const HadithQueryBuilder = () => {
     });
   };
 
- const handleAddNarrator = () => {
-  setData((prevData) => ({
-    ...prevData,
-    narrators: [...prevData.narrators, { title: '', name: '' }],
-  }));
-
-  setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
-};
-
+  const handleAddNarrator = () => {
+    setData({
+      ...data,
+      narrators: [...data.narrators, { title: '', name: '' }],
+    });
+  };
 
   const handleRemoveNarrator = (index) => {
-    const updatedNarrators = [...data.narrators];
-    const updatedLogic = [...narratorLogic];
-  
-    updatedNarrators.splice(index, 1);
-    updatedLogic.splice(index, 1);
-  
+    const updatedNarrators = data.narrators.filter((_, i) => i !== index);
     setData({
       ...data,
       narrators: updatedNarrators,
     });
-  
-    setNarratorLogic(updatedLogic);
   };
-  
-  
+
   const handleOrganizationChange = (selectedOption) => {
     setData({
       ...data,
@@ -173,7 +161,7 @@ const HadithQueryBuilder = () => {
         console.log('Success:', data);
         if (data.result) {
           console.log('Result from backend:', data.result);
-          navigate('/hadith-query-results', { state: { resultsData: data.result } });
+          navigate('/verse-query-results', { state: { resultsData: data.result } });
         }
       })
       .catch((error) => {
@@ -194,19 +182,9 @@ const decrementValue = () => {
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
 
-// Logic Gates
-const [narratorLogic, setNarratorLogic] = useState(Array(data.narrators.length).fill('AND'));
-
-const handleNarratorLogicChange = (index) => {
-  setNarratorLogic((prevLogic) => {
-    const updatedLogic = [...prevLogic];
-    updatedLogic[index] = updatedLogic[index] === 'AND' ? 'OR' : 'AND';
-    return updatedLogic;
-  });
-};
 
   return (
-    <div className="hadith-query-builder">
+    <div className="verse-query-builder">
       <div className="back-button">
         <img
           src={require('../../assets/back_button.png')}
@@ -248,49 +226,32 @@ const handleNarratorLogicChange = (index) => {
       </div>
 
       <div className="query-box">
-        <div className="search-text">Search for Hadith with:</div>
+        <div className="search-text">Search for Verse with:</div>
         <div className="dropdown-container">
+            <div className="dropdown">
+              <label htmlFor="surah_number">Surah Number</label>
+              <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+            </div>
+            <div className="dropdown">
+              <label htmlFor="ayat_number">Ayat Number</label>
+              <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+            </div>
+
             <div className="dropdown">
               <label htmlFor="theme">Theme</label>
               <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
             </div>
-            <div className="dropdown">
-              <label htmlFor="hadith_number">Hadith Number</label>
-              <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
-            </div>
           </div>
 
-          <div className="add-narrator-button">
-            <div className="add-content" onClick={handleAddNarrator}>
-              <img
-                src={require('../../assets/add.png')} 
-                alt="Add Narrator"
-                className="add-image"
-              />
-              <p id="add-narrator-text">Add Narrator</p>
-            </div>
+
+        <div className="add-narrator-button">
+          <button className="add-button" onClick={handleAddNarrator}>
+            + Add Narrator
+          </button>
         </div>
-
-
         <div className="narrators">
           {data.narrators.map((narrator, index) => (
             <div key={index} className="narrator">
-
-              <div className="narrator-logic-buttons">
-                <button
-                  className={`logic-button ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
-                  onClick={() => handleNarratorLogicChange(index)}
-                >
-                  AND
-                </button>
-                <button
-                  className={`logic-button ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
-                  onClick={() => handleNarratorLogicChange(index)}
-                >
-                  OR
-                </button>
-              </div>
-
               <div className="dropdown">
                 <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
                 <Select
@@ -311,16 +272,11 @@ const handleNarratorLogicChange = (index) => {
                   }
                 />
               </div>
-
               <div className="remove-narrator-button">
-                <img
-                  src={require('../../assets/remove.png')} // Updated image path
-                  alt="Remove Narrator"
-                  className="remove-image"
-                  onClick={() => handleRemoveNarrator(index)}
-                />
+                <button className="remove-button" onClick={() => handleRemoveNarrator(index)}>
+                  - Remove
+                </button>
               </div>
-              
             </div>
           ))}
         </div>
@@ -359,13 +315,8 @@ const handleNarratorLogicChange = (index) => {
           </div>
       </div>
       </div>
-
-      <div className='Footer-portion'>
-          <Footer />
-      </div>
-      
     </div>
   );
 };
 
-export default HadithQueryBuilder;
+export default VerseQueryBuilder;

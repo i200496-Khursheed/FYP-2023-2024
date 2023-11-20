@@ -1,6 +1,6 @@
-/* HadithQueryResults.css */
+/* VerseQueryResults.css */
 
-.hadith-query-results {
+.verse-query-results {
   text-shadow: 0 1px 2px rgba(0,0,0,.35);
   display: flex;
   flex-direction: column;
@@ -11,36 +11,21 @@
   font-weight: bold;
   transition: height 0.3s;
   margin-top: 5%;
-  padding-bottom: 100px; /* Adjust the value based on your footer height */
-
 }
 
-.hadith-query-results.expanded {
+.verse-query-results.expanded {
   height: auto;
-}
-
-.Footer-portion-HQR {
-  position: absolute;
-  bottom: -31.8%;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: #fff;
-  box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1);
-  z-index: 2;
-  overflow-x: hidden;
 }
 
 .details-table {
   max-width: 200%;
   overflow-x: hidden;
   position: relative;
-  bottom: -10px;
+  bottom: -20px;
   max-height: 553px;
   overflow: auto;
   left: 70%;
   margin-left: -50%; /* Offset half of the width */
-  margin-bottom: 190px; /* Adjust this value based on the footer height */
-
 }
 
 .query-text-box {
@@ -186,7 +171,7 @@ h2 {
   font-size: 24px;
 }
 
-.back-button-HQR img {
+.back-button-VQR img {
   width: 40px;
   height: 40px;
   position: absolute;
