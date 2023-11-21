@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './CommentaryQueryBuilder.css';
+import Footer from '../Footer/Footer'; // Import Footer component
+
 
 // Commentary Contents
 const ayatNumberOptions = [
@@ -307,6 +309,9 @@ const MAX_LIMIT = 2000; // Example value
           </div>
       </div>
       </div>
+      <div className='Footer-portion'>
+        <Footer />
+      </div> 
     </div>
   );
 };
