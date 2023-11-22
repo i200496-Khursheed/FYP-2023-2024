@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GraphDB Test Page</title>
+</head>
+<body>
+    <h1>GraphDB Test Results</h1>
+    <ul>
+        {% for result in results %}
+            <li>{{ result }}</li>
+        {% empty %}
+            <li>No results found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
