@@ -233,6 +233,118 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
         '''
 
     return baseQueryString
+def constructCommentarySparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
+                                     theme='?theme', mentions="?mentions", subtheme="?subtheme",
+                                     hadith_number='?hadith_number', RootNarrator='?root_narrator',
+                                     narrator='?narrator', narratortitle='narrator-title',
+                                     applyLimit=True, limit=""):
+    baseQueryString = f'''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT ?number
+       (GROUP_CONCAT(DISTINCT ?Text; separator=", ") as ?Texts)
+       (GROUP_CONCAT(DISTINCT ?chapter_no; separator=", ") as ?chapter_nos)
+       (GROUP_CONCAT(DISTINCT ?V_Text; separator=", ") as ?V_Texts)
+       (GROUP_CONCAT(DISTINCT ?V_no; separator=", ") as ?V_nos)
+       (GROUP_CONCAT(DISTINCT ?name; separator=", ") as ?person_names)
+       (GROUP_CONCAT(DISTINCT ?page; separator=", ") as ?pages)
+       (GROUP_CONCAT(DISTINCT ?volume; separator=", ") as ?volumes)
+       (GROUP_CONCAT(DISTINCT ?edition; separator=", ") as ?editions)
+       (GROUP_CONCAT(DISTINCT ?theme_name; separator=", ") as ?theme_names)
+       (GROUP_CONCAT(DISTINCT ?sec_chp; separator=", ") as ?sec_chps)
+       (GROUP_CONCAT(DISTINCT ?sec_no; separator=", ") as ?sec_nos)
+       (GROUP_CONCAT(DISTINCT ?sec_text; separator=", ") as ?sec_texts)
+       (GROUP_CONCAT(DISTINCT ?subtheme; separator=", ") as ?subthemes)
+       (GROUP_CONCAT(DISTINCT ?refer_type_suffix; separator=", ") as ?refer_type)
+       (GROUP_CONCAT(DISTINCT ?per_type; separator=", ") as ?p_type)
+WHERE {{
+  ?Commentary rdf:type :Commentary.
+  ?Commentary :hasCommentaryNo ?number.
+  
+  ?Commentary :hasText ?Text.
+  ?Commentary :references ?Verse.
+  ?Verse rdf:type ?refer_type.
+  BIND(SUBSTR(STR(?refer_type), STRLEN(STR(:)) + 1) AS ?refer_type_suffix)
+    optional {{
+    ?Verse :hasChapterNo ?chapter_no.
+    ?Verse :hasText ?V_Text.
+    ?Verse :hasVerseNo ?V_no.
+    ?Commentary :mentions ?person.
+    ?person :hasName ?name.
+    ?person rdf:type ?p_type.
+    BIND(SUBSTR(STR(?p_type), STRLEN(STR(:)) + 1) AS ?per_type).
+  }}
+    OPTIONAL {{
+    ?Commentary :hasBookLocation ?BL.
+    ?BL :hasPageNo ?page.
+    ?BL :hasVolumeNo ?volume.
+    ?BL :hasEdition ?edition.
+  }}
+  optional {{
+    ?Commentary :containsSegment ?segment.
+    ?segment :hasText ?seg_text.
+    ?segment :hasSubTheme ?sub.
+    ?sub :hasName ?subtheme. 
+  }}
+  ?Commentary :hasTheme ?theme.
+  ?theme :hasName ?theme_name.
+
+  optional {{
+    ?section rdf:type :Section.
+    ?section :containsCommentary ?Commentary.
+    ?section :hasChapterNo ?sec_chp.
+    ?section :hasSectionNo ?sec_no.
+    ?section :hasText ?sec_text.
+  }}
+
+
+    '''
+
+
+    if versetext != '?vtext':
+        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}")'''
+        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}" || !BOUND(?Verse_Text))'''
+
+    if chapterNo != '?chapterNo':
+        baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}")'''
+        baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}" || !BOUND(?chapter))'''
+
+    if verseNo != '?verseNo':
+        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}")'''
+        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}" || !BOUND(?Verse_No))'''
+
+    if theme != '?theme':
+        baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
+
+    if subtheme != '?subtheme':
+        baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
+        baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
+
+    if narrator != '?narrator':
+        baseQueryString += f'''\n  ?NarratorName :hasName {narrator} .'''
+
+    if narratortitle != 'narrator-title':
+        baseQueryString += f'''\n  ?NarratorName :hasNarratorType {narratortitle} .'''
+
+    if hadith_number != '?hadith_number':
+        baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
+
+    if RootNarrator != '?root_narrator':
+        baseQueryString += f'''\n  ?RootPerson :hasName "{RootNarrator}" .'''
+
+    if mentions != '?mentions':
+        baseQueryString += f'''\n  ?Ref :hasName "{mentions}" .'''
+
+    baseQueryString += f'\n}}'
+    baseQueryString += f'\n GROUP BY ?number'
+
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
+        baseQueryString += f'''
+        LIMIT {limit}
+        '''
+
+    return baseQueryString
 
 def constructVerseSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
                                      theme='?theme', mentions="?mentions", subtheme="?subtheme",
