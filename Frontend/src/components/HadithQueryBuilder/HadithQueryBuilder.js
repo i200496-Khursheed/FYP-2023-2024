@@ -45,6 +45,7 @@ const placeOptions = [
 const HadithQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('hadith');
+  
   const [data, setData] = useState({
     theme: '',
     hadith_number: '',
@@ -141,45 +142,75 @@ const HadithQueryBuilder = () => {
     });
   };
 
-  const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
+  // const SendDataToBackend = () => {
+  //   // Extract individual data properties
+  //   const { theme, hadith_number, organization, time, place } = data;
+  
+  //   // Create an object containing only the non-empty parameters
+  //   const queryParams = {
+  //     theme,
+  //     hadith_number,
+  //     organization,
+  //     time,
+  //     place,
+  //   };
+  
+  //   // Filter out undefined or empty values
+  //   const filteredParams = Object.fromEntries(
+  //     Object.entries(queryParams).filter(([key, value]) => value !== undefined && value !== '')
+  //   );
+  
+  //   // Construct the URL by appending filtered parameters
+  //   const url = `http://127.0.0.1:8000/api/query_hadith/?${new URLSearchParams(filteredParams).toString()}`;
+  
+  //   fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((responseData) => {
+  //       console.log('Success:', responseData);
+  //       if (responseData.result) {
+  //         console.log('Result from backend:', responseData.result);
+  //         navigate('/hadith-query-results', { state: { resultsData: responseData.result } });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // };
+ 
+// Frontend.js
 
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
-    }
+const SendDataToBackend = () => {
+  console.log('POST')
+  const url = 'http://127.0.0.1:8000/api/query_hadith/';
 
-    if (data.organization) {
-      url += `&organization=${data.organization}`;
-    }
-
-    if (data.time) {
-      url += `&time=${data.time}`;
-    }
-
-    if (data.place) {
-      url += `&place=${data.place}`;
-    }
-
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  fetch(url, {
+    method: 'POST',  
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    // Send all parameters to the backend as a JSON object
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log('Success:', responseData);
+      if (responseData.result) {
+        console.log('Result from backend:', responseData.result);
+        navigate('/hadith-query-results', { state: { resultsData: responseData.result } });
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        if (data.result) {
-          console.log('Result from backend:', data.result);
-          navigate('/hadith-query-results', { state: { resultsData: data.result } });
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+};
+  
 
-  const [limitValue, setLimitValue] = useState(0);
+const [limitValue, setLimitValue] = useState(0);
 
 const incrementValue = () => {
   setLimitValue(Math.min(limitValue + 1, MAX_LIMIT));

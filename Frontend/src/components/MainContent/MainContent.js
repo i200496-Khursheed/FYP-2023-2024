@@ -48,6 +48,7 @@ function MainContent() {
             title="Al-Tabari Knowledge Queries" 
             description="Explore pre-built queries of Tafseer Al-Tabari" 
             imageSrc={require('../../assets/top_queries.png')}
+            linkTo="/faq-page" 
           />
           <InfoBox 
             title="Statistics" 

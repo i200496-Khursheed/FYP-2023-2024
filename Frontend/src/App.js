@@ -11,15 +11,12 @@ import HadithQueryResultsPage from './pages/HadithQueryResultsPage';
 import VerseQueryBuilderPage from './pages/VerseQueryBuilderPage';
 import VerseQueryResultsPage from './pages/VerseQueryResultsPage';
 
-
-
 import CommentaryQueryBuilderPage from './pages/CommentaryQueryBuilderPage';
 import CommentaryQueryResultsPage from './pages/CommentaryQueryResultsPage';
 
-
-
 import ChainPage from './pages/ChainPage';
 
+import FAQPage from './pages/FAQPage';
 
 function App() {
 
@@ -64,6 +61,11 @@ function App() {
           <Route
             path="/commentary-query-results"
             element={<CommentaryQueryResultsPage />} 
+          />
+
+          <Route
+            path="/faq-page"
+            element={<FAQPage />} 
           />
 
         </Routes>
