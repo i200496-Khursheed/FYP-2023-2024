@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './HadithQueryResults.css';
+import Footer from '../Footer/Footer'; // Import Footer component
 
 const HadithQueryResults = () => {
   const location = useLocation();
@@ -42,46 +43,51 @@ const HadithQueryResults = () => {
   };
 
   return (
-    <div className={`hadith-query-results ${isExpanded ? 'expanded' : ''}`}>
-      <div className="back-button-HQR" onClick={() => window.history.back()}>
-        <img src={require('../../assets/back_button.png')} alt="Back Button" />
-      </div>
-      <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
-        <div className="details-swipe-bar" onClick={toggleExpand}>
-          <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
+    <div>
+      <div className={`hadith-query-results ${isExpanded ? 'expanded' : ''}`}>
+        <div className="back-button-HQR" onClick={() => window.history.back()}>
+          <img src={require('../../assets/back_button.png')} alt="Back Button" />
         </div>
-      </div>
+        <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
+          <div className="details-swipe-bar" onClick={toggleExpand}>
+            <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
+          </div>
+        </div>
 
-      {isExpanded && resultsData && resultsData.HadithNo && resultsData.Theme && resultsData.Text && (
-        <div className="details-table">
-          <table>
-            <tbody>
-              <tr>
-                <th className="sortable" onClick={handleSort}>
-                  Hadith Number {sortOrder === 'asc' ? '▲' : '▼'}
-                </th>
-                <th>Theme</th>
-                <th>Narrator Title</th>
-                <th>Narrator Name</th>
-                <th>Text</th>
-              </tr>
-              {resultsData?.HadithNo?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item}</td>
-                  <td>{resultsData?.Theme?.[index]}</td>
-                  <td>{resultsData?.NarratorTitle?.[index] || 'N/A'}</td>
-                  <td
+        {isExpanded && resultsData && resultsData.HadithNo && resultsData.Theme && resultsData.Text && (
+          <div className="details-table">
+            <table>
+              <tbody>
+                <tr>
+                  <th className="sortable" onClick={handleSort}>
+                    Hadith Number {sortOrder === 'asc' ? '▲' : '▼'}
+                  </th>
+                  <th>Theme</th>
+                  <th>Narrator Title</th>
+                  <th>Narrator Name</th>
+                  <th>Text</th>
+                </tr>
+                {resultsData?.HadithNo?.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item}</td>
+                    <td>{resultsData?.Theme?.[index]}</td>
+                    <td>{resultsData?.NarratorTitle?.[index] || 'N/A'}</td>
+                    <td
                       className="narrator-name"
                       onClick={() => handleNarratorClick(resultsData?.NarratorName?.[index])}>
                       {resultsData?.NarratorName?.[index] || 'N/A'}
-                  </td>
-                  <td className="text-cell">{resultsData?.Text?.[index]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                    </td>
+                    <td className="text-cell">{resultsData?.Text?.[index]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+      <div className='Footer-portion-HQR'>
+        <Footer />
+      </div>
     </div>
   );
 };

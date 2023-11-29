@@ -449,3 +449,8 @@ body, p{
   width: 65px; /* expanded width as needed */
   height: 65px; /* expanded height as needed */
 }
+
+.Footer-portion {
+  width: 100%;
+  box-sizing: border-box;
+}

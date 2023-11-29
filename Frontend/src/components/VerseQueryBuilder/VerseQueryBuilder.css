@@ -457,3 +457,8 @@ body, p{
   width: 65px; /* expanded width as needed */
   height: 65px; /* expanded height as needed */
 }
+
+.Footer-portion {
+  max-width: 100%;
+  overflow-x: hidden;
+}

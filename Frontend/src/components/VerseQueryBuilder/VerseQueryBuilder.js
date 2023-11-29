@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './VerseQueryBuilder.css';
+import Footer from '../Footer/Footer'; // Import Footer component
 
 // Verse Contents
 const ayatNumberOptions = [
@@ -388,6 +389,9 @@ const handleNarratorLogicChange = (index) => {
           </div>
       </div>
       </div>
+      <div className='Footer-portion'>
+        <Footer />
+      </div> 
     </div>
   );
 };
