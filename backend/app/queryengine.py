@@ -158,13 +158,13 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            SELECT DISTINCT ?Text ?rootNarratorType ?HadithNo ?Theme ?subtheme ?RootNarrator ?NarratorType ?NarratorName ?Refer   ?chapter ?Verse_Text ?Verse_No  WHERE {{
+            SELECT DISTINCT ?ref_type ?Text ?rootNarratorType ?HadithNo ?Theme ?subtheme ?RootNarrator ?NarratorType ?NarratorName ?Refer   ?chapter ?Verse_Text ?Verse_No  WHERE {{
     '''
 
     baseQueryString += f'''\n  ?HadithNo1 rdf:type :Hadith .'''
     baseQueryString += f'''\n  ?HadithNo1 :hasText ?Text.'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo ?HadithNo.'''
-    baseQueryString += f'''\n  ?Hadith :hasTheme ?Theme.'''
+    baseQueryString += f'''\n  ?HadithNo1 :hasTheme ?Theme.'''
     baseQueryString += f'''\n  OPTIONAL {{'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithText ?text.'''
     baseQueryString += f'''\n  ?text :containsSegment ?seg.'''
@@ -178,7 +178,9 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     baseQueryString += f'''\n  OPTIONAL {{'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithText ?Hadith.'''
     baseQueryString += f'''\n  ?Hadith :mentions ?Ref.'''
-    baseQueryString += f'''\n  ?Ref :hasName ?Refer. }}'''
+    baseQueryString += f'''\n  ?Ref :hasName ?Refer. 
+                                ?Ref rdf:type ?ref_type
+                                }}'''
     baseQueryString += f'''\n  ?HadithNo1 :containsNarratorChain ?Narrators.'''
     baseQueryString += f'''\n  ?Narrators :hasNarratorSegment ?segment.'''
     baseQueryString += f'''\n  ?segment :refersTo ?Person.'''
@@ -191,17 +193,8 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     baseQueryString += f'''\n  ?RootPerson :hasNarratorType ?Roottype.'''
     baseQueryString += f'''\n  ?Roottype :hasType ?rootNarratorType.'''
 
-    if versetext != '?vtext':
-        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}")'''
-        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}" || !BOUND(?Verse_Text))'''
 
-    if chapterNo != '?chapterNo':
-        baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}")'''
-        baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}" || !BOUND(?chapter))'''
 
-    if verseNo != '?verseNo':
-        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}")'''
-        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}" || !BOUND(?Verse_No))'''
 
     if theme != '?theme':
         baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
@@ -211,19 +204,21 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
 
     if narrator != '?narrator':
-        baseQueryString += f'''\n  ?NarratorName :hasName {narrator} .'''
+        baseQueryString += f'''\n     FILTER(CONTAINS(?NarratorName,"{narrator}"))''' 
+        
 
     if narratortitle != 'narrator-title':
-        baseQueryString += f'''\n  ?NarratorName :hasNarratorType {narratortitle} .'''
+        baseQueryString += f'''\n  FILTER(?NarratorType = "{narratortitle}")  .'''
 
     if hadith_number != '?hadith_number':
         baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
 
     if RootNarrator != '?root_narrator':
-        baseQueryString += f'''\n  ?RootPerson :hasName "{RootNarrator}" .'''
-
+        baseQueryString += f'''\n FILTER(?RootNarrator = "{RootNarrator}") .'''
+   
     if mentions != '?mentions':
-        baseQueryString += f'''\n  ?Ref :hasName "{mentions}" .'''
+        baseQueryString += f'''\n  FILTER(?Refer = "{mentions}") .'''
+        
 
     baseQueryString += f'\n}}'
 
@@ -231,6 +226,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
         baseQueryString += f'''
         LIMIT {limit}
         '''
+        
 
     return baseQueryString
 def constructCommentarySparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
@@ -346,16 +342,15 @@ WHERE {{
 
     return baseQueryString
 
-def constructVerseSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
-                                     theme='?theme', mentions="?mentions", subtheme="?subtheme",
-                                     hadith_number='?hadith_number', RootNarrator='?root_narrator',
-                                     narrator='?narrator', narratortitle='narrator-title',
-                                     applyLimit=True, limit=""):
+def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
+                                     theme='?theme',reference="?reference", subtheme="?subtheme",hadith_number='?hadith_number',
+                                     narrator='?narrator',
+                                     commno='?commno',applyLimit=True, limit=""):
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            SELECT DISTINCT ?Text ?chapter ?Verseno ?Surahname ?commno ?commtext ?reference ?themename ?subtheme ?segment_text ?hadithno ?hadithtext ?page ?volume ?edition WHERE {{
+            SELECT DISTINCT ?Text ?chapter ?Verseno ?Surahname ?commno ?commtext ?reference ?themename ?subtheme ?segment_text ?hadithno ?hadithtext ?name ?page ?volume ?edition WHERE {{
     '''
 
     baseQueryString += f'''\n  ?Verse rdf:type :Verse .'''
@@ -389,44 +384,64 @@ def constructVerseSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', 
     baseQueryString += f'''\n  ?Hadith rdf:type :HadithText.'''
     baseQueryString += f'''\n  optional {'{'}'''
     baseQueryString += f'''\n  ?Hadith :references ?versefragment.'''
-    baseQueryString += f'''\n  ?Hadith :hasHadithNo ?hadithno.'''
-    baseQueryString += f'''\n  ?Hadith :hasText ?hadithtext.'''
-    baseQueryString += f'''\n  {'}'}'''
+    baseQueryString += f'''\n  ?Hadith :hasHadithNo ?hadithno.
+                               ?Hadith :hasText ?hadithtext.
+                                {'}'}
+                                    optional{'{'}   
+                                ?Hadith_1 rdf:type :HadithText.
+                                ?Hadith_1 :references ?versefragment.
+                                ?Hadith_2 rdf:type :Hadith.
+                                ?Hadith_2 :hasHadithText ?Hadith_1.
+                                ?Hadith_2 :containsNarratorChain ?chain.
+                                ?chain :hasNarratorSegment ?narrator.
+                                ?narrator :refersTo ?nar.
+                                ?nar :hasName ?name.
+                                {'}'}'''
+ 
+  
 
-    if versetext != '?vtext':
-        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}")'''
-        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}" || !BOUND(?Verse_Text))'''
+  
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
 
     if chapterNo != '?chapterNo':
         baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}")'''
         baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}" || !BOUND(?chapter))'''
 
     if verseNo != '?verseNo':
-        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}")'''
-        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}" || !BOUND(?Verse_No))'''
+        baseQueryString += f'''\n  FILTER(?Verseno = "{verseNo}")'''
+        baseQueryString += f'''\n  FILTER(?Verseno = "{verseNo}" || !BOUND(?Verseno))'''
 
     if theme != '?theme':
-        baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
+       
+        baseQueryString += f'''\n FILTER(?themename = '{theme}')'''
 
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
 
+    if commno != '?commno':
+        baseQueryString += f'''\n     FILTER(?commno = "{commno}").''' 
+        baseQueryString += f'''\n  FILTER(?commno = "{commno}" || !BOUND(?commno))'''
+
+
+    if reference != '?reference':
+        baseQueryString += f'''\n     FILTER(?reference = "{reference}").''' 
+        baseQueryString += f'''\n  FILTER(?reference = "{reference}" || !BOUND(?reference))'''
+    
     if narrator != '?narrator':
-        baseQueryString += f'''\n  ?NarratorName :hasName {narrator} .'''
-
-    if narratortitle != 'narrator-title':
-        baseQueryString += f'''\n  ?NarratorName :hasNarratorType {narratortitle} .'''
-
+        baseQueryString += f'''\n     FILTER(CONTAINS(?name,"{narrator}"))''' 
+    
     if hadith_number != '?hadith_number':
-        baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
-
-    if RootNarrator != '?root_narrator':
-        baseQueryString += f'''\n  ?RootPerson :hasName "{RootNarrator}" .'''
-
-    if mentions != '?mentions':
-        baseQueryString += f'''\n  ?Ref :hasName "{mentions}" .'''
-
+        baseQueryString += f'''\n     FILTER(CONTAINS(?hadithno,"{hadith_number}"))''' 
     baseQueryString += f'\n}}'
 
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
@@ -439,7 +454,7 @@ def constructVerseSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', 
 if __name__ == "__main__":
     prefix = "http://www.tafsirtabari.com/ontology"
     # Create instances of the classes
-    
+    """
     all_classes = AllClasses()
     all_instances = AllInstances()
     all_person_names = AllPersonNames()
@@ -472,7 +487,9 @@ if __name__ == "__main__":
         print(theme)
         
     print("\nQuery")
-    query = constructHadithSparQLQueryString(theme='lugha')
+    query = constructHadithSparQLQueryString(theme='lugha')"""
+    query = constructVerseSparQLQueryString(hadith_number="134")
+
 
 
     print(query)
