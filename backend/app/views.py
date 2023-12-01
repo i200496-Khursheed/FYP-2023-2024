@@ -57,12 +57,12 @@ def query_hadith(request):
         mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
         subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
         RootNarrator = data['RootNarrator'] if 'RootNarrator' in data and data['RootNarrator'] != '' else '?root_narrator'
-        narrator = data['narrator'] if 'narrator' in data and data['narrator'] != '' else '?narrator'
+        narrator = data['narrators'][0]['name'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('name') != '' else '?narrator'
         narratortitle = data['narrators'][0]['title'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('title') != '' else 'narrator-title'
         applyLimit = data.get('applyLimit', True)
         limit = data.get('limit', '')
 
-        print('title', narratortitle)
+        print('narrator', narrator)
         query = constructHadithSparQLQueryString(versetext, chapterNo, verseNo, theme, mentions, subtheme,
                                                      hadith_number, RootNarrator, narrator, narratortitle,
                                                      applyLimit, limit)
