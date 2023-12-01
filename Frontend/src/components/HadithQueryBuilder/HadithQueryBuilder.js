@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './HadithQueryBuilder.css';
-import Footer from '../Footer/Footer'; // Import Footer component
-
 
 const themeOptions = [
   { value: 'lugha', label: 'lugha' },
@@ -47,6 +45,7 @@ const placeOptions = [
 const HadithQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('hadith');
+  
   const [data, setData] = useState({
     theme: '',
     hadith_number: '',
@@ -58,19 +57,6 @@ const HadithQueryBuilder = () => {
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
-    switch (option) {
-      case 'verse':
-        navigate('/verse-query-builder');
-        break;
-      case 'hadith':
-        navigate('/hadith-query-builder');
-        break;
-      case 'commentary':
-        navigate('/commentary-query-builder');
-        break;
-      default:
-        break;
-    }
   };
 
   const handleThemeChange = (selectedOption) => {
@@ -96,32 +82,21 @@ const HadithQueryBuilder = () => {
     });
   };
 
- const handleAddNarrator = () => {
-  setData((prevData) => ({
-    ...prevData,
-    narrators: [...prevData.narrators, { title: '', name: '' }],
-  }));
-
-  setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
-};
-
+  const handleAddNarrator = () => {
+    setData({
+      ...data,
+      narrators: [...data.narrators, { title: '', name: '' }],
+    });
+  };
 
   const handleRemoveNarrator = (index) => {
-    const updatedNarrators = [...data.narrators];
-    const updatedLogic = [...narratorLogic];
-  
-    updatedNarrators.splice(index, 1);
-    updatedLogic.splice(index, 1);
-  
+    const updatedNarrators = data.narrators.filter((_, i) => i !== index);
     setData({
       ...data,
       narrators: updatedNarrators,
     });
-  
-    setNarratorLogic(updatedLogic);
   };
-  
-  
+
   const handleOrganizationChange = (selectedOption) => {
     setData({
       ...data,
@@ -143,45 +118,74 @@ const HadithQueryBuilder = () => {
     });
   };
 
-  const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
+  // const SendDataToBackend = () => {
+  //   // Extract individual data properties
+  //   const { theme, hadith_number, organization, time, place } = data;
+  
+  //   // Create an object containing only the non-empty parameters
+  //   const queryParams = {
+  //     theme,
+  //     hadith_number,
+  //     organization,
+  //     time,
+  //     place,
+  //   };
+  
+  //   // Filter out undefined or empty values
+  //   const filteredParams = Object.fromEntries(
+  //     Object.entries(queryParams).filter(([key, value]) => value !== undefined && value !== '')
+  //   );
+  
+  //   // Construct the URL by appending filtered parameters
+  //   const url = `http://127.0.0.1:8000/api/query_hadith/?${new URLSearchParams(filteredParams).toString()}`;
+  
+  //   fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((responseData) => {
+  //       console.log('Success:', responseData);
+  //       if (responseData.result) {
+  //         console.log('Result from backend:', responseData.result);
+  //         navigate('/hadith-query-results', { state: { resultsData: responseData.result } });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // };
+ 
+// Frontend.js
 
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
-    }
+const SendDataToBackend = () => {
+  console.log('POST')
+  const url = 'http://127.0.0.1:8000/api/query_hadith/';
 
-    if (data.organization) {
-      url += `&organization=${data.organization}`;
-    }
-
-    if (data.time) {
-      url += `&time=${data.time}`;
-    }
-
-    if (data.place) {
-      url += `&place=${data.place}`;
-    }
-
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log('Success:', responseData);
+      if (responseData.result) {
+        console.log('Result from backend:', responseData.result);
+        navigate('/hadith-query-results', { state: { resultsData: responseData.result } });
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        if (data.result) {
-          console.log('Result from backend:', data.result);
-          navigate('/hadith-query-results', { state: { resultsData: data.result } });
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+};
+  
 
-  const [limitValue, setLimitValue] = useState(0);
+const [limitValue, setLimitValue] = useState(0);
 
 const incrementValue = () => {
   setLimitValue(Math.min(limitValue + 1, MAX_LIMIT));
@@ -194,16 +198,6 @@ const decrementValue = () => {
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
 
-// Logic Gates
-const [narratorLogic, setNarratorLogic] = useState(Array(data.narrators.length).fill('AND'));
-
-const handleNarratorLogicChange = (index) => {
-  setNarratorLogic((prevLogic) => {
-    const updatedLogic = [...prevLogic];
-    updatedLogic[index] = updatedLogic[index] === 'AND' ? 'OR' : 'AND';
-    return updatedLogic;
-  });
-};
 
   return (
     <div className="hadith-query-builder">
@@ -259,38 +253,14 @@ const handleNarratorLogicChange = (index) => {
               <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
             </div>
           </div>
-
-          <div className="add-narrator-button">
-            <div className="add-content" onClick={handleAddNarrator}>
-              <img
-                src={require('../../assets/add.png')} 
-                alt="Add Narrator"
-                className="add-image"
-              />
-              <p id="add-narrator-text">Add Narrator</p>
-            </div>
+        <div className="add-narrator-button">
+          <button className="add-button" onClick={handleAddNarrator}>
+            + Add Narrator
+          </button>
         </div>
-
-
         <div className="narrators">
           {data.narrators.map((narrator, index) => (
             <div key={index} className="narrator">
-
-              <div className="narrator-logic-buttons">
-                <button
-                  className={`logic-button ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
-                  onClick={() => handleNarratorLogicChange(index)}
-                >
-                  AND
-                </button>
-                <button
-                  className={`logic-button ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
-                  onClick={() => handleNarratorLogicChange(index)}
-                >
-                  OR
-                </button>
-              </div>
-
               <div className="dropdown">
                 <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
                 <Select
@@ -311,16 +281,11 @@ const handleNarratorLogicChange = (index) => {
                   }
                 />
               </div>
-
               <div className="remove-narrator-button">
-                <img
-                  src={require('../../assets/remove.png')} // Updated image path
-                  alt="Remove Narrator"
-                  className="remove-image"
-                  onClick={() => handleRemoveNarrator(index)}
-                />
+                <button className="remove-button" onClick={() => handleRemoveNarrator(index)}>
+                  - Remove
+                </button>
               </div>
-              
             </div>
           ))}
         </div>
@@ -359,11 +324,6 @@ const handleNarratorLogicChange = (index) => {
           </div>
       </div>
       </div>
-
-      <div className='Footer-portion'>
-          <Footer />
-      </div>
-      
     </div>
   );
 };

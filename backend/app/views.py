@@ -15,23 +15,6 @@ from .queryengine import Sparql_Endpoint, constructHadithSparQLQueryString
 class ReactView(APIView):
     print('sadsada')
     
-    # def get(self, request):
-    #     output = [{"theme": output.theme,
-    #                "narratorname": output.narratorname,
-    #                "narratortitle": output.narratortitle}
-    #               for output in React.objects.all()]
-    #     return Response(output)
-    
-    # def post(self, request):
-    #     print(request.data)
-    #     serializer = ReactSerializer(data=request.data)
-    #     print('serererer',serializer)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response({"message": "Data saved successfully"})
-    #     else:
-    #         return Response(serializer.errors, status=400)
-        
 # @csrf_exempt
 # def query_hadith(request):
 #     print("hello",request)
@@ -55,71 +38,40 @@ class ReactView(APIView):
 #         return JsonResponse({'result': result})
 #     else:
 #         return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
-
-
-# @csrf_exempt
-# def query_hadith(request):
-#     print('backend/POST')
-#     if request.method == 'POST':  # Change to POST
-#         try:
-#             data = json.loads(request.body)
-#         except json.JSONDecodeError:
-#             return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
-
-#         theme = data.get('theme', '')
-#         hadith_number = data.get('hadith_number', None)
-
-#         if hadith_number is None:
-#             query = constructHadithSparQLQueryString(theme=theme)
-#         else:
-#             query = constructHadithSparQLQueryString(theme=theme, hadith_number=hadith_number)
-
-#         prefix = "http://www.tafsirtabari.com/ontology"
-#         get_query = urllib.parse.quote(query)
-#         result = Sparql_Endpoint(get_query, prefix)
-#         print(result)
-
-#         return JsonResponse({'result': result})
-#     else:
-#         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
-
 @csrf_exempt
 def query_hadith(request):
     print('backend/POST')
-    if request.method == 'POST':
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
 
-        # Set default values if not provided in the request
-        theme = data.get('theme', '?theme')
-        hadith_number = data.get('hadith_number', '?hadith_number')
+        # Get values from the request data or use default values
+        theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
+        hadith_number = data['hadith_number'] if 'hadith_number' in data and data['hadith_number'] != '' else '?hadith_number'
+        versetext = data['versetext'] if 'versetext' in data and data['versetext'] != '' else '?vtext'
+        chapterNo = data['chapterNo'] if 'chapterNo' in data and data['chapterNo'] != '' else '?chapterNo'
+        verseNo = data['verseNo'] if 'verseNo' in data and data['verseNo'] != '' else '?verseNo'
+        mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
+        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
+        RootNarrator = data['RootNarrator'] if 'RootNarrator' in data and data['RootNarrator'] != '' else '?root_narrator'
+        narrator = data['narrator'] if 'narrator' in data and data['narrator'] != '' else '?narrator'
+        narratortitle = data['narrators'][0]['title'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('title') != '' else 'narrator-title'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
 
-        # Handle null values
-        versetext = data.get('versetext', '?vtext')
-        chapterNo = data.get('chapterNo', '?chapterNo')
-        verseNo = data.get('verseNo', '?verseNo')
-        narrator = data.get('narrator', '?narrator')
-        narratortitle = data.get('narratortitle', 'narrator-title')
-        reffered_chapNo = data.get('reffered_chapNo', '?refferedChapNo')
-        reffered_vNo = data.get('reffered_vNo', '?refferedVerseNo')
-        refrences_chapNo = data.get('refrences_chapNo', '?refrencesChapNo')
-        refrences_vNo = data.get('refrences_vNo', '?refrencesVerseNo')
-        applyLimit = True
-        limit = ""
-
-        # Call the constructHadithSparQLQueryString function with the provided or default values
-        query = constructHadithSparQLQueryString(versetext=versetext, chapterNo=chapterNo, verseNo=verseNo,
-                                                 theme=theme, hadith_number=hadith_number, narrator=narrator,
-                                                 narratortitle=narratortitle, reffered_chapNo=reffered_chapNo,
-                                                 reffered_vNo=reffered_vNo, refrences_chapNo=refrences_chapNo,
-                                                 refrences_vNo=refrences_vNo, applyLimit=applyLimit, limit=limit)
-
+        print('title', narratortitle)
+        query = constructHadithSparQLQueryString(versetext, chapterNo, verseNo, theme, mentions, subtheme,
+                                                     hadith_number, RootNarrator, narrator, narratortitle,
+                                                     applyLimit, limit)
+      
         prefix = "http://www.tafsirtabari.com/ontology"
         get_query = urllib.parse.quote(query)
+        print(query)
         result = Sparql_Endpoint(get_query, prefix)
-        print(result)
+        # print("idhar", result)
 
         return JsonResponse({'result': result})
     else:
