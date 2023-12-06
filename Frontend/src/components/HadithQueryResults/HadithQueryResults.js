@@ -1,47 +1,46 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './HadithQueryResults.css';
-import Footer from '../Footer/Footer'; // Import Footer component
+import Footer from '../Footer/Footer'; 
 
 const HadithQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
+  const [sortOrder, setSortOrder] = useState('asc');
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleNarratorClick = async (selectedNarrator) => {
-    try {
-      // Simulate fetching related narrators (replace this with your actual API call)
-      const relatedNarratorsResponse = await fetch(
-        `your_backend_url/narrators?selectedNarrator=${selectedNarrator}`
-      );
-      const relatedNarratorsData = await relatedNarratorsResponse.json();
-
-      // Add the selected narrator's name at the beginning of the array
-      const narratorsData = [selectedNarrator, ...relatedNarratorsData.narrators];
-
-      // Redirect to Chain page with the narrators' data
-      window.location.href = `/chain-page?narratorsData=${JSON.stringify(narratorsData)}`;
-    } catch (error) {
-      console.error('Error fetching related narrators:', error);
-    }
-  };
-
-  const handleSort = () => {
+  const handleSort = (field) => {
     if (sortOrder === 'asc') {
-      resultsData?.HadithNo?.sort((a, b) => a - b); // Sort in ascending order
+      resultsData?.sort((a, b) => a[field]?.value.localeCompare(b[field]?.value));
       setSortOrder('desc');
     } else {
-      resultsData?.HadithNo?.sort((a, b) => b - a); // Sort in descending order
+      resultsData?.sort((a, b) => b[field]?.value.localeCompare(a[field]?.value));
       setSortOrder('asc');
     }
   };
 
+  const renderTableData = () => {
+    return (
+      resultsData &&
+      resultsData.map((data, index) => (
+        <tr key={index}>
+          <td>{data.HadithNo?.value}</td>
+          <td>{data.NarratorName?.value}</td>
+          <td>{data.NarratorType?.value}</td>
+          <td>{data.RootNarrator?.value}</td>
+          <td>{data.Text?.value}</td>
+          <td>{data.Theme?.value}</td>
+          <td>{data.RootNarratorType?.value}</td>
+        </tr>
+      ))
+    );
+  };
+  
   return (
     <div>
       <div className={`hadith-query-results ${isExpanded ? 'expanded' : ''}`}>
@@ -54,32 +53,24 @@ const HadithQueryResults = () => {
           </div>
         </div>
 
-        {isExpanded && resultsData && resultsData.HadithNo && resultsData.Theme && resultsData.Text && (
+        {isExpanded && resultsData && (
           <div className="details-table">
             <table>
-              <tbody>
+              <thead>
                 <tr>
-                  <th className="sortable" onClick={handleSort}>
+                  <th className="sortable" onClick={() => handleSort('HadithNo')}>
                     Hadith Number {sortOrder === 'asc' ? '▲' : '▼'}
                   </th>
-                  <th>Theme</th>
-                  <th>Narrator Title</th>
                   <th>Narrator Name</th>
+                  <th>Narrator Type</th>
+                  <th>Root Narrator</th>
                   <th>Text</th>
+                  <th>Theme</th>
+                  <th>Root Narrator Type</th>
                 </tr>
-                {resultsData?.HadithNo?.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item}</td>
-                    <td>{resultsData?.Theme?.[index]}</td>
-                    <td>{resultsData?.NarratorTitle?.[index] || 'N/A'}</td>
-                    <td
-                      className="narrator-name"
-                      onClick={() => handleNarratorClick(resultsData?.NarratorName?.[index])}>
-                      {resultsData?.NarratorName?.[index] || 'N/A'}
-                    </td>
-                    <td className="text-cell">{resultsData?.Text?.[index]}</td>
-                  </tr>
-                ))}
+              </thead>
+              <tbody>
+                {renderTableData()}
               </tbody>
             </table>
           </div>

@@ -1,7 +1,10 @@
+//HadithQueryBuilder.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './HadithQueryBuilder.css';
+import Footer from '../Footer/Footer'; // Import Footer component
+
 
 const themeOptions = [
   { value: 'lugha', label: 'lugha' },
@@ -57,6 +60,13 @@ const HadithQueryBuilder = () => {
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
+
+    // Navigate based on the selected radio button
+    if (option === 'verse') {
+      navigate('/verse-query-builder');
+    } else if (option === 'commentary') {
+      navigate('/commentary-query-builder');
+    }
   };
 
   const handleThemeChange = (selectedOption) => {
@@ -87,7 +97,10 @@ const HadithQueryBuilder = () => {
       ...data,
       narrators: [...data.narrators, { title: '', name: '' }],
     });
+  
+    setNarratorLogic([...narratorLogic, 'AND']); // Add 'AND' for the new narrator
   };
+  
 
   const handleRemoveNarrator = (index) => {
     const updatedNarrators = data.narrators.filter((_, i) => i !== index);
@@ -174,15 +187,21 @@ const SendDataToBackend = () => {
     .then((response) => response.json())
     .then((responseData) => {
       console.log('Success:', responseData);
-      if (responseData.result) {
-        console.log('Result from backend:', responseData.result);
-        navigate('/hadith-query-results', { state: { resultsData: responseData.result } });
+
+      if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+        const results = responseData.result.results.bindings;
+        console.log('Results:', results);
+
+        navigate('/hadith-query-results', { state: { resultsData: results } });
+      } else {
+        console.error('Results or bindings not found in response data.');
       }
     })
     .catch((error) => {
       console.error('Error:', error);
     });
 };
+
   
 
 const [limitValue, setLimitValue] = useState(0);
@@ -198,134 +217,179 @@ const decrementValue = () => {
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
 
+// Logic Gates
+const [narratorLogic, setNarratorLogic] = useState(Array(data.narrators.length).fill('AND'));
 
-  return (
-    <div className="hadith-query-builder">
-      <div className="back-button">
-        <img
-          src={require('../../assets/back_button.png')}
-          alt="Back Button"
-          onClick={() => window.history.back()}
-        />
-      </div>
-      <div className="radio-buttons">
-        <label className={`radio-button ${selectedOption === 'hadith' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="queryType"
-            value="hadith"
-            onChange={() => handleRadioChange('hadith')}
-            checked={selectedOption === 'hadith'}
-          />
-          <span> <p>Hadith</p> </span>
-        </label>
-        <label className={`radio-button ${selectedOption === 'verse' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="queryType"
-            value="verse"
-            onChange={() => handleRadioChange('verse')}
-            checked={selectedOption === 'verse'}
-          />
-          <span> <p>Verse</p> </span>
-        </label>
-        <label className={`radio-button ${selectedOption === 'commentary' ? 'selected' : ''}`}>
-          <input
-            type="radio"
-            name="queryType"
-            value="commentary"
-            onChange={() => handleRadioChange('commentary')}
-            checked={selectedOption === 'commentary'}
-          />
-          <span> <p>Commentary</p> </span>
-        </label>
-      </div>
+const handleNarratorLogicChange = (index) => {
+  setNarratorLogic((prevLogic) => {
+    const updatedLogic = [...prevLogic];
+    updatedLogic[index] = updatedLogic[index] === 'AND' ? 'OR' : 'AND';
+    return updatedLogic;
+  });
+};
 
-      <div className="query-box">
-        <div className="search-text">Search for Hadith with:</div>
-        <div className="dropdown-container">
-            <div className="dropdown">
-              <label htmlFor="theme">Theme</label>
-              <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
-            </div>
-            <div className="dropdown">
-              <label htmlFor="hadith_number">Hadith Number</label>
-              <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
-            </div>
-          </div>
-        <div className="add-narrator-button">
-          <button className="add-button" onClick={handleAddNarrator}>
-            + Add Narrator
-          </button>
-        </div>
-        <div className="narrators">
-          {data.narrators.map((narrator, index) => (
-            <div key={index} className="narrator">
-              <div className="dropdown">
-                <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
-                <Select
-                  options={narratorTitleOptions}
-                  isSearchable={true}
-                  onChange={(selectedOption) =>
-                    handleNarratorChange(index, 'title', selectedOption.value)
-                  }
-                />
-              </div>
-              <div className="dropdown">
-                <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
-                <Select
-                  options={narratorNameOptions}
-                  isSearchable={true}
-                  onChange={(selectedOption) =>
-                    handleNarratorChange(index, 'name', selectedOption.value)
-                  }
-                />
-              </div>
-              <div className="remove-narrator-button">
-                <button className="remove-button" onClick={() => handleRemoveNarrator(index)}>
-                  - Remove
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="that-mentions">
-          <div className="search-text">That Mentions:</div>
-          <div className="dropdown">
-            <label htmlFor="organization">Organization</label>
-            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
-          </div>
-          <div className="dropdown">
-            <label htmlFor="time">Time</label>
-            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-          </div>
-          <div className="dropdown">
-            <label htmlFor="place">Place</label>
-            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
-          </div>
-        </div>
-        <div className="run-query-button">
-          <button className="run-button" onClick={SendDataToBackend}>
-            Run Query
-          </button>
-        </div>
-
-        <div className="limit-results-box">
-          <label htmlFor="limit-results">Limit Search Results</label>
-          <div className="limit-input">
-            <button className="decrement" onClick={decrementValue}>-</button>
-            <input
-              type="number"
-              id="limit-results"
-              value={limitValue}
-              onChange={(e) => setLimitValue(Math.max(0, parseInt(e.target.value)))}
-            />
-            <button className="increment" onClick={incrementValue}>+</button>
-          </div>
-      </div>
-      </div>
+return (
+  <div className="hadith-query-builder">
+    <div className="back-button">
+      <img
+        src={require('../../assets/back_button.png')}
+        alt="Back Button"
+        onClick={() => window.history.back()}
+      />
     </div>
-  );
+    <div className="radio-buttons">
+      <label className={`radio-button ${selectedOption === 'hadith' ? 'selected' : ''}`}>
+        <input
+          type="radio"
+          name="queryType"
+          value="hadith"
+          onChange={() => handleRadioChange('hadith')}
+          checked={selectedOption === 'hadith'}
+        />
+        <span> <p>Hadith</p> </span>
+      </label>
+      <label className={`radio-button ${selectedOption === 'verse' ? 'selected' : ''}`}>
+        <input
+          type="radio"
+          name="queryType"
+          value="verse"
+          onChange={() => handleRadioChange('verse')}
+          checked={selectedOption === 'verse'}
+        />
+        <span> <p>Verse</p> </span>
+      </label>
+      <label className={`radio-button ${selectedOption === 'commentary' ? 'selected' : ''}`}>
+        <input
+          type="radio"
+          name="queryType"
+          value="commentary"
+          onChange={() => handleRadioChange('commentary')}
+          checked={selectedOption === 'commentary'}
+        />
+        <span> <p>Commentary</p> </span>
+      </label>
+    </div>
+
+    <div className="query-box">
+      <div className="search-text">Search for Hadith with:</div>
+      <div className="dropdown-container">
+          <div className="dropdown">
+            <label htmlFor="theme">Theme</label>
+            <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+          </div>
+          <div className="dropdown">
+            <label htmlFor="hadith_number">Hadith Number</label>
+            <Select options={hadithNumberOptions} isSearchable={true} onChange={handleHadithNumberChange} />
+          </div>
+        </div>
+
+        <div className="add-narrator-button">
+          <div className="add-content" onClick={handleAddNarrator}>
+            <img
+              src={require('../../assets/add.png')} 
+              alt="Add Narrator"
+              className="add-image"
+            />
+            <p id="add-narrator-text">Add Narrator</p>
+          </div>
+      </div>
+
+
+      <div className="narrators">
+        {data.narrators.map((narrator, index) => (
+          <div key={index} className="narrator">
+
+            <div className="narrator-logic-buttons">
+              <button
+                className={`logic-button ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
+                onClick={() => handleNarratorLogicChange(index)}
+              >
+                AND
+              </button>
+              <button
+                className={`logic-button ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
+                onClick={() => handleNarratorLogicChange(index)}
+              >
+                OR
+              </button>
+            </div>
+
+            <div className="dropdown">
+              <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
+              <Select
+                options={narratorTitleOptions}
+                isSearchable={true}
+                onChange={(selectedOption) =>
+                  handleNarratorChange(index, 'title', selectedOption.value)
+                }
+              />
+            </div>
+            <div className="dropdown">
+              <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
+              <Select
+                options={narratorNameOptions}
+                isSearchable={true}
+                onChange={(selectedOption) =>
+                  handleNarratorChange(index, 'name', selectedOption.value)
+                }
+              />
+            </div>
+
+            <div className="remove-narrator-button">
+              <img
+                src={require('../../assets/remove.png')} // Updated image path
+                alt="Remove Narrator"
+                className="remove-image"
+                onClick={() => handleRemoveNarrator(index)}
+              />
+            </div>
+            
+          </div>
+        ))}
+      </div>
+      <div className="that-mentions">
+        <div className="search-text">That Mentions:</div>
+        <div className="dropdown">
+          <label htmlFor="organization">Organization</label>
+          <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
+        </div>
+        <div className="dropdown">
+          <label htmlFor="time">Time</label>
+          <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
+        </div>
+        <div className="dropdown">
+          <label htmlFor="place">Place</label>
+          <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
+        </div>
+      </div>
+      <div className="run-query-button">
+        <button className="run-button" onClick={SendDataToBackend}>
+          Run Query
+        </button>
+      </div>
+
+      <div className="limit-results-box">
+        <label htmlFor="limit-results">Limit Search Results</label>
+        <div className="limit-input">
+          <button className="decrement" onClick={decrementValue}>-</button>
+          <input
+            type="number"
+            id="limit-results"
+            value={limitValue}
+            onChange={(e) => setLimitValue(Math.max(0, parseInt(e.target.value)))}
+          />
+          <button className="increment" onClick={incrementValue}>+</button>
+        </div>
+    </div>
+    </div>
+
+    <div className='Footer-portion'>
+        <Footer />
+    </div>
+    
+  </div>
+);
+  
 };
 
 export default HadithQueryBuilder;

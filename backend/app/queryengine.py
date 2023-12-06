@@ -7,7 +7,7 @@ import urllib.parse
 
 def Sparql_Endpoint(query: str, prefix: str = "") -> dict:
     x = requests.get( 
-        'http://Sameer:7200/repositories/FYP?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
+        'http://khursheed:7200/repositories/kg?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
         headers={
             'Accept' : 'application/sparql-results+json', 
             'Host' : 'localhost:7200'
@@ -229,10 +229,8 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
         
 
     return baseQueryString
-def constructCommentarySparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
-                                     theme='?theme', mentions="?mentions", subtheme="?subtheme",
-                                     hadith_number='?hadith_number', RootNarrator='?root_narrator',
-                                     narrator='?narrator', narratortitle='narrator-title',
+def constructCommentarySparQLQueryString(commno='?number',chapterNo='?chapter_no', verseNo='?V_no',
+                                     theme='?theme', mentions="?mentions", subtheme="?subtheme", 
                                      applyLimit=True, limit=""):
     baseQueryString = f'''
 PREFIX : <http://www.tafsirtabari.com/ontology#>
@@ -297,18 +295,18 @@ WHERE {{
 
     '''
 
+    if commno != '?number':
+        baseQueryString += f'''\n  FILTER(?number = "{commno}")'''
+        baseQueryString += f'''\n  FILTER(?number = "{commno}" || !BOUND(?number))'''
 
-    if versetext != '?vtext':
-        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}")'''
-        baseQueryString += f'''\n  FILTER(?Verse_Text = "{versetext}" || !BOUND(?Verse_Text))'''
 
-    if chapterNo != '?chapterNo':
-        baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}")'''
-        baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}" || !BOUND(?chapter))'''
+    if chapterNo != '?chapter_no':
+        baseQueryString += f'''\n  FILTER(?chapter_no = "{chapterNo}")'''
+        baseQueryString += f'''\n  FILTER(?chapter_no = "{chapterNo}" || !BOUND(?chapter_no))'''
 
-    if verseNo != '?verseNo':
-        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}")'''
-        baseQueryString += f'''\n  FILTER(?Verse_No = "{verseNo}" || !BOUND(?Verse_No))'''
+    if verseNo != '?V_no':
+        baseQueryString += f'''\n  FILTER(?V_no = "{verseNo}")'''
+        baseQueryString += f'''\n  FILTER(?V_no = "{verseNo}" || !BOUND(?V_no))'''
 
     if theme != '?theme':
         baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
@@ -317,20 +315,8 @@ WHERE {{
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
 
-    if narrator != '?narrator':
-        baseQueryString += f'''\n  ?NarratorName :hasName {narrator} .'''
-
-    if narratortitle != 'narrator-title':
-        baseQueryString += f'''\n  ?NarratorName :hasNarratorType {narratortitle} .'''
-
-    if hadith_number != '?hadith_number':
-        baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
-
-    if RootNarrator != '?root_narrator':
-        baseQueryString += f'''\n  ?RootPerson :hasName "{RootNarrator}" .'''
-
     if mentions != '?mentions':
-        baseQueryString += f'''\n  ?Ref :hasName "{mentions}" .'''
+        baseQueryString += f'''\n  FILTER(?name = "{mentions}") .'''
 
     baseQueryString += f'\n}}'
     baseQueryString += f'\n GROUP BY ?number'
@@ -397,20 +383,6 @@ def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
                                 ?narrator :refersTo ?nar.
                                 ?nar :hasName ?name.
                                 {'}'}'''
- 
-  
-
-  
-  
- 
-  
-  
-  
-  
-  
-  
-  
-  
 
     if chapterNo != '?chapterNo':
         baseQueryString += f'''\n  FILTER(?chapter = "{chapterNo}")'''
@@ -488,7 +460,7 @@ if __name__ == "__main__":
         
     print("\nQuery")
     query = constructHadithSparQLQueryString(theme='lugha')"""
-    query = constructVerseSparQLQueryString(hadith_number="134")
+    query = constructHadithSparQLQueryString()
 
 
 

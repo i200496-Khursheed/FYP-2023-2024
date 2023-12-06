@@ -21,7 +21,7 @@
 
 .Footer-portion-HQR {
   position: absolute;
-  bottom: -31.8%;
+  bottom: -37.8%;
   width: 100%;
   box-sizing: border-box;
   background-color: #fff;
@@ -41,6 +41,12 @@
   margin-left: -50%; /* Offset half of the width */
   margin-bottom: 190px; /* Adjust this value based on the footer height */
 
+}
+
+.details-table table {
+  width: 150%; 
+  max-height: 700px;
+  overflow-y: auto;
 }
 
 .query-text-box {

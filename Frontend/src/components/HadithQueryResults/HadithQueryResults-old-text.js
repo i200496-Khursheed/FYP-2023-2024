@@ -16,6 +16,8 @@ const HadithQueryResults = () => {
     document.querySelector('.arrow').classList.toggle('expanded'); // Toggle expanded class on arrow
   };
 
+  
+
   return (
     <div className="hadith-query-results">
       <div className="back-button-HQR" onClick={() => window.history.back()}>
