@@ -1,0 +1,170 @@
+/* MainContent.css */
+
+.main-content {
+  margin-top: -850px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(295vh - 10px); /* Adjusted to ensure a minimum height */
+}
+
+.animated {
+  animation: slideIn 2s forwards;
+}
+
+.info-boxes {
+  animation: slideInFromRight 2.0s forwards;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.text, .secondary-text, .box-image {
+  animation: slideInLeft 2s forwards;
+  opacity: 0;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.box {
+  width: 100%;
+  max-width: 1400px;
+  height: 50vh;
+  border-radius: 59px 59px 350px 59px;
+  background: linear-gradient(115deg, rgba(0, 25, 255, 0.75), rgba(238, 154, 229, 1));
+  border: 2.5px solid #000000;
+}  
+
+.text {
+  font-size: 48px;
+  font-weight: 800;
+  font-family: 'Jost', sans-serif;
+  color: #FFFCFC;
+  text-align: left;
+  padding: 20px;
+  padding-left: 50px;
+}
+
+.box {
+  position: relative;
+}
+
+.secondary-text {
+  position: absolute;
+  bottom: 55px;
+  left: 50px;
+}
+
+.secondary-heading {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: 'Jost', sans-serif;
+  color: #FFFCFC;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.square {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  
+  background-color: #FFFFFF;
+  border: 1px solid #000000;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.side-text {
+  display: inline-block;
+}
+
+.italic-text {
+  font-style: italic;
+  font-family: 'Jost', sans-serif;
+  color: #FFFCFC;
+  text-align: left;
+  font-size: 120%;
+}
+
+.buttons {
+margin-top: 30px;
+}
+
+.explore-button, .about-button {
+font-size: 16px;
+font-weight: 800;
+font-family: 'Jost', sans-serif;
+color: #FFFFFF;
+background-color: #01257D;
+border: none;
+border-radius: 10px;
+padding: 13px 26px;
+margin-right: 40px;
+text-align: center;
+cursor: pointer;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.about-button {
+background-color: transparent;
+border: 2px solid #000000;
+background: transparent;
+color: #000000;
+}
+
+.about-button:hover {
+background-color: #473849;
+color: #FFFFFF;
+}
+
+.explore-button:hover {
+background-color: #ee78c0;
+color: #FFFFFF;
+}
+
+.about-button:focus {
+outline: none;
+}
+
+@keyframes pulsate {
+0% {
+  transform: scale(1);
+}
+50% {
+  transform: scale(1.05);
+}
+100% {
+  transform: scale(1);
+}
+}
+
+.box-image {
+position: absolute;
+top: 6%;
+right: 150px;
+transform: translateY(-50%);
+max-height: 300px;
+max-width: 200%;
+border-radius: 20%;
+opacity: 0.65;
+animation: pulsate 2s infinite;
+box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+.Footer-portion {
+  width: 100%;
+  box-sizing: border-box;
+}
