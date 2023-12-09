@@ -149,6 +149,52 @@ class AllVerseText:
 
 
 
+
+
+
+
+
+def getNarratorChain(hadith_number='?hadith_number', 
+                    applyLimit=True, limit=""):
+    baseQueryString = f'''
+            PREFIX : <http://www.tafsirtabari.com/ontology#>
+            PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT DISTINCT  ?Text  ?HadithNo  ?RootNarrator  ?NarratorName    WHERE {{
+    '''
+
+    baseQueryString += f'''\n  ?HadithNo1 rdf:type :Hadith .'''
+    baseQueryString += f'''\n  ?HadithNo1 :hasText ?Text.'''
+    baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo ?HadithNo.'''
+    baseQueryString += f'''\n  ?HadithNo1 :containsNarratorChain ?Narrators.'''
+    baseQueryString += f'''\n  ?Narrators :hasNarratorSegment ?segment.'''
+    baseQueryString += f'''\n  ?segment :refersTo ?Person.'''
+    baseQueryString += f'''\n  ?Person :hasName ?NarratorName.'''
+    baseQueryString += f'''\n  ?Person :hasNarratorType ?type.'''
+    baseQueryString += f'''\n  ?type :hasType ?NarratorType.'''
+    baseQueryString += f'''\n  ?Narrators :hasRootNarratorSegment ?Root.'''
+    baseQueryString += f'''\n  ?Root :refersTo ?RootPerson .'''
+    baseQueryString += f'''\n  ?RootPerson :hasName ?RootNarrator .'''
+    baseQueryString += f'''\n  ?RootPerson :hasNarratorType ?Roottype.'''
+    baseQueryString += f'''\n  ?Roottype :hasType ?rootNarratorType.'''
+
+    
+    if hadith_number != '?hadith_number':
+        baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo  "{hadith_number}" .'''
+
+    
+        
+
+    baseQueryString += f'\n}}'
+
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
+        baseQueryString += f'''
+        LIMIT {limit}
+        '''
+        
+
+    return baseQueryString
+
 def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
                                      theme='?theme', mentions="?mentions", subtheme="?subtheme",
                                      hadith_number='?hadith_number', RootNarrator='?root_narrator',
@@ -541,7 +587,7 @@ if __name__ == "__main__":
     print("\nQuery")
     query = constructHadithSparQLQueryString(theme='lugha')"""
     
-    query = constructVerseSparQLQueryString(theme='lugha')
+    query = getNarratorChain(hadith_number='134')
 
 
 
