@@ -16,7 +16,7 @@ class ReactView(APIView):
     print('sadsada')
     
 # @csrf_exempt
-# def query_hadith(request):
+# def queryhadith(request):
 #     print("hello",request)
 #     print('popo',request)
 #     if request.method == 'GET':
