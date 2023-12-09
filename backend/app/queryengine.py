@@ -153,6 +153,47 @@ class AllVerseText:
 
 
 
+def FederatedQuery(person='?person', 
+                    applyLimit=True, limit=""):
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            SELECT DISTINCT  ?death  ?abstract    WHERE {{
+                    ?person rdf:type :Person.
+                    ?person :hasName "{person}".
+
+                    ?pn rdf:type :Person.
+                    ?pn owl:sameAs ?person.
+
+                       SERVICE <https://dbpedia.org/sparql> {{
+       
+             ?pn dbo:abstract ?abstract .
+             ?pn dbo:deathDate ?death.
+     
+        	FILTER(LANG(?abstract) = "en")
+        
+       
+            }}
+    '''
+
+    
+
+    
+        
+
+    baseQueryString += f'\n}}'
+
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
+        baseQueryString += f'''
+        LIMIT {limit}
+        '''
+        
+
+    return baseQueryString
 
 def getNarratorChain(hadith_number='?hadith_number', 
                     applyLimit=True, limit=""):
@@ -587,7 +628,7 @@ if __name__ == "__main__":
     print("\nQuery")
     query = constructHadithSparQLQueryString(theme='lugha')"""
     
-    query = getNarratorChain(hadith_number='134')
+    query = FederatedQuery(person='محمد')
 
 
 
