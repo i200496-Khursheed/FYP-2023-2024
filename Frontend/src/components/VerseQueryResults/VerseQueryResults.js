@@ -1,3 +1,4 @@
+//VerseQueryResults.js
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './VerseQueryResults.css';
@@ -33,6 +34,40 @@ const VerseQueryResults = () => {
       }
     };
 
+    const handleSort = (field) => {
+      if (sortOrder === 'asc') {
+        resultsData?.sort((a, b) => a[field]?.value.localeCompare(b[field]?.value));
+        setSortOrder('desc');
+      } else {
+        resultsData?.sort((a, b) => b[field]?.value.localeCompare(a[field]?.value));
+        setSortOrder('asc');
+      }
+    };
+
+    const renderTableData = () => {
+      return (
+        resultsData &&
+        resultsData.map((data, index) => (
+          <tr key={index}>
+            <td>{data.Verseno?.value}</td>
+            <td>{data.Surahname?.value}</td>
+            <td>{data.Text?.value}</td>
+            <td>{data.chapter?.value}</td>
+            <td>{data.commno?.value}</td>
+            <td className="commentary-text">{data.commtext?.value}</td>
+            <td>{data.hadithno?.value}</td>
+            <td>{data.hadithtext?.value}</td>
+            <td>{data.name?.value}</td>
+            <td>{data.reference?.value}</td>
+            <td>{data.segment_text?.value}</td>
+            <td>{data.subtheme?.value}</td>
+            <td>{data.themename?.value}</td>
+          </tr>
+        ))
+      );
+    };
+    
+
     return (
       <div>
         <div className={`verse-query-results ${isExpanded ? 'expanded' : ''}`}>
@@ -46,43 +81,33 @@ const VerseQueryResults = () => {
           </div>
         </div>
 
-        {isExpanded && resultsData && resultsData.SurahNumber && (
-        <div className="details-table">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Surah Number</th>
-                  <th>Surah Name</th>
-                  <th>Ayat Number</th>
-                  <th>Commentary Theme</th>
-                  <th>Hadith Theme</th>
-                  <th>Narrator Title</th>
-                  <th>Narrator Name</th>
-                </tr>
-                {resultsData.SurahNumber.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item}</td>
-                    <td>{resultsData.SurahName?.[index] || 'N/A'}</td>
-                    <td>{resultsData.AyatNumber?.[index] || 'N/A'}</td>
-                    <td>{resultsData.CommentaryTheme?.[index] || 'N/A'}</td>
-                    <td>{resultsData.HadithTheme?.[index] || 'N/A'}</td>
-                    <td>{resultsData.NarratorTitle?.[index] || 'N/A'}</td>
-                    <td
-                      className="narrator-name"
-                      onClick={() => handleNarratorClick(resultsData.NarratorName?.[index])}
-                    >
-                      {resultsData.NarratorName?.[index] || 'N/A'}
-                    </td>
-                  </tr>
-                ))}
-                {!resultsData.SurahNumber || resultsData.SurahNumber.length === 0 ? (
-                  <tr>
-                    <td colSpan="7">N/A</td>
-                  </tr>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
+        {isExpanded && resultsData && (
+        <div className="details-table-VQR">
+        <table>
+          <thead>
+            <tr>
+              <th className="sortable" onClick={() => handleSort('Verseno')}>
+                Verse Number {sortOrder === 'asc' ? '▲' : '▼'}
+              </th>
+              <th>Surah Name</th>
+              <th>Text</th>
+              <th>Chapter</th>
+              <th>Commentary Number</th>
+              <th>Commentary Text</th>
+              <th>Hadith Number</th>
+              <th>Hadith Text</th>
+              <th>Name</th>
+              <th>Reference</th>
+              <th>Segment Text</th>
+              <th>Subtheme</th>
+              <th>Theme Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {renderTableData()}
+          </tbody>
+        </table>
+      </div>      
         )}
       </div>
       <div className='Footer-portion-VQR'>

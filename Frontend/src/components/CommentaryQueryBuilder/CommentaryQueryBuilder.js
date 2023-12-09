@@ -138,41 +138,71 @@ const CommentaryQueryBuilder = () => {
     });
   };
 
+  // const SendDataToBackend = () => {
+  //   let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
+
+  //   if (data.hadith_number) {
+  //     url += `&hadith_number=${data.hadith_number}`;
+  //   }
+
+  //   if (data.organization) {
+  //     url += `&organization=${data.organization}`;
+  //   }
+
+  //   if (data.time) {
+  //     url += `&time=${data.time}`;
+  //   }
+
+  //   if (data.place) {
+  //     url += `&place=${data.place}`;
+  //   }
+
+  //   fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('Success:', data);
+  //       if (data.result) {
+  //         console.log('Result from backend:', data.result);
+  //         navigate('/commentary-query-results', { state: { resultsData: data.result } });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // };
+
+
   const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
-
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
-    }
-
-    if (data.organization) {
-      url += `&organization=${data.organization}`;
-    }
-
-    if (data.time) {
-      url += `&time=${data.time}`;
-    }
-
-    if (data.place) {
-      url += `&place=${data.place}`;
-    }
-
+    console.log("POST")
+    const url = 'http://127.0.0.1:8000/api/query_commentary/';
+    
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        if (data.result) {
-          console.log('Result from backend:', data.result);
-          navigate('/commentary-query-results', { state: { resultsData: data.result } });
+      .then((responseData) => {
+        console.log('Success:', responseData);
+
+        if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+          const results = responseData.result.results.bindings;
+          console.log('Results:', results);
+
+          navigate('/commentary-query-results', { state: { resultsData: results } });
+        } else {
+          console.error('Results or bindings not found in response data.');
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
+        //console.error('Error:', error);
       });
   };
 

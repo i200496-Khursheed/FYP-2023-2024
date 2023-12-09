@@ -3,98 +3,92 @@ import { useLocation } from 'react-router-dom';
 import './CommentaryQueryResults.css';
 import Footer from '../Footer/Footer'; // Import Footer component
 
-
 const CommentaryQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleNarratorClick = async (selectedNarrator) => {
-    try {
-        // Simulate fetching related narrators (replace this with your actual API call)
-        const relatedNarratorsResponse = await fetch(
-          `your_backend_url/narrators?selectedNarrator=${selectedNarrator}`
-        );
-        const relatedNarratorsData = await relatedNarratorsResponse.json();
-  
-        // Add the selected narrator's name at the beginning of the array
-        const narratorsData = [selectedNarrator, ...relatedNarratorsData.narrators];
-  
-        // Redirect to Chain page with the narrators' data
-        window.location.href = `/chain-page?narratorsData=${JSON.stringify(narratorsData)}`;
-      } catch (error) {
-        console.error('Error fetching related narrators:', error);
-      }
+  const handleSort = (field) => {
+    if (sortOrder === 'asc') {
+      resultsData?.sort((a, b) => a[field]?.value.localeCompare(b[field]?.value));
+      setSortOrder('desc');
+    } else {
+      resultsData?.sort((a, b) => b[field]?.value.localeCompare(a[field]?.value));
+      setSortOrder('asc');
+    }
+  };
+
+  const renderTableData = () => {
+    return (
+      resultsData &&
+      resultsData.map((data, index) => (
+        <tr key={index}>
+          <td>{data.V_nos?.value}</td>
+          <td>{data.chapter_nos?.value}</td>
+          <td>{data.Texts?.value}</td>
+          <td>{data.sec_chps?.value}</td>
+          <td>{data.number?.value}</td>
+          <td className="commentary-text">{data.sec_texts?.value}</td>
+          <td>{data.sec_nos?.value}</td>
+          <td>{data.sec_texts?.value}</td>
+          <td>{data.person_names?.value}</td>
+          <td>{data.refer_type?.value}</td>
+          <td>{data.subthemes?.value}</td>
+          <td>{data.theme_names?.value}</td>
+          <td>{data.volumes?.value}</td>
+        </tr>
+      ))
+    );
   };
 
   return (
     <div>
-      <div className={`commentary-query-results ${isExpanded ? 'expanded' : ''}`}>
-        {/* Your back button */}
+      <div className={`verse-query-results ${isExpanded ? 'expanded' : ''}`}>
         <div className="back-button-CQR" onClick={() => window.history.back()}>
           <img src={require('../../assets/back_button.png')} alt="Back Button" />
         </div>
-
-        {/* Your expand/collapse button */}
         <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
           <div className="details-swipe-bar" onClick={toggleExpand}>
             <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
           </div>
         </div>
 
-        {/* Rendering the results table */}
-        {isExpanded && resultsData && resultsData.SurahNumber && (
-          <div className="details-table">
+        {isExpanded && resultsData && (
+          <div className="details-table-CQR">
             <table>
               <thead>
                 <tr>
-                  <th>Surah Number</th>
-                  <th>Surah Name</th>
-                  <th>Ayat Number</th>
-                  <th>Commentary Theme</th>
-                  <th>Which has Theme</th>
-                  <th>Which has the Sub-Theme</th>
-                  <th>Narrator Title</th>
-                  <th>Narrator Name</th>
+                  <th className="sortable" onClick={() => handleSort('V_nos')}>
+                    Verse Number {sortOrder === 'asc' ? '▲' : '▼'}
+                  </th>
+                  <th>Chapter Number</th>
+                  <th>Text</th>
+                  <th>Section Chapter</th>
+                  <th>Commentary Number</th>
+                  <th>Commentary Text</th>
+                  <th>Section Number</th>
+                  <th>Section Text</th>
+                  <th>Person Names</th>
+                  <th>Reference Type</th>
+                  <th>Subthemes</th>
+                  <th>Theme Names</th>
+                  <th>Volumes</th>
                 </tr>
               </thead>
-              <tbody>
-                {resultsData.SurahNumber.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item}</td>
-                    <td>{resultsData.SurahName?.[index] || 'N/A'}</td>
-                    <td>{resultsData.AyatNumber?.[index] || 'N/A'}</td>
-                    <td>{resultsData.CommentaryTheme?.[index] || 'N/A'}</td>
-                    <td>{resultsData.WhichHasTheme?.[index] || 'N/A'}</td>
-                    <td>{resultsData.WhichHasSubTheme?.[index] || 'N/A'}</td>
-                    <td>{resultsData.NarratorTitle?.[index] || 'N/A'}</td>
-                    <td
-                      className="narrator-name"
-                      onClick={() => handleNarratorClick(resultsData.NarratorName?.[index])}
-                    >
-                      {resultsData.NarratorName?.[index] || 'N/A'}
-                    </td>
-                  </tr>
-                ))}
-                {/* Render a 'N/A' row if there's no data */}
-                {!resultsData.SurahNumber || resultsData.SurahNumber.length === 0 ? (
-                  <tr>
-                    <td colSpan="8">N/A</td>
-                  </tr>
-                ) : null}
-              </tbody>
+              <tbody>{renderTableData()}</tbody>
             </table>
           </div>
         )}
       </div>
-      <div className='Footer-portion-CQR'>
+      <div className="Footer-portion-CQR">
         <Footer />
-      </div> 
+      </div>
     </div>
   );
 };

@@ -28,7 +28,7 @@
   height: auto;
 }
 
-.details-table {
+.details-table-VQR {
   max-width: 200%;
   overflow-x: hidden;
   position: relative;
@@ -107,17 +107,8 @@ details-table {
   overflow: auto; /* Add overflow: auto to enable scrolling */
 }
 
-details-table th {
+.details-table-VQR th {
   cursor: pointer; /* Add a pointer cursor to indicate it's clickable */
-}
-
-details-table table {
-  border-collapse: collapse;
-  width: 100%;
-  border-radius: 20px;
-  border: 2px solid #000;
-  background-color: #f3f3f3;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 th,
@@ -192,7 +183,7 @@ h2 {
   transition: transform 0.3s, filter 0.3s;
 }
 
-.back-button-HQR img:hover {
+.back-button-VQR img:hover {
   transform: scale(1.2);
   filter: brightness(1.2);
   background-color: transparent;
@@ -208,4 +199,49 @@ td.narrator-name {
 td.narrator-name:hover {
   color: navy; 
   text-decoration: none; 
+}
+
+/* Table */
+.details-table-VQR table {
+  width: 200%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.details-table-VQR th,
+.details-table-VQR td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.details-table-VQR th {
+  background-color: #4639e3;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-VQR tr {
+  background-color: #fff;
+}
+
+.details-table-VQR tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+.details-table-VQR tbody tr:hover {
+  background-color: #e0e0e0;
+}
+
+td.text-cell {
+  font-size: 16px;
+  color: #333;
+}
+
+.details-table-VQR td:nth-child(3),
+.details-table-VQR th:nth-child(3) {
+  /* Text column */
+  width: 20%; /* Adjusted width */
 }

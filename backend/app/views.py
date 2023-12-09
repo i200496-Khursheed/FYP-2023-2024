@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import Sparql_Endpoint, constructHadithSparQLQueryString
+from .queryengine import Sparql_Endpoint, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString
 
 class ReactView(APIView):
     print('sadsada')
@@ -73,6 +73,79 @@ def query_hadith(request):
         result = Sparql_Endpoint(get_query, prefix)
         # print("idhar", result)
 
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+#Verse
+@csrf_exempt
+def query_verse(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        chapterNo = data['chapterNo'] if 'chapterNo' in data and data['chapterNo'] != '' else '?chapterNo'
+        verseNo = data['verseNo'] if 'verseNo' in data and data['verseNo'] != '' else '?verseNo'
+        theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
+        reference = data['reference'] if 'reference' in data and data['reference'] != '' else '?reference'
+        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
+        hadith_number = data['hadith_number'] if 'hadith_number' in data and data['hadith_number'] != '' else '?hadith_number'
+        narrator = data['narrator'] if 'narrator' in data and data['narrator'] != '' else '?narrator'
+        commno = data['commno'] if 'commno' in data and data['commno'] != '' else '?commno'
+        applyLimit = data.get('applyLimit', True)
+        #limit = data.get('limit', '')
+        limit = 100
+
+        query = constructVerseSparQLQueryString(chapterNo, verseNo, theme, reference, subtheme, hadith_number,
+                                                narrator, commno, applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+        # Use your Sparql_Endpoint function to query the endpoint
+        
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+#commentary
+@csrf_exempt
+def query_commentary(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        commno = data['number'] if 'number' in data and data['number'] != '' else '?number'
+        chapterNo = data['chapter_no'] if 'chapter_no' in data and data['chapter_no'] != '' else '?chapter_no'
+        verseNo = data['V_no'] if 'V_no' in data and data['V_no'] != '' else '?V_no'
+        theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
+        mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
+        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+
+        query = constructCommentarySparQLQueryString(commno, chapterNo, verseNo, theme, mentions, subtheme,
+                                                     applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+        # Use your Sparql_Endpoint function to query the endpoint
+        
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
