@@ -1,66 +1,39 @@
-import React, { useState } from 'react';
+//VerseQueryBuilder.js
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './VerseQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
 
 // Verse Contents
-const ayatNumberOptions = [
-  { value: '15', label: 'Verse 015' },
+const verseNumberOptions = [
+  { value: '7', label: 'Verse 007' },
   { value: '6', label: 'Verse 006' },
-  { value: '13', label: 'Verse 013' },
+  { value: '2', label: 'Verse 002' },
 ];
 
-const surahNumberOptions = [
-  { value: '12', label: 'يوسف 12' },
-  { value: '10', label: 'يونس 10' },
-  { value: '19', label: 'مريم 19' },
-];
-
-const themeOptions = [
-  { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
+const surahNameOptions = [
+  { value: 'الفاتحة', label: 'الفاتحة	' },
+  { value: 'يونس', label: 'يونس' },
+  { value: 'مريم', label: 'مريم ' },
 ];
 
 const narratorTitleOptions = [
   { value: 'sahabi', label: 'sahabi' },
   { value: 'rawi', label: 'rawi' },
+  { value: 'shaykh', label: 'shaykh' },
   { value: 'any', label: 'any' },
-];
-
-const narratorNameOptions = [
-  { value: 'ابن عباس', label: 'ابن عباس' },
-  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-  { value: 'أبو روق', label: 'أبو روق' },
-];
-
-const organizationOptions = [
-  { value: 'org1', label: 'Organization 1' },
-  { value: 'org2', label: 'Organization 2' },
-];
-
-const timeOptions = [
-  { value: 'time1', label: 'Time 1' },
-  { value: 'time2', label: 'Time 2' },
-];
-
-const placeOptions = [
-  { value: 'place1', label: 'Place 1' },
-  { value: 'place2', label: 'Place 2' },
 ];
 
 const VerseQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('verse');
   const [data, setData] = useState({
-    surah_number: '',
-    verse_number: '',
+    Surahname: '',
+    Verseno: '',
     theme: '',
     narrators: [{ title: '', name: '' }],
-    organization: '',
-    time: '',
-    place: '',
+    mentions: '',
   });
 
   const handleRadioChange = (option) => {
@@ -120,78 +93,93 @@ const VerseQueryBuilder = () => {
   
     setNarratorLogic(updatedLogic);
   };
-  
-  
-  const handleOrganizationChange = (selectedOption) => {
+
+  const handleMentionsChange = (selectedOption) => {
     setData({
       ...data,
-      organization: selectedOption.value,
+      mentions: selectedOption.value,
     });
   };
 
-  const handleTimeChange = (selectedOption) => {
+  const handleSurahNameChange = (selectedOption) => {
     setData({
       ...data,
-      time: selectedOption.value,
-    });
-  };
-
-  const handlePlaceChange = (selectedOption) => {
-    setData({
-      ...data,
-      place: selectedOption.value,
-    });
-  };
-
-  const handleSurahNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      surah_number: selectedOption.value,
+      Surahname: selectedOption.value,
     });
   };
   
-  const handleAyatNumberChange = (selectedOption) => {
+  const handleVerseNumberChange = (selectedOption) => {
     setData({
       ...data,
-      verse_number: selectedOption.value,
+      Verseno: selectedOption.value,
     });
   };
+
+  // const SendDataToBackend = () => {
+  //   let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
+
+  //   if (data.hadith_number) {
+  //     url += `&hadith_number=${data.hadith_number}`;
+  //   }
+
+  //   if (data.organization) {
+  //     url += `&organization=${data.organization}`;
+  //   }
+
+  //   if (data.time) {
+  //     url += `&time=${data.time}`;
+  //   }
+
+  //   if (data.place) {
+  //     url += `&place=${data.place}`;
+  //   }
+
+  //   fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('Success:', data);
+  //       if (data.result) {
+  //         console.log('Result from backend:', data.result);
+  //         navigate('/verse-query-results', { state: { resultsData: data.result } });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // };
+
 
   const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
-
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
-    }
-
-    if (data.organization) {
-      url += `&organization=${data.organization}`;
-    }
-
-    if (data.time) {
-      url += `&time=${data.time}`;
-    }
-
-    if (data.place) {
-      url += `&place=${data.place}`;
-    }
+    console.log("POST")
+    const url = 'http://127.0.0.1:8000/api/query_verse/';
 
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        if (data.result) {
-          console.log('Result from backend:', data.result);
-          navigate('/verse-query-results', { state: { resultsData: data.result } });
+      .then((responseData) => {
+        console.log('Success:', responseData);
+
+        if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+          const results = responseData.result.results.bindings;
+          console.log('Results:', results);
+
+          navigate('/verse-query-results', { state: { resultsData: results } });
+        } else {
+          console.error('Results or bindings not found in response data.');
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
+        //console.error('Error:', error);
       });
   };
 
@@ -218,6 +206,80 @@ const handleNarratorLogicChange = (index) => {
     return updatedLogic;
   });
 };
+
+// Fetch TXT
+const [themeOptions, setThemeOptions] = useState([]);
+const [narratorNameOptions, setNarratorNameOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+
+
+// themes
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const themes = data.split('\n').slice(1).map((theme) => {
+        // Remove the leading colon from each theme
+        const trimmedTheme = theme.trim();
+        const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+        return { value: themeWithoutColon, label: themeWithoutColon };
+      });
+      setThemeOptions(themes);
+    })
+    .catch((error) => {
+      console.error('Error fetching themes:', error);
+    });
+}, []);
+
+// Narrators
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/narrators.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const narrator_name = data.split('\n').slice(1).map((narrator_name) => {
+        // Remove the leading colon from each narrator_name
+        const trimmedNarratorName = narrator_name.trim();
+        const narratorNameWithoutColon = trimmedNarratorName.startsWith(':') ? trimmedNarratorName.substring(1) : trimmedNarratorName;
+        return { value: narratorNameWithoutColon, label: narratorNameWithoutColon };
+      });
+      setNarratorNameOptions(narrator_name);
+    })
+    .catch((error) => {
+      console.error('Error fetching narrator name:', error);
+    });
+}, []);
+
+// Fetch mentioned persons from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/mentioned persons.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract Arabic text and type
+      const mentionedPersons = lines.map((line) => {
+        const [text, type] = line.split(/\s+/);
+        return { text, type };
+      });
+      // Create options with combined text and type for display
+      const mentionsOption = mentionedPersons.map((person) => ({
+        value: person.text,
+        label: `${person.text} ${person.type}`, // Combined text and type
+      }));
+      // Set the options in state
+      setMentionsOptions(mentionsOption);
+    })
+    .catch((error) => {
+      console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+
+//end
 
   return (
     <div className="verse-query-builder">
@@ -265,12 +327,12 @@ const handleNarratorLogicChange = (index) => {
       <div className="search-text-verse">Search for Verse with:</div>
       <div className="dropdown-container-verse">
             <div className="dropdown-verse">
-              <label htmlFor="surah_number">Surah Number</label>
-              <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+              <label htmlFor="Surahname">Surah Name</label>
+              <Select options={surahNameOptions} isSearchable={true} onChange={handleSurahNameChange} />
             </div>
             <div className="dropdown-verse">
-              <label htmlFor="ayat_number">Ayat Number</label>
-              <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+              <label htmlFor="Verseno">Ayat Number</label>
+              <Select options={verseNumberOptions} isSearchable={true} onChange={handleVerseNumberChange} />
             </div>
 
             <div className="dropdown-verse">
@@ -354,21 +416,13 @@ const handleNarratorLogicChange = (index) => {
             </div>
           ))}
         </div>
-        <div className="that-mentions-verse">
-          <div className="search-text-verse">That Mentions:</div>
-          <div className="dropdown-verse">
-            <label htmlFor="organization">Organization</label>
-            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="mentions">Mentions</label>
+            <Select options={mentionsOptions} isSearchable={true} onChange={handleMentionsChange} />
           </div>
-          <div className="dropdown-verse">
-            <label htmlFor="time">Time</label>
-            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-          </div>
-          <div className="dropdown-verse">
-            <label htmlFor="place">Place</label>
-            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
-          </div>
-        </div>
+      </div>
         <div className="run-query-button-verse">
           <button className="run-button" onClick={SendDataToBackend}>
             Run Query

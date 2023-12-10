@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './CommentaryQueryBuilder.css';
@@ -18,44 +18,12 @@ const surahNumberOptions = [
   { value: '19', label: 'مريم 19' },
 ];
 
-const themeOptions = [
-  { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
-];
-
 const subThemeOptions = [
     { value: 'afaalibad', label: 'afaalibad' },
     { value: 'khairshar', label: 'khairshar' },
     { value: 'sifatilahi', label: 'sifatilahi' },
+    { value: 'murad', label: 'murad' },
   ];
-
-const narratorTitleOptions = [
-  { value: 'sahabi', label: 'sahabi' },
-  { value: 'rawi', label: 'rawi' },
-  { value: 'any', label: 'any' },
-];
-
-const narratorNameOptions = [
-  { value: 'ابن عباس', label: 'ابن عباس' },
-  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-  { value: 'أبو روق', label: 'أبو روق' },
-];
-
-const organizationOptions = [
-  { value: 'org1', label: 'Organization 1' },
-  { value: 'org2', label: 'Organization 2' },
-];
-
-const timeOptions = [
-  { value: 'time1', label: 'Time 1' },
-  { value: 'time2', label: 'Time 2' },
-];
-
-const placeOptions = [
-  { value: 'place1', label: 'Place 1' },
-  { value: 'place2', label: 'Place 2' },
-];
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
@@ -66,9 +34,7 @@ const CommentaryQueryBuilder = () => {
     theme: '',
     sub_theme: '',
     narrators: [{ title: '', name: '' }],
-    organization: '',
-    time: '',
-    place: '',
+    mentions: '',
   });
 
   const handleRadioChange = (option) => {
@@ -87,7 +53,6 @@ const CommentaryQueryBuilder = () => {
         break;
     }
   };
-  
 
   const handleThemeChange = (selectedOption) => {
     setData({
@@ -103,24 +68,10 @@ const CommentaryQueryBuilder = () => {
     });
   };
   
-  const handleOrganizationChange = (selectedOption) => {
+  const handleMentionsChange = (selectedOption) => {
     setData({
       ...data,
-      organization: selectedOption.value,
-    });
-  };
-
-  const handleTimeChange = (selectedOption) => {
-    setData({
-      ...data,
-      time: selectedOption.value,
-    });
-  };
-
-  const handlePlaceChange = (selectedOption) => {
-    setData({
-      ...data,
-      place: selectedOption.value,
+      mentions: selectedOption.value,
     });
   };
 
@@ -138,41 +89,71 @@ const CommentaryQueryBuilder = () => {
     });
   };
 
+  // const SendDataToBackend = () => {
+  //   let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
+
+  //   if (data.hadith_number) {
+  //     url += `&hadith_number=${data.hadith_number}`;
+  //   }
+
+  //   if (data.organization) {
+  //     url += `&organization=${data.organization}`;
+  //   }
+
+  //   if (data.time) {
+  //     url += `&time=${data.time}`;
+  //   }
+
+  //   if (data.place) {
+  //     url += `&place=${data.place}`;
+  //   }
+
+  //   fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('Success:', data);
+  //       if (data.result) {
+  //         console.log('Result from backend:', data.result);
+  //         navigate('/commentary-query-results', { state: { resultsData: data.result } });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // };
+
+
   const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
-
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
-    }
-
-    if (data.organization) {
-      url += `&organization=${data.organization}`;
-    }
-
-    if (data.time) {
-      url += `&time=${data.time}`;
-    }
-
-    if (data.place) {
-      url += `&place=${data.place}`;
-    }
-
+    console.log("POST")
+    const url = 'http://127.0.0.1:8000/api/query_commentary/';
+    
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        if (data.result) {
-          console.log('Result from backend:', data.result);
-          navigate('/commentary-query-results', { state: { resultsData: data.result } });
+      .then((responseData) => {
+        console.log('Success:', responseData);
+
+        if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+          const results = responseData.result.results.bindings;
+          console.log('Results:', results);
+
+          navigate('/commentary-query-results', { state: { resultsData: results } });
+        } else {
+          console.error('Results or bindings not found in response data.');
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
+        //console.error('Error:', error);
       });
   };
 
@@ -188,6 +169,58 @@ const decrementValue = () => {
 
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
+
+
+// Fetch from txt
+const [themeOptions, setThemeOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+
+// themes
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const themes = data.split('\n').slice(1).map((theme) => {
+        // Remove the leading colon from each theme
+        const trimmedTheme = theme.trim();
+        const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+        return { value: themeWithoutColon, label: themeWithoutColon };
+      });
+      setThemeOptions(themes);
+    })
+    .catch((error) => {
+      console.error('Error fetching themes:', error);
+    });
+}, []);
+
+// Fetch mentioned persons from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/mentioned persons.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract Arabic text and type
+      const mentionedPersons = lines.map((line) => {
+        const [text, type] = line.split(/\s+/);
+        return { text, type };
+      });
+      // Create options with combined text and type for display
+      const mentionsOption = mentionedPersons.map((person) => ({
+        value: person.text,
+        label: `${person.text} ${person.type}`, // Combined text and type
+      }));
+      // Set the options in state
+      setMentionsOptions(mentionsOption);
+    })
+    .catch((error) => {
+      console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+//end
 
   return (
     <div className="commentary-query-builder">
@@ -256,19 +289,11 @@ const MAX_LIMIT = 2000; // Example value
         </div>
         </div>
 
-        <div className="that-mentions-commentary">
-          <div className="search-text-commentary">That Mentions:</div>
-          <div className="dropdown-commentary">
-            <label htmlFor="organization">Organization</label>
-            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
-          </div>
-          <div className="dropdown-commentary">
-            <label htmlFor="time">Time</label>
-            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-          </div>
-          <div className="dropdown-commentary">
-            <label htmlFor="place">Place</label>
-            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="mentions">Mentions</label>
+            <Select options={mentionsOptions} isSearchable={true} onChange={handleMentionsChange} />
           </div>
         </div>
 

@@ -18,6 +18,11 @@ import ChainPage from './pages/ChainPage';
 
 import FAQPage from './pages/FAQPage';
 
+import FAQResultsPage from './pages/FAQResultsPage';
+
+import PeoplePage from './pages/PeoplePage';
+
+
 function App() {
 
   return (
@@ -66,6 +71,16 @@ function App() {
           <Route
             path="/faq-page"
             element={<FAQPage />} 
+          />
+
+          <Route
+            path="/faq-results"
+            element={<FAQResultsPage />} 
+          />
+
+          <Route
+            path="/people-page"
+            element={<PeoplePage />} 
           />
 
         </Routes>

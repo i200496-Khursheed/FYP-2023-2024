@@ -44,6 +44,7 @@ function MainContent() {
               title="Rawi" 
               description="In Al-Tabari, find & learn about Rawi" 
               imageSrc={require('../../assets/people_search.png')}
+              linkTo="/people-page" 
             />
             <InfoBox 
               title="Al-Tabari Knowledge Queries" 
