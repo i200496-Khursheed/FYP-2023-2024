@@ -172,7 +172,7 @@ def chain_narrators(request):
         get_query = urllib.parse.quote(query)
         #print(query)
         result = Sparql_Endpoint(get_query, prefix)
-        print(result)
+        #print(result)
         # Use your Sparql_Endpoint function to query the endpoint
         
         return JsonResponse({'result': result})

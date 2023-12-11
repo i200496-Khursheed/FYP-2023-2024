@@ -87,13 +87,16 @@
 
 
 import React, { useState } from 'react';
-import { useLocation, navigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './HadithQueryResults.css';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+
 
 const HadithQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
+  const navigate = useNavigate(); // Define navigate
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortOrder, setSortOrder] = useState('asc');
@@ -116,7 +119,7 @@ const HadithQueryResults = () => {
     console.log("here", hadithNo)
     console.log('POST to a different backend endpoint');
     const url = 'http://127.0.0.1:8000/api/chain_narrators/';
-
+  
     fetch(url, {
       method: 'POST',
       headers: {
@@ -127,17 +130,20 @@ const HadithQueryResults = () => {
       .then((response) => response.json())
       .then((responseData) => {
         console.log('Success:', responseData);
+  
+        // Use navigate to move to the Chain page
+        navigate('/chain-page', { state: { resultsData: responseData } });
+  
         // Handle the response data as needed
       })
       .catch((error) => {
         console.error('Error:', error);
       });
   };
-
+  
   const handleHadithNumberClick = (hadithNo) => {
     sendHadithNumberToDifferentBackend(hadithNo);
   };
-
   const renderTableData = () => {
     return (
       resultsData &&
