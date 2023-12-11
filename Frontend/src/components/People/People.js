@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Oval as Loader } from 'react-loader-spinner';
 import './People.css';
-import Footer from '../Footer/Footer'; // Import Footer component
+import Footer from '../Footer/Footer';
 
 const People = () => {
   const location = useLocation();
@@ -10,6 +11,7 @@ const People = () => {
   const [selectedValue, setSelectedValue] = useState('');
   const [showTable, setShowTable] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setTableData(resultsData || []);
@@ -33,6 +35,7 @@ const People = () => {
 
   const handleRenderTable = () => {
     if (selectedValue) {
+      setLoading(true);
       fetchData(selectedValue);
     }
   };
@@ -46,11 +49,11 @@ const People = () => {
         },
         body: JSON.stringify({ person: selectedName }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log('Backend Response:', data);
-  
+
         if (data && data.result && data.result.results && Array.isArray(data.result.results.bindings)) {
           setTableData(
             data.result.results.bindings.map(item => ({
@@ -58,7 +61,7 @@ const People = () => {
               death: item.death?.value || '',
             }))
           );
-  
+
           setShowTable(true);
         } else {
           console.error('Invalid backend response:', data);
@@ -68,15 +71,17 @@ const People = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-    return (
-      <div>
-        <div className="back-button-VQR" onClick={() => window.history.back()}>
-          <img src={require('../../assets/back_button.png')} alt="Back Button" />
-        </div>
-        <div className={`query-text-box-P`}>
+  return (
+    <div>
+      <div className="back-button-VQR" onClick={() => window.history.back()}>
+        <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      </div>
+      <div className={`query-text-box-P`}>
         <select onChange={handleDropdownChange} value={selectedValue}>
           <option value="">Select...</option>
           <option value="محمد">محمد</option>
@@ -86,7 +91,13 @@ const People = () => {
         <button onClick={handleRenderTable}>Learn About the Person</button>
       </div>
 
-      {showTable && (
+      {loading && (
+        <div className="loader-container">
+          <Loader type="Oval" color="#4639E3" height={40} width={40} />
+        </div>
+      )}
+
+      {showTable && !loading && (
         <div className="details-table-P">
           <table>
             <thead>
@@ -108,5 +119,3 @@ const People = () => {
 };
 
 export default People;
-
-

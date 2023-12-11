@@ -389,9 +389,9 @@ WHERE {{
     if verseNo != '?V_no':
         baseQueryString += f'''\n  FILTER(?V_no = "{verseNo}")'''
         baseQueryString += f'''\n  FILTER(?V_no = "{verseNo}" || !BOUND(?V_no))'''
-
+ 
     if theme != '?theme':
-        baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
+        baseQueryString += f'''\n  Filter(?theme_name="{theme}") .'''
 
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
@@ -411,14 +411,14 @@ WHERE {{
     return baseQueryString
 
 def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
-                                     theme='?theme',reference="?reference", subtheme="?subtheme",hadith_number='?hadith_number',
-                                     narrator='?narrator',
+                                     theme='?theme', hadithTheme='?hadithTheme', reference="?reference", subtheme="?subtheme",hadith_number='?hadith_number',
+                                     narrator='?narrator', 
                                      commno='?commno',applyLimit=True, limit=""):
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            SELECT DISTINCT ?Text ?chapter ?Verseno ?Surahname ?commno ?commtext ?reference ?themename ?subtheme ?segment_text ?hadithno ?hadithtext ?name ?page ?volume ?edition WHERE {{
+            SELECT DISTINCT ?Text ?chapter ?Verseno ?Surahname ?commno ?commtext ?reference ?themename ?subtheme ?segment_text ?hadithno ?hadithtext ?name ?page ?volume ?edition ?hadithTheme WHERE {{
     '''
 
     baseQueryString += f'''\n  ?Verse rdf:type :Verse .'''
@@ -460,6 +460,8 @@ def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
                                 ?Hadith_1 :references ?versefragment.
                                 ?Hadith_2 rdf:type :Hadith.
                                 ?Hadith_2 :hasHadithText ?Hadith_1.
+                                ?Hadith_2 :hasTheme ?htheme.
+                                ?htheme :hasName ?hadithTheme.
                                 ?Hadith_2 :containsNarratorChain ?chain.
                                 ?chain :hasNarratorSegment ?narrator.
                                 ?narrator :refersTo ?nar.
@@ -477,6 +479,10 @@ def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
     if theme != '?theme':
        
         baseQueryString += f'''\n FILTER(?themename = '{theme}')'''
+
+    if hadithTheme != '?hadithTheme':
+       
+        baseQueryString += f'''\n FILTER(?hadithTheme = '{hadithTheme}')'''
 
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
@@ -511,7 +517,7 @@ def competencyquestion1():
         PREFIX : <http://www.tafsirtabari.com/ontology#>
         PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        SELECT DISTINCT ?Text ?chapter ?Verseno ?Surahname WHERE {
+        SELECT DISTINCT ?reference ?Text ?chapter ?Verseno ?Surahname WHERE {
     '''
 
     baseQueryString += '\n  ?Verse rdf:type :Verse .'
@@ -564,6 +570,7 @@ def competencyquestion1():
     baseQueryString += '\n}'
     baseQueryString += '\nLIMIT 100'  # Adjust the limit as needed
 
+
     return baseQueryString
 
 
@@ -606,9 +613,11 @@ if __name__ == "__main__":
         
     print("\nQuery")
     query = constructHadithSparQLQueryString(theme='lugha')"""
-    query = constructHadithSparQLQueryString()
+    # query = constructHadithSparQLQueryString()
 
+    #query = constructVerseSparQLQueryString(verseNo=258)
 
+    query = constructCommentarySparQLQueryString(theme='asbab')
 
     print(query)
     results = []

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './HadithQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
+import { Oval as Loader } from 'react-loader-spinner';
 
 
 const narratorTitleOptions = [
@@ -51,7 +52,11 @@ const HadithQueryBuilder = () => {
 
   const handleNarratorChange = (index, type, value) => {
     const updatedNarrators = [...data.narrators];
-    updatedNarrators[index][type] = value;
+
+    // If "any" is selected as the title, set it to an empty string
+    const title = value === 'any' ? '' : value;
+
+    updatedNarrators[index][type] = title;    
     setData({
       ...data,
       narrators: updatedNarrators,
@@ -130,6 +135,8 @@ const SendDataToBackend = () => {
   console.log('POST')
   const url = 'http://127.0.0.1:8000/api/query_hadith/';
 
+  setLoading(true);
+
   fetch(url, {
     method: 'POST',
     headers: {
@@ -152,10 +159,14 @@ const SendDataToBackend = () => {
     })
     .catch((error) => {
       console.error('Error:', error);
+    })
+    .finally(() => {
+      setLoading(false);
     });
 };
 
-  
+const [loading, setLoading] = useState(false);
+
 
 const [limitValue, setLimitValue] = useState(0);
 
@@ -421,7 +432,11 @@ return (
         </div>
     </div>
     </div>
-
+    {loading && (
+      <div className="loader-container">
+        <Loader type="Oval" color="#4639E3" height={40} width={40} />
+      </div>
+    )}
     <div className='Footer-portion'>
         <Footer />
     </div>

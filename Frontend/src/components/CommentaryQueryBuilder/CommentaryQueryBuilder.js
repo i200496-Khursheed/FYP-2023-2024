@@ -6,17 +6,17 @@ import Footer from '../Footer/Footer'; // Import Footer component
 
 
 // Commentary Contents
-const ayatNumberOptions = [
-  { value: '15', label: 'Verse 015' },
-  { value: '6', label: 'Verse 006' },
-  { value: '13', label: 'Verse 013' },
-];
+// const ayatNumberOptions = [
+//   { value: '15', label: 'Verse 015' },
+//   { value: '6', label: 'Verse 006' },
+//   { value: '13', label: 'Verse 013' },
+// ];
 
-const surahNumberOptions = [
-  { value: '12', label: 'يوسف 12' },
-  { value: '10', label: 'يونس 10' },
-  { value: '19', label: 'مريم 19' },
-];
+// const surahNumberOptions = [
+//   { value: '12', label: 'يوسف 12' },
+//   { value: '10', label: 'يونس 10' },
+//   { value: '19', label: 'مريم 19' },
+// ];
 
 const subThemeOptions = [
     { value: 'afaalibad', label: 'afaalibad' },
@@ -29,10 +29,10 @@ const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('commentary');
   const [data, setData] = useState({
-    surah_number: '',
-    verse_number: '',
+    chapterNo: '',
+    verseNo: '',
     theme: '',
-    sub_theme: '',
+    subtheme: '',
     narrators: [{ title: '', name: '' }],
     mentions: '',
   });
@@ -64,7 +64,7 @@ const CommentaryQueryBuilder = () => {
   const handleSubThemeChange = (selectedOption) => {
     setData({
       ...data,
-      sub_theme: selectedOption.value,
+      subtheme: selectedOption.value,
     });
   };
   
@@ -75,17 +75,17 @@ const CommentaryQueryBuilder = () => {
     });
   };
 
-  const handleSurahNumberChange = (selectedOption) => {
+  const handleChapterNoChange = (selectedOption) => {
     setData({
       ...data,
       surah_number: selectedOption.value,
     });
   };
   
-  const handleAyatNumberChange = (selectedOption) => {
+  const handleVerseNoChange = (selectedOption) => {
     setData({
       ...data,
-      verse_number: selectedOption.value,
+      verseNo: selectedOption.value,
     });
   };
 
@@ -172,8 +172,48 @@ const MAX_LIMIT = 2000; // Example value
 
 
 // Fetch from txt
+const [chapterNoOptions, setChapterNoOptions] = useState([]);
+
+const [verseNoOptions, setVerseNoOptions] = useState([]);
 const [themeOptions, setThemeOptions] = useState([]);
 const [mentionsOptions, setMentionsOptions] = useState([]);
+
+
+// Chapter No
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/Chapter Information.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const chapters = data.split('\n').slice(1).map((chapter) => {
+        // Split each line to get the numeric value and chapter name
+        const [chapterNumber, chapterName] = chapter.split('\t');
+        return { value: chapterNumber, label: chapterName.trim() };
+      });
+      setChapterNoOptions(chapters);
+    })
+    .catch((error) => {
+      console.error('Error fetching chapterNo:', error);
+    });
+}, []);
+
+// VerseNo
+useEffect(() => {
+  fetch('/Drop-down-data/Verse Information.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      const verses = data.split('\n').slice(1).map((verse) => ({
+        value: verse.trim(),
+        label: verse.trim(),
+      }));
+      setVerseNoOptions(verses);
+    })
+    .catch((error) => {
+      console.error('Error fetching verse numbers:', error);
+    });
+}, []);
+
 
 // themes
 useEffect(() => {
@@ -271,11 +311,11 @@ useEffect(() => {
       <div className="dropdown-container-commentary">
         <div className="dropdown-commentary">
             <label htmlFor="surah_number">Surah Number</label>
-            <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+            <Select options={chapterNoOptions} isSearchable={true} onChange={handleChapterNoChange} />
         </div>
         <div className="dropdown-commentary">
             <label htmlFor="ayat_number">Ayat Number</label>
-            <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+            <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
         </div>
 
         <div className="dropdown-commentary">
@@ -301,11 +341,11 @@ useEffect(() => {
             <div className="search-text-commentary-2">Which References the Verse:</div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="surah_number">Surah Number</label>
-                <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+                <Select options={chapterNoOptions} isSearchable={true} onChange={handleChapterNoChange} />
             </div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="ayat_number">Ayat Number</label>
-                <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+                <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
             </div>
 
             <div className="dropdown-commentary-2">

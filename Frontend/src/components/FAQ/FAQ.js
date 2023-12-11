@@ -103,6 +103,7 @@ const FAQ = () => {
           <table ref={tableRef}>
             <thead>
               <tr>
+                <th>Reference</th>
                 <th>Text</th>
                 <th>Chapter</th>
                 <th>Verse Number</th>
@@ -112,6 +113,7 @@ const FAQ = () => {
             <tbody>
               {result.map((item, index) => (
                 <tr key={index}>
+                  <td>{item.reference ? item.reference.value : '-'}</td>
                   <td>{item.Text ? item.Text.value : '-'}</td>
                   <td>{item.chapter ? item.chapter.value : '-'}</td>
                   <td>{item.Verseno ? item.Verseno.value : '-'}</td>
