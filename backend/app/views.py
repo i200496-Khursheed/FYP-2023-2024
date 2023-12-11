@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import Sparql_Endpoint, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString
+from .queryengine import Sparql_Endpoint, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString, getNarratorChain
 
 class ReactView(APIView):
     print('sadsada')
@@ -149,3 +149,35 @@ def query_commentary(request):
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+@csrf_exempt
+def chain_narrators(request):
+    print('From chain narrators')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        hadithNo = data['hadithNo'] if 'hadithNo' in data and data['hadithNo'] != '' else '?hadithNo'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+
+        query = getNarratorChain(hadithNo,applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        #print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+        print(result)
+        # Use your Sparql_Endpoint function to query the endpoint
+        
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+    

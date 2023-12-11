@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from app.views import ReactView, query_hadith, query_verse, query_commentary
+from app.views import ReactView, query_hadith, query_verse, query_commentary, chain_narrators
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -8,4 +8,6 @@ urlpatterns = [
     path('api/query_hadith/', query_hadith, name='query_hadith'),
     path('api/query_verse/', query_verse, name='query_verse'),
     path('api/query_commentary/', query_commentary, name='query_commentary'),
+    path('api/chain_narrators/', chain_narrators, name='chain_narrators'),
+    
 ]

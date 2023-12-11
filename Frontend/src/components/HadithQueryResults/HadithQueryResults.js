@@ -115,7 +115,7 @@ const HadithQueryResults = () => {
   const sendHadithNumberToDifferentBackend = (hadithNo) => {
     console.log("here", hadithNo)
     console.log('POST to a different backend endpoint');
-    const url = 'http://127.0.0.1:8000/api/different_backend_endpoint/';
+    const url = 'http://127.0.0.1:8000/api/chain_narrators/';
 
     fetch(url, {
       method: 'POST',
