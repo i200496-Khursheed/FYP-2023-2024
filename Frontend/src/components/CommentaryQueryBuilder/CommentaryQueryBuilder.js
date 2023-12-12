@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './CommentaryQueryBuilder.css';
@@ -6,69 +6,36 @@ import Footer from '../Footer/Footer'; // Import Footer component
 
 
 // Commentary Contents
-const ayatNumberOptions = [
-  { value: '15', label: 'Verse 015' },
-  { value: '6', label: 'Verse 006' },
-  { value: '13', label: 'Verse 013' },
-];
+// const ayatNumberOptions = [
+//   { value: '15', label: 'Verse 015' },
+//   { value: '6', label: 'Verse 006' },
+//   { value: '13', label: 'Verse 013' },
+// ];
 
-const surahNumberOptions = [
-  { value: '12', label: 'يوسف 12' },
-  { value: '10', label: 'يونس 10' },
-  { value: '19', label: 'مريم 19' },
-];
-
-const themeOptions = [
-  { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
-];
+// const surahNumberOptions = [
+//   { value: '12', label: 'يوسف 12' },
+//   { value: '10', label: 'يونس 10' },
+//   { value: '19', label: 'مريم 19' },
+// ];
 
 const subThemeOptions = [
     { value: 'afaalibad', label: 'afaalibad' },
     { value: 'khairshar', label: 'khairshar' },
     { value: 'sifatilahi', label: 'sifatilahi' },
+    { value: 'murad', label: 'murad' },
   ];
-
-const narratorTitleOptions = [
-  { value: 'sahabi', label: 'sahabi' },
-  { value: 'rawi', label: 'rawi' },
-  { value: 'any', label: 'any' },
-];
-
-const narratorNameOptions = [
-  { value: 'ابن عباس', label: 'ابن عباس' },
-  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-  { value: 'أبو روق', label: 'أبو روق' },
-];
-
-const organizationOptions = [
-  { value: 'org1', label: 'Organization 1' },
-  { value: 'org2', label: 'Organization 2' },
-];
-
-const timeOptions = [
-  { value: 'time1', label: 'Time 1' },
-  { value: 'time2', label: 'Time 2' },
-];
-
-const placeOptions = [
-  { value: 'place1', label: 'Place 1' },
-  { value: 'place2', label: 'Place 2' },
-];
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('commentary');
   const [data, setData] = useState({
-    surah_number: '',
-    verse_number: '',
+    commno: '',
+    chapterNo: '',
+    verseNo: '',
     theme: '',
-    sub_theme: '',
+    subtheme: '',
     narrators: [{ title: '', name: '' }],
-    organization: '',
-    time: '',
-    place: '',
+    mentions: '',
   });
 
   const handleRadioChange = (option) => {
@@ -87,7 +54,6 @@ const CommentaryQueryBuilder = () => {
         break;
     }
   };
-  
 
   const handleThemeChange = (selectedOption) => {
     setData({
@@ -99,42 +65,35 @@ const CommentaryQueryBuilder = () => {
   const handleSubThemeChange = (selectedOption) => {
     setData({
       ...data,
-      sub_theme: selectedOption.value,
+      subtheme: selectedOption.value,
     });
   };
   
-  const handleOrganizationChange = (selectedOption) => {
+  const handleMentionsChange = (selectedOption) => {
     setData({
       ...data,
-      organization: selectedOption.value,
+      mentions: selectedOption.value,
     });
   };
 
-  const handleTimeChange = (selectedOption) => {
+  const handleChapterNoChange = (selectedOption) => {
     setData({
       ...data,
-      time: selectedOption.value,
+      chapterNo: selectedOption.value,
     });
   };
 
-  const handlePlaceChange = (selectedOption) => {
+  const handleCommentaryNoChange = (selectedOption) => {
     setData({
       ...data,
-      place: selectedOption.value,
-    });
-  };
-
-  const handleSurahNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      surah_number: selectedOption.value,
+      commno: selectedOption.value,
     });
   };
   
-  const handleAyatNumberChange = (selectedOption) => {
+  const handleVerseNoChange = (selectedOption) => {
     setData({
       ...data,
-      verse_number: selectedOption.value,
+      verseNo: selectedOption.value,
     });
   };
 
@@ -219,6 +178,110 @@ const decrementValue = () => {
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
 
+
+// Fetch from txt
+const [commentaryNoOptions, setCommentaryNoOptions] = useState([]);
+
+const [chapterNoOptions, setChapterNoOptions] = useState([]);
+
+const [verseNoOptions, setVerseNoOptions] = useState([]);
+const [themeOptions, setThemeOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+
+// Commentary Number
+useEffect(() => {
+  fetch('/Drop-down-data/commentary number.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      const comms = data.split('\n').slice(1).map((commentaryNo) => ({
+        value: commentaryNo.trim(),
+        label: commentaryNo.trim(),
+      }));
+      setCommentaryNoOptions(comms);
+    })
+    .catch((error) => {
+      console.error('Error fetching commentary numbers:', error);
+    });
+}, []);
+
+// Chapter No
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/ayat chapter commentary.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const chapters = data.split('\n').slice(1).map((chapter) => {
+        // Split each line to get the numeric value and chapter name
+        const [chapterNumber, chapterName] = chapter.split('\t');
+        return { value: chapterNumber, label: chapterName.trim() };
+      });
+      setChapterNoOptions(chapters);
+    })
+    .catch((error) => {
+      console.error('Error fetching chapterNo:', error);
+    });
+}, []);
+
+// VerseNo
+useEffect(() => {
+  fetch('/Drop-down-data/ayat number commentary.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      const verses = data.split('\n').slice(1).map((verse) => ({
+        value: verse.trim(),
+        label: verse.trim(),
+      }));
+      setVerseNoOptions(verses);
+    })
+    .catch((error) => {
+      console.error('Error fetching verse numbers:', error);
+    });
+}, []);
+
+
+// themes
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const themes = data.split('\n').slice(1).map((theme) => {
+        // Remove the leading colon from each theme
+        const trimmedTheme = theme.trim();
+        const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+        return { value: themeWithoutColon, label: themeWithoutColon };
+      });
+      setThemeOptions(themes);
+    })
+    .catch((error) => {
+      console.error('Error fetching themes:', error);
+    });
+}, []);
+
+// Fetch mentioned persons from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/commentary mentions.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract the full name
+      const mentionedPersons = lines.slice(1).map((line) => {
+        const fullName = line.trim();
+        return { value: fullName, label: fullName };
+      });
+      // Set the options in state
+      setMentionsOptions(mentionedPersons);
+    })
+    .catch((error) => {
+      console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+//end
+
   return (
     <div className="commentary-query-builder">
       <div className="back-button-commentary">
@@ -267,14 +330,10 @@ const MAX_LIMIT = 2000; // Example value
       <div className="search-text-commentary">Find Commentary About:</div>
       <div className="dropdown-container-commentary">
         <div className="dropdown-commentary">
-            <label htmlFor="surah_number">Surah Number</label>
-            <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+            <label htmlFor="surah_number">Commentary Number</label>
+            <Select options={commentaryNoOptions} isSearchable={true} onChange={handleCommentaryNoChange} />
         </div>
-        <div className="dropdown-commentary">
-            <label htmlFor="ayat_number">Ayat Number</label>
-            <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
-        </div>
-
+        
         <div className="dropdown-commentary">
             <label htmlFor="theme">Which has Theme</label>
             <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
@@ -286,19 +345,11 @@ const MAX_LIMIT = 2000; // Example value
         </div>
         </div>
 
-        <div className="that-mentions-commentary">
-          <div className="search-text-commentary">That Mentions:</div>
-          <div className="dropdown-commentary">
-            <label htmlFor="organization">Organization</label>
-            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
-          </div>
-          <div className="dropdown-commentary">
-            <label htmlFor="time">Time</label>
-            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-          </div>
-          <div className="dropdown-commentary">
-            <label htmlFor="place">Place</label>
-            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="mentions">Mentions</label>
+            <Select options={mentionsOptions} isSearchable={true} onChange={handleMentionsChange} />
           </div>
         </div>
 
@@ -306,16 +357,11 @@ const MAX_LIMIT = 2000; // Example value
             <div className="search-text-commentary-2">Which References the Verse:</div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="surah_number">Surah Number</label>
-                <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+                <Select options={chapterNoOptions} isSearchable={true} onChange={handleChapterNoChange} />
             </div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="ayat_number">Ayat Number</label>
-                <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
-            </div>
-
-            <div className="dropdown-commentary-2">
-                <label htmlFor="theme">Which has Theme</label>
-                <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+                <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
             </div>
         </div>
 

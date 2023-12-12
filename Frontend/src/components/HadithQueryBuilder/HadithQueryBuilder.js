@@ -1,48 +1,17 @@
 //HadithQueryBuilder.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './HadithQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
+import { Oval as Loader } from 'react-loader-spinner';
 
-
-const themeOptions = [
-  { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
-];
-
-const hadithNumberOptions = [
-  { value: '134', label: 'Hadith 134' },
-  { value: '135', label: 'Hadith 135' },
-  { value: '136', label: 'Hadith 136' },
-];
 
 const narratorTitleOptions = [
   { value: 'sahabi', label: 'sahabi' },
   { value: 'rawi', label: 'rawi' },
+  { value: 'shaykh', label: 'shaykh' },
   { value: 'any', label: 'any' },
-];
-
-const narratorNameOptions = [
-  { value: 'ابن عباس', label: 'ابن عباس' },
-  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-  { value: 'أبو روق', label: 'أبو روق' },
-];
-
-const organizationOptions = [
-  { value: 'org1', label: 'Organization 1' },
-  { value: 'org2', label: 'Organization 2' },
-];
-
-const timeOptions = [
-  { value: 'time1', label: 'Time 1' },
-  { value: 'time2', label: 'Time 2' },
-];
-
-const placeOptions = [
-  { value: 'place1', label: 'Place 1' },
-  { value: 'place2', label: 'Place 2' },
 ];
 
 const HadithQueryBuilder = () => {
@@ -53,9 +22,7 @@ const HadithQueryBuilder = () => {
     theme: '',
     hadith_number: '',
     narrators: [{ title: '', name: '' }],
-    organization: '',
-    time: '',
-    place: '',
+    mentions: '', // Combined field for person, organization, time
   });
 
   const handleRadioChange = (option) => {
@@ -85,7 +52,11 @@ const HadithQueryBuilder = () => {
 
   const handleNarratorChange = (index, type, value) => {
     const updatedNarrators = [...data.narrators];
-    updatedNarrators[index][type] = value;
+
+    // If "any" is selected as the title, set it to an empty string
+    const title = value === 'any' ? '' : value;
+
+    updatedNarrators[index][type] = title;    
     setData({
       ...data,
       narrators: updatedNarrators,
@@ -110,26 +81,13 @@ const HadithQueryBuilder = () => {
     });
   };
 
-  const handleOrganizationChange = (selectedOption) => {
-    setData({
-      ...data,
-      organization: selectedOption.value,
-    });
-  };
-
-  const handleTimeChange = (selectedOption) => {
-    setData({
-      ...data,
-      time: selectedOption.value,
-    });
-  };
-
-  const handlePlaceChange = (selectedOption) => {
-    setData({
-      ...data,
-      place: selectedOption.value,
-    });
-  };
+  // Remove individual handlers
+const handleMentionsChange = (selectedOption) => {
+  setData({
+    ...data,
+    mentions: selectedOption.value,
+  });
+};
 
   // const SendDataToBackend = () => {
   //   // Extract individual data properties
@@ -177,6 +135,8 @@ const SendDataToBackend = () => {
   console.log('POST')
   const url = 'http://127.0.0.1:8000/api/query_hadith/';
 
+  setLoading(true);
+
   fetch(url, {
     method: 'POST',
     headers: {
@@ -199,10 +159,14 @@ const SendDataToBackend = () => {
     })
     .catch((error) => {
       console.error('Error:', error);
+    })
+    .finally(() => {
+      setLoading(false);
     });
 };
 
-  
+const [loading, setLoading] = useState(false);
+
 
 const [limitValue, setLimitValue] = useState(0);
 
@@ -227,6 +191,95 @@ const handleNarratorLogicChange = (index) => {
     return updatedLogic;
   });
 };
+
+// Fetch from txt
+const [themeOptions, setThemeOptions] = useState([]);
+const [hadithNumberOptions, setHadithNumberOptions] = useState([]);
+const [narratorNameOptions, setNarratorNameOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+
+
+// themes
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const themes = data.split('\n').slice(1).map((theme) => {
+        // Remove the leading colon from each theme
+        const trimmedTheme = theme.trim();
+        const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+        return { value: themeWithoutColon, label: themeWithoutColon };
+      });
+      setThemeOptions(themes);
+    })
+    .catch((error) => {
+      console.error('Error fetching themes:', error);
+    });
+}, []);
+
+// Hadith Number
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/hadith-no.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const hadith_number = data.split('\n').slice(1).map((hadith_number) => {
+        // Remove the leading colon from each hadith_number
+        const trimmedHadithNumber = hadith_number.trim();
+        const hadithNumberWithoutColon = trimmedHadithNumber.startsWith(':') ? trimmedHadithNumber.substring(1) : trimmedHadithNumber;
+        return { value: hadithNumberWithoutColon, label: hadithNumberWithoutColon };
+      });
+      setHadithNumberOptions(hadith_number);
+    })
+    .catch((error) => {
+      console.error('Error fetching hadith number:', error);
+    });
+}, []);
+
+// Narrators
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/narrators.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const narrator_name = data.split('\n').slice(1).map((narrator_name) => {
+        // Remove the leading colon from each narrator_name
+        const trimmedNarratorName = narrator_name.trim();
+        const narratorNameWithoutColon = trimmedNarratorName.startsWith(':') ? trimmedNarratorName.substring(1) : trimmedNarratorName;
+        return { value: narratorNameWithoutColon, label: narratorNameWithoutColon };
+      });
+      setNarratorNameOptions(narrator_name);
+    })
+    .catch((error) => {
+      console.error('Error fetching narrator name:', error);
+    });
+}, []);
+
+// Fetch mentioned persons from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/mentioned persons.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract the full name
+      const mentionedPersons = lines.slice(1).map((line) => {
+        const fullName = line.trim();
+        return { value: fullName, label: fullName };
+      });
+      // Set the options in state
+      setMentionsOptions(mentionedPersons);
+    })
+    .catch((error) => {
+      console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+// end
 
 return (
   <div className="hadith-query-builder">
@@ -350,16 +403,8 @@ return (
       <div className="that-mentions">
         <div className="search-text">That Mentions:</div>
         <div className="dropdown">
-          <label htmlFor="organization">Organization</label>
-          <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
-        </div>
-        <div className="dropdown">
-          <label htmlFor="time">Time</label>
-          <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-        </div>
-        <div className="dropdown">
-          <label htmlFor="place">Place</label>
-          <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
+          <label htmlFor="mentions">Mentions</label>
+          <Select options={mentionsOptions} isSearchable={true} onChange={handleMentionsChange} />
         </div>
       </div>
       <div className="run-query-button">
@@ -382,7 +427,11 @@ return (
         </div>
     </div>
     </div>
-
+    {loading && (
+      <div className="loader-container">
+        <Loader type="Oval" color="#4639E3" height={40} width={40} />
+      </div>
+    )}
     <div className='Footer-portion'>
         <Footer />
     </div>

@@ -203,7 +203,7 @@ td.narrator-name:hover {
 
 /* Table */
 .details-table-CQR table {
-  width: 200%;
+  width: 400%;
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -243,5 +243,5 @@ td.text-cell {
 .details-table-CQR td:nth-child(3),
 .details-table-CQR th:nth-child(3) {
   /* Text column */
-  width: 20%; /* Adjusted width */
+  width: 40%; /* Adjusted width */
 }

@@ -1,0 +1,169 @@
+/* VerseQueryResults.css */
+
+.Footer-portion-P {
+    position: absolute;
+    bottom: -31.8%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    overflow-x: hidden;
+  }
+  
+  .query-text-box-P {
+    text-align: center;
+    left: 45%;
+    width: 820px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px; /* 10px */
+    margin-top: -0.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+  }
+  
+  h2 {
+    color: #4639E3;
+    font-size: 20px;
+  }
+  
+  .back-button-P img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    cursor: pointer;
+    transition: transform 0.3s, filter 0.3s;
+  }
+  
+  .back-button-P img:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
+    background-color: transparent;
+  }
+
+
+/* Centering the query text box */
+.query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px; /* Adjust the top margin to create space between navbar and query box */
+    margin-left: -320px;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+/* Animation for dynamic RGB border */
+@keyframes dynamicBorder {
+  0% {
+    border-color: #f00; /* Red border */
+  }
+  25% {
+    border-color: #0f0; /* Green border */
+  }
+  50% {
+    border-color: #00f; /* Blue border */
+  }
+  75% {
+    border-color: #ff0; /* Yellow border */
+  }
+  100% {
+    border-color: #f00; /* Back to Red border */
+  }
+}
+  
+  /* Additional styles for select and input elements */
+  .query-text-box-P select, .query-text-box-P input {
+    margin-top: 10px; /* Adding space between select and input */
+  }
+  
+  /* People.css */
+
+/* Styling for select */
+.query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 800px;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+  
+  /* Styling for button */
+  .query-text-box-P button {
+    padding: 12px 20px; /* Increase padding for better size */
+    margin: 10px;
+    font-size: 16px; /* Increase font size */
+    background-color: #4639E3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .query-text-box-P button:hover {
+    background-color: #5f55ff;
+  }
+  
+/* Style for Table the container */
+.details-table-P {
+  text-align: center; /* Centering the table */
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.details-table-P table {
+  width: 90%;
+  margin: auto; /* Centering the table */
+  font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+}
+
+.details-table-P th,
+.details-table-P td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for table cells */
+  line-height: 1.6; /* Adjust line height to add space between lines of text */
+}
+
+.details-table-P th {
+  background-color: #5f55ff;
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh; /* Adjust as needed */
+}
+
+.loader-container > div {
+  text-align: center;
+}
+
+.loader-container > div > div {
+  width: 200px; /* Adjust the width as needed */
+  height: 200px; /* Adjust the height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-container > div > div > svg {
+  width: 100%; /* Make the SVG take 100% of the container */
+  height: 100%;
+}

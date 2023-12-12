@@ -1,67 +1,40 @@
 //VerseQueryBuilder.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './VerseQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
 
 // Verse Contents
-const ayatNumberOptions = [
-  { value: '15', label: 'Verse 015' },
-  { value: '6', label: 'Verse 006' },
-  { value: '13', label: 'Verse 013' },
-];
+// const verseNoOptions = [
+//   { value: '7', label: 'Verse 007' },
+//   { value: '6', label: 'Verse 006' },
+//   { value: '2', label: 'Verse 002' },
+// ];
 
-const surahNumberOptions = [
-  { value: '12', label: 'يوسف 12' },
-  { value: '10', label: 'يونس 10' },
-  { value: '19', label: 'مريم 19' },
-];
-
-const themeOptions = [
-  { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
-];
+// const chapterNoOptions = [
+//   { value: 'الفاتحة', label: 'الفاتحة	' },
+//   { value: 'يونس', label: 'يونس' },
+//   { value: 'مريم', label: 'مريم ' },
+// ];
 
 const narratorTitleOptions = [
   { value: 'sahabi', label: 'sahabi' },
   { value: 'rawi', label: 'rawi' },
+  { value: 'shaykh', label: 'shaykh' },
   { value: 'any', label: 'any' },
-];
-
-const narratorNameOptions = [
-  { value: 'ابن عباس', label: 'ابن عباس' },
-  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-  { value: 'أبو روق', label: 'أبو روق' },
-];
-
-const organizationOptions = [
-  { value: 'org1', label: 'Organization 1' },
-  { value: 'org2', label: 'Organization 2' },
-];
-
-const timeOptions = [
-  { value: 'time1', label: 'Time 1' },
-  { value: 'time2', label: 'Time 2' },
-];
-
-const placeOptions = [
-  { value: 'place1', label: 'Place 1' },
-  { value: 'place2', label: 'Place 2' },
 ];
 
 const VerseQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('verse');
   const [data, setData] = useState({
-    surah_number: '',
-    verse_number: '',
+    chapterNo: '',
+    verseNo: '',
     theme: '',
-    narrators: [{ title: '', name: '' }],
-    organization: '',
-    time: '',
-    place: '',
+    hadithTheme: '',
+    narrator: [{ title: '', name: '' }],
+    reference: '',
   });
 
   const handleRadioChange = (option) => {
@@ -88,19 +61,26 @@ const VerseQueryBuilder = () => {
     });
   };
 
+  const handleHadithThemeChange = (selectedOption) => {
+    setData({
+      ...data,
+      hadithTheme: selectedOption.value,
+    });console.log("This is inside handle: ",data.hadithTheme)
+  };
+
   const handleNarratorChange = (index, type, value) => {
-    const updatedNarrators = [...data.narrators];
+    const updatedNarrators = [...data.narrator];
     updatedNarrators[index][type] = value;
     setData({
       ...data,
-      narrators: updatedNarrators,
+      narrator: updatedNarrators,
     });
   };
 
  const handleAddNarrator = () => {
   setData((prevData) => ({
     ...prevData,
-    narrators: [...prevData.narrators, { title: '', name: '' }],
+    narrator: [...prevData.narrator, { title: '', name: '' }],
   }));
 
   setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
@@ -108,7 +88,7 @@ const VerseQueryBuilder = () => {
 
 
   const handleRemoveNarrator = (index) => {
-    const updatedNarrators = [...data.narrators];
+    const updatedNarrators = [...data.narrator];
     const updatedLogic = [...narratorLogic];
   
     updatedNarrators.splice(index, 1);
@@ -116,45 +96,30 @@ const VerseQueryBuilder = () => {
   
     setData({
       ...data,
-      narrators: updatedNarrators,
+      narrator: updatedNarrators,
     });
   
     setNarratorLogic(updatedLogic);
   };
-  
-  
-  const handleOrganizationChange = (selectedOption) => {
+
+  const handleMentionsChange = (selectedOption) => {
     setData({
       ...data,
-      organization: selectedOption.value,
+      reference: selectedOption.value,
     });
   };
 
-  const handleTimeChange = (selectedOption) => {
+  const handleChapterNoChange = (selectedOption) => {
     setData({
       ...data,
-      time: selectedOption.value,
-    });
-  };
-
-  const handlePlaceChange = (selectedOption) => {
-    setData({
-      ...data,
-      place: selectedOption.value,
-    });
-  };
-
-  const handleSurahNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      surah_number: selectedOption.value,
+      chapterNo: selectedOption.value,
     });
   };
   
-  const handleAyatNumberChange = (selectedOption) => {
+  const handleVerseNoChange = (selectedOption) => {
     setData({
       ...data,
-      verse_number: selectedOption.value,
+      verseNo: selectedOption.value,
     });
   };
 
@@ -199,6 +164,7 @@ const VerseQueryBuilder = () => {
 
   const SendDataToBackend = () => {
     console.log("POST")
+    console.log(data.hadithTheme);  // Add this line
     const url = 'http://127.0.0.1:8000/api/query_verse/';
 
     fetch(url, {
@@ -240,7 +206,7 @@ const decrementValue = () => {
 const MAX_LIMIT = 2000; // Example value
 
 // Logic Gates
-const [narratorLogic, setNarratorLogic] = useState(Array(data.narrators.length).fill('AND'));
+const [narratorLogic, setNarratorLogic] = useState(Array(data.narrator.length).fill('AND'));
 
 const handleNarratorLogicChange = (index) => {
   setNarratorLogic((prevLogic) => {
@@ -249,6 +215,138 @@ const handleNarratorLogicChange = (index) => {
     return updatedLogic;
   });
 };
+
+// Fetch TXT
+const [verseNoOptions, setVerseNoOptions] = useState([]);
+
+const [chapterNoOptions, setChapterNoOptions] = useState([]);
+const [themeOptions, setThemeOptions] = useState([]);
+const [narratorNameOptions, setNarratorNameOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+
+const [hadithThemeOptions, setHadithThemeOptions] = useState([]);
+
+
+// VerseNo
+useEffect(() => {
+  fetch('/Drop-down-data/Verse Information.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      const verses = data.split('\n').slice(1).map((verse) => ({
+        value: verse.trim(),
+        label: verse.trim(),
+      }));
+      setVerseNoOptions(verses);
+    })
+    .catch((error) => {
+      console.error('Error fetching verse numbers:', error);
+    });
+}, []);
+
+
+// Chapter No
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/Chapter Information.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const chapters = data.split('\n').slice(1).map((chapter) => {
+        // Split each line to get the numeric value and chapter name
+        const [chapterNumber, chapterName] = chapter.split('\t');
+        return { value: chapterNumber, label: chapterName.trim() };
+      });
+      setChapterNoOptions(chapters);
+    })
+    .catch((error) => {
+      console.error('Error fetching chapterNo:', error);
+    });
+}, []);
+
+// themes
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const themes = data.split('\n').slice(1).map((theme) => {
+        // Remove the leading colon from each theme
+        const trimmedTheme = theme.trim();
+        const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+        return { value: themeWithoutColon, label: themeWithoutColon };
+      });
+      setThemeOptions(themes);
+    })
+    .catch((error) => {
+      console.error('Error fetching themes:', error);
+    });
+}, []);
+
+// hadithThemes
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const hadithThemes = data.split('\n').slice(1).map((hadithTheme) => {
+        // Remove the leading colon from each theme
+        const trimmedHadithTheme = hadithTheme.trim();
+        const hadithThemeWithoutColon = trimmedHadithTheme.startsWith(':') ? trimmedHadithTheme.substring(1) : trimmedHadithTheme;
+        return { value: hadithThemeWithoutColon, label: hadithThemeWithoutColon };
+      });
+      setHadithThemeOptions(hadithThemes);
+    })
+    .catch((error) => {
+      console.error('Error fetching hadithThemes:', error);
+    });
+}, []);
+
+// Narrators
+useEffect(() => {
+  // Fetch the text file from the public folder
+  fetch('/Drop-down-data/narrators.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines and start from line 2
+      const narrator_name = data.split('\n').slice(1).map((narrator_name) => {
+        // Remove the leading colon from each narrator_name
+        const trimmedNarratorName = narrator_name.trim();
+        const narratorNameWithoutColon = trimmedNarratorName.startsWith(':') ? trimmedNarratorName.substring(1) : trimmedNarratorName;
+        return { value: narratorNameWithoutColon, label: narratorNameWithoutColon };
+      });
+      setNarratorNameOptions(narrator_name);
+    })
+    .catch((error) => {
+      console.error('Error fetching narrator name:', error);
+    });
+}, []);
+
+// Fetch mentioned persons from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/verse mentions.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract the full name
+      const mentionedPersons = lines.slice(1).map((line) => {
+        const fullName = line.trim();
+        return { value: fullName, label: fullName };
+      });
+      // Set the options in state
+      setMentionsOptions(mentionedPersons);
+    })
+    .catch((error) => {
+      console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+
+
+
+//end
 
   return (
     <div className="verse-query-builder">
@@ -296,12 +394,12 @@ const handleNarratorLogicChange = (index) => {
       <div className="search-text-verse">Search for Verse with:</div>
       <div className="dropdown-container-verse">
             <div className="dropdown-verse">
-              <label htmlFor="surah_number">Surah Number</label>
-              <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+              <label htmlFor="chapterNo">Surah Number</label>
+              <Select options={chapterNoOptions} isSearchable={true} onChange={handleChapterNoChange} />
             </div>
             <div className="dropdown-verse">
-              <label htmlFor="ayat_number">Ayat Number</label>
-              <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
+              <label htmlFor="Verseno">Ayat Number</label>
+              <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
             </div>
 
             <div className="dropdown-verse">
@@ -323,7 +421,7 @@ const handleNarratorLogicChange = (index) => {
 
 
         <div className="narrators-verse">
-          {data.narrators.map((narrator, index) => (
+          {data.narrator.map((narrator, index) => (
             <div key={index} className="narrator-verse">
               <p> Where the verse is referenced by Hadith</p>
               <div className="narrator-logic-buttons-verse">
@@ -342,17 +440,11 @@ const handleNarratorLogicChange = (index) => {
               </div>
 
               <div className="dropdown-verse">
-                <label htmlFor={`theme_${index}`}>Theme</label>
-                <Select
-                  options={themeOptions}
-                  isSearchable={true}
-                  onChange={(selectedOption) =>
-                    handleThemeChange(index, 'theme', selectedOption.value)
-                  }
-                />
+                <label> Theme </label>
+              <Select options={hadithThemeOptions} isSearchable={true} onChange={handleHadithThemeChange} />
               </div>
 
-              <div className="dropdown-verse">
+              {/* <div className="dropdown-verse">
                 <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
                 <Select
                   options={narratorTitleOptions}
@@ -361,7 +453,7 @@ const handleNarratorLogicChange = (index) => {
                     handleNarratorChange(index, 'title', selectedOption.value)
                   }
                 />
-              </div>
+              </div> */}
               <div className="dropdown-verse">
                 <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
                 <Select
@@ -385,21 +477,13 @@ const handleNarratorLogicChange = (index) => {
             </div>
           ))}
         </div>
-        <div className="that-mentions-verse">
-          <div className="search-text-verse">That Mentions:</div>
-          <div className="dropdown-verse">
-            <label htmlFor="organization">Organization</label>
-            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="mentions">Mentions</label>
+            <Select options={mentionsOptions} isSearchable={true} onChange={handleMentionsChange} />
           </div>
-          <div className="dropdown-verse">
-            <label htmlFor="time">Time</label>
-            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-          </div>
-          <div className="dropdown-verse">
-            <label htmlFor="place">Place</label>
-            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
-          </div>
-        </div>
+      </div>
         <div className="run-query-button-verse">
           <button className="run-button" onClick={SendDataToBackend}>
             Run Query

@@ -62,6 +62,7 @@ const VerseQueryResults = () => {
             <td>{data.segment_text?.value}</td>
             <td>{data.subtheme?.value}</td>
             <td>{data.themename?.value}</td>
+            <td>{data.hadithTheme?.value}</td>
           </tr>
         ))
       );
@@ -101,6 +102,7 @@ const VerseQueryResults = () => {
               <th>Segment Text</th>
               <th>Subtheme</th>
               <th>Theme Name</th>
+              <th>Hadith Theme</th>
             </tr>
           </thead>
           <tbody>

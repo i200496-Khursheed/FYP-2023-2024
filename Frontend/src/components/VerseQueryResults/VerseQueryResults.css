@@ -245,3 +245,10 @@ td.text-cell {
   /* Text column */
   width: 20%; /* Adjusted width */
 }
+
+/* Add this style to your VerseQueryResults.css or your preferred CSS file */
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff; /* You can adjust the background color as needed */
+}

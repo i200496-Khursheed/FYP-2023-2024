@@ -219,3 +219,18 @@ td.narrator-name:hover {
   color: navy; 
   text-decoration: none; 
 }
+
+td.text-cell {
+  font-size: 16px;
+  color: #333;
+}
+
+td{
+  font-size: 14px;
+}
+
+.details-table-HQR td:nth-child(3),
+.details-table-HQR th:nth-child(3) {
+  /* Text column */
+  width: 20%; /* Adjusted width */
+}

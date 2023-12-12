@@ -5,9 +5,14 @@ import './Chain.css';
 
 const Chain = () => {
   const location = useLocation();
+  console.log("I am here Location ", location.state); // Log location.state here
+
   const resultsData = location.state ? location.state.resultsData : null;
 
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const [displayText, setDisplayText] = useState('Dummy Text');
+
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -61,6 +66,24 @@ const Chain = () => {
     });
   };
   
+
+  console.log("RESULTS DATA:", resultsData); // Log the resultsData here
+
+
+  useEffect(() => {
+    console.log("RESULTS DATA:", resultsData); // Log the resultsData here
+  
+    if (resultsData && resultsData.result && resultsData.result.results && resultsData.result.results.bindings) {
+      const textValue = resultsData.result.results.bindings[0].Text.value;
+      setDisplayText(textValue);
+    }
+    
+  }, [resultsData]);
+  
+  
+  
+  
+  
   
 
   useEffect(() => {
@@ -78,7 +101,7 @@ const Chain = () => {
         <img src={require('../../assets/back_button.png')} alt="Back Button" />
       </div>
       <div className={`query-text-box-chain ${isExpanded ? 'expanded' : ''}`}>
-        <p>Dummy Text</p>
+        <p>{displayText}</p>
         <div className="details-swipe-bar-chain" onClick={toggleExpand}>
           <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
         </div>
@@ -86,16 +109,41 @@ const Chain = () => {
 
 
       {isExpanded && narrators && narrators.length > 0 && (
-        <div className="details-chain">
-          <div className="chain-container">
-          <div className="container-with-stroke">
-            {narrators.map((narrator, index) => (
-              <div key={index} className="narrator-block" id={`narrator-block-${index}`}>
-                {narrator.name}
-              </div>
-            ))}
-          </div>
-          </div>
+  <div className="details-chain">
+    <div className="chain-container">
+      <div className="container-with-stroke">
+        {narrators.map((narrator, index) => {
+          let narratorValue;
+
+          if (index === 0) {
+            // Display RootNarrator in the first block
+            narratorValue = resultsData.result.results.bindings[0]?.RootNarrator.value;
+          } else {
+            // Extract unique NarratorName values for subsequent blocks
+            const uniqueNarratorNames = Array.from(
+              new Set(
+                resultsData &&
+                  resultsData.result &&
+                  resultsData.result.results &&
+                  resultsData.result.results.bindings &&
+                  resultsData.result.results.bindings.map(
+                    (binding) => binding.NarratorName.value
+                  )
+              )
+            );
+
+            // Get NarratorName value for the current index
+            narratorValue = uniqueNarratorNames[index - 1]; // Subtract 1 to account for RootNarrator
+          }
+
+          return (
+            <div key={index} className="narrator-block" id={`narrator-block-${index}`}>
+              <p>{narratorValue}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
           <div className="chain-links">
             {narrators.length > 1 &&
               narrators.map((_, index) => (

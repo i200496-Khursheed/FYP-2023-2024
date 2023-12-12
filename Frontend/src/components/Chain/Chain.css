@@ -146,6 +146,17 @@
   animation: gradientBorder 10s ease infinite;
 }
 
+.narrator-block p {
+  color: white; /* Set the desired font color */
+  font-size: 40px;
+}
+
+.query-text-box-chain p {
+  font-size: 25px;
+  margin: 10px;
+  line-height: 50.9px;
+}
+
 /* Keyframes for dynamic border animation */
 @keyframes gradientBorder {
   0% {
