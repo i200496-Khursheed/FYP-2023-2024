@@ -102,8 +102,9 @@ def query_verse(request):
         applyLimit = data.get('applyLimit', True)
         #limit = data.get('limit', '')
         limit = 100
+        # print(hadithTheme)
+        # print(request.body)
         print(hadithTheme)
-        print(request.body)
         query = constructVerseSparQLQueryString(chapterNo, verseNo, theme, hadithTheme, reference, subtheme, hadith_number,
                                                 narrator, commno, applyLimit, limit)
         
@@ -130,9 +131,9 @@ def query_commentary(request):
             return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
 
         # Get values from the request data or use default values
-        commno = data['number'] if 'number' in data and data['number'] != '' else '?number'
-        chapterNo = data['chapter_no'] if 'chapter_no' in data and data['chapter_no'] != '' else '?chapter_no'
-        verseNo = data['V_no'] if 'V_no' in data and data['V_no'] != '' else '?V_no'
+        commno = data['commno'] if 'commno' in data and data['commno'] != '' else '?number'
+        chapterNo = data['chapterNo'] if 'chapterNo' in data and data['chapterNo'] != '' else '?chapter_no'
+        verseNo = data['verseNo'] if 'verseNo' in data and data['verseNo'] != '' else '?V_no'
         theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
         mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
         subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
@@ -145,10 +146,12 @@ def query_commentary(request):
         
         prefix = "http://www.tafsirtabari.com/ontology"
         get_query = urllib.parse.quote(query)
-        print(query)
+        #print(query)
         result = Sparql_Endpoint(get_query, prefix)
         # Use your Sparql_Endpoint function to query the endpoint
         
+        print(query)
+
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})

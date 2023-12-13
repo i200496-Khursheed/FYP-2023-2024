@@ -34,7 +34,7 @@ const VerseQueryBuilder = () => {
     theme: '',
     hadithTheme: '',
     narrator: [{ title: '', name: '' }],
-    mentions: '',
+    reference: '',
   });
 
   const handleRadioChange = (option) => {
@@ -65,7 +65,7 @@ const VerseQueryBuilder = () => {
     setData({
       ...data,
       hadithTheme: selectedOption.value,
-    });
+    });console.log("This is inside handle: ",data.hadithTheme)
   };
 
   const handleNarratorChange = (index, type, value) => {
@@ -105,7 +105,7 @@ const VerseQueryBuilder = () => {
   const handleMentionsChange = (selectedOption) => {
     setData({
       ...data,
-      mentions: selectedOption.value,
+      reference: selectedOption.value,
     });
   };
 
@@ -164,6 +164,7 @@ const VerseQueryBuilder = () => {
 
   const SendDataToBackend = () => {
     console.log("POST")
+    console.log(data.hadithTheme);  // Add this line
     const url = 'http://127.0.0.1:8000/api/query_verse/';
 
     fetch(url, {
@@ -246,7 +247,7 @@ useEffect(() => {
 // Chapter No
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/Chapter Information.txt')
+  fetch('/Drop-down-data/Latest Verse Chapter Information.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -265,7 +266,7 @@ useEffect(() => {
 // themes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+  fetch('/Drop-down-data/verse sub theme names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -285,7 +286,7 @@ useEffect(() => {
 // hadithThemes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+  fetch('/Drop-down-data/verse hadith theme names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -324,28 +325,25 @@ useEffect(() => {
 
 // Fetch mentioned persons from the text file
 useEffect(() => {
-  fetch('/Drop-down-data/mentioned persons.txt')
+  fetch('/Drop-down-data/verse mentions.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines
       const lines = data.split('\n');
-      // Process each line to extract Arabic text and type
-      const mentionedPersons = lines.map((line) => {
-        const [text, type] = line.split(/\s+/);
-        return { text, type };
+      // Process each line to extract the full name
+      const mentionedPersons = lines.slice(1).map((line) => {
+        const fullName = line.trim();
+        return { value: fullName, label: fullName };
       });
-      // Create options with combined text and type for display
-      const mentionsOption = mentionedPersons.map((person) => ({
-        value: person.text,
-        label: `${person.text} ${person.type}`, // Combined text and type
-      }));
       // Set the options in state
-      setMentionsOptions(mentionsOption);
+      setMentionsOptions(mentionedPersons);
     })
     .catch((error) => {
       console.error('Error fetching mentioned persons:', error);
     });
 }, []);
+
+
 
 
 //end
@@ -442,14 +440,8 @@ useEffect(() => {
               </div>
 
               <div className="dropdown-verse">
-                <label htmlFor={`hadithTheme_${index}`}>Theme</label>
-                <Select
-                  options={hadithThemeOptions}
-                  isSearchable={true}
-                  onChange={(selectedOption) =>
-                    handleHadithThemeChange(index, 'hadithTheme', selectedOption.value)
-                  }
-                />
+                <label> Theme </label>
+              <Select options={hadithThemeOptions} isSearchable={true} onChange={handleHadithThemeChange} />
               </div>
 
               {/* <div className="dropdown-verse">

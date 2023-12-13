@@ -29,8 +29,9 @@ const CommentaryQueryResults = () => {
       resultsData &&
       resultsData.map((data, index) => (
         <tr key={index}>
-          <td>{data.V_nos?.value}</td>
+          <td>{data.number?.value}</td>
           <td>{data.chapter_nos?.value}</td>
+          <td>{data.V_nos?.value}</td>
           <td>{data.Texts?.value}</td>
           <td>{data.sec_chps?.value}</td>
           <td>{data.number?.value}</td>
@@ -38,10 +39,11 @@ const CommentaryQueryResults = () => {
           <td>{data.sec_nos?.value}</td>
           <td>{data.sec_texts?.value}</td>
           <td>{data.person_names?.value}</td>
-          <td>{data.refer_type?.value}</td>
           <td>{data.subthemes?.value}</td>
           <td>{data.theme_names?.value}</td>
           <td>{data.volumes?.value}</td>
+          <td>{data.editions?.value}</td>
+          <td>{data.pages?.value}</td>
         </tr>
       ))
     );
@@ -65,9 +67,9 @@ const CommentaryQueryResults = () => {
               <thead>
                 <tr>
                   <th className="sortable" onClick={() => handleSort('V_nos')}>
-                    Verse Number {sortOrder === 'asc' ? '▲' : '▼'}
-                  </th>
-                  <th>Chapter Number</th>
+                    Commentary Number {sortOrder === 'asc' ? '▲' : '▼'}</th>
+                  <th>Surah Number</th>
+                  <th>Verse Number</th>
                   <th>Text</th>
                   <th>Section Chapter</th>
                   <th>Commentary Number</th>
@@ -75,10 +77,11 @@ const CommentaryQueryResults = () => {
                   <th>Section Number</th>
                   <th>Section Text</th>
                   <th>Person Names</th>
-                  <th>Reference Type</th>
                   <th>Subthemes</th>
                   <th>Theme Names</th>
                   <th>Volumes</th>
+                  <th>Editions</th>
+                  <th>Pages</th>
                 </tr>
               </thead>
               <tbody>{renderTableData()}</tbody>

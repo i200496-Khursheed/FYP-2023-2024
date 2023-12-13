@@ -18,17 +18,18 @@ import Footer from '../Footer/Footer'; // Import Footer component
 //   { value: '19', label: 'مريم 19' },
 // ];
 
-const subThemeOptions = [
-    { value: 'afaalibad', label: 'afaalibad' },
-    { value: 'khairshar', label: 'khairshar' },
-    { value: 'sifatilahi', label: 'sifatilahi' },
-    { value: 'murad', label: 'murad' },
-  ];
+// const subThemeOptions = [
+//     { value: 'qghairjaiz', label: 'qghairjaiz' },
+//     { value: 'khairshar', label: 'khairshar' },
+//     { value: 'sifatilahi', label: 'sifatilahi' },
+//     { value: 'murad', label: 'murad' },
+//   ];
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('commentary');
   const [data, setData] = useState({
+    commno: '',
     chapterNo: '',
     verseNo: '',
     theme: '',
@@ -78,7 +79,14 @@ const CommentaryQueryBuilder = () => {
   const handleChapterNoChange = (selectedOption) => {
     setData({
       ...data,
-      surah_number: selectedOption.value,
+      chapterNo: selectedOption.value,
+    });
+  };
+
+  const handleCommentaryNoChange = (selectedOption) => {
+    setData({
+      ...data,
+      commno: selectedOption.value,
     });
   };
   
@@ -172,17 +180,35 @@ const MAX_LIMIT = 2000; // Example value
 
 
 // Fetch from txt
+const [commentaryNoOptions, setCommentaryNoOptions] = useState([]);
+
 const [chapterNoOptions, setChapterNoOptions] = useState([]);
 
 const [verseNoOptions, setVerseNoOptions] = useState([]);
 const [themeOptions, setThemeOptions] = useState([]);
 const [mentionsOptions, setMentionsOptions] = useState([]);
+const [subThemeOptions, setSubThemeOptions] = useState([]);
 
+// Commentary Number
+useEffect(() => {
+  fetch('/Drop-down-data/commentary number.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      const comms = data.split('\n').slice(1).map((commentaryNo) => ({
+        value: commentaryNo.trim(),
+        label: commentaryNo.trim(),
+      }));
+      setCommentaryNoOptions(comms);
+    })
+    .catch((error) => {
+      console.error('Error fetching commentary numbers:', error);
+    });
+}, []);
 
 // Chapter No
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/Chapter Information.txt')
+  fetch('/Drop-down-data/ayat chapter commentary.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -200,7 +226,7 @@ useEffect(() => {
 
 // VerseNo
 useEffect(() => {
-  fetch('/Drop-down-data/Verse Information.txt')
+  fetch('/Drop-down-data/ayat number commentary.txt')
     .then((response) => response.text())
     .then((data) => {
       const verses = data.split('\n').slice(1).map((verse) => ({
@@ -218,7 +244,7 @@ useEffect(() => {
 // themes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+  fetch('/Drop-down-data/commentary theme names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -237,26 +263,41 @@ useEffect(() => {
 
 // Fetch mentioned persons from the text file
 useEffect(() => {
-  fetch('/Drop-down-data/mentioned persons.txt')
+  fetch('/Drop-down-data/commentary mentions.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines
       const lines = data.split('\n');
-      // Process each line to extract Arabic text and type
-      const mentionedPersons = lines.map((line) => {
-        const [text, type] = line.split(/\s+/);
-        return { text, type };
+      // Process each line to extract the full name
+      const mentionedPersons = lines.slice(1).map((line) => {
+        const fullName = line.trim();
+        return { value: fullName, label: fullName };
       });
-      // Create options with combined text and type for display
-      const mentionsOption = mentionedPersons.map((person) => ({
-        value: person.text,
-        label: `${person.text} ${person.type}`, // Combined text and type
-      }));
       // Set the options in state
-      setMentionsOptions(mentionsOption);
+      setMentionsOptions(mentionedPersons);
     })
     .catch((error) => {
       console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+// Fetch sub theme from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/commentary sub theme options.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract the full name
+      const subthemes = lines.slice(1).map((line) => {
+        const subtheme = line.trim();
+        return { value: subtheme, label: subtheme };
+      });
+      // Set the options in state
+      setSubThemeOptions(subthemes);
+    })
+    .catch((error) => {
+      console.error('Error fetching sub themes:', error);
     });
 }, []);
 
@@ -310,14 +351,10 @@ useEffect(() => {
       <div className="search-text-commentary">Find Commentary About:</div>
       <div className="dropdown-container-commentary">
         <div className="dropdown-commentary">
-            <label htmlFor="surah_number">Surah Number</label>
-            <Select options={chapterNoOptions} isSearchable={true} onChange={handleChapterNoChange} />
+            <label htmlFor="surah_number">Commentary Number</label>
+            <Select options={commentaryNoOptions} isSearchable={true} onChange={handleCommentaryNoChange} />
         </div>
-        <div className="dropdown-commentary">
-            <label htmlFor="ayat_number">Ayat Number</label>
-            <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
-        </div>
-
+        
         <div className="dropdown-commentary">
             <label htmlFor="theme">Which has Theme</label>
             <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
@@ -346,11 +383,6 @@ useEffect(() => {
             <div className="dropdown-commentary-2">
                 <label htmlFor="ayat_number">Ayat Number</label>
                 <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
-            </div>
-
-            <div className="dropdown-commentary-2">
-                <label htmlFor="theme">Which has Theme</label>
-                <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
             </div>
         </div>
 

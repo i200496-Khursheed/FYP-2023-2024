@@ -130,7 +130,7 @@ const FAQ = () => {
 
   const renderQuestion2Table = () => {
     // return (
-    //   // Render your table for competency_question2 here
+    //   // Render table for competency_question2
     // );
   };
 

@@ -266,18 +266,13 @@ useEffect(() => {
     .then((data) => {
       // Split the file content by lines
       const lines = data.split('\n');
-      // Process each line to extract Arabic text and type
-      const mentionedPersons = lines.map((line) => {
-        const [text, type] = line.split(/\s+/);
-        return { text, type };
+      // Process each line to extract the full name
+      const mentionedPersons = lines.slice(1).map((line) => {
+        const fullName = line.trim();
+        return { value: fullName, label: fullName };
       });
-      // Create options with combined text and type for display
-      const mentionsOption = mentionedPersons.map((person) => ({
-        value: person.text,
-        label: `${person.text} ${person.type}`, // Combined text and type
-      }));
       // Set the options in state
-      setMentionsOptions(mentionsOption);
+      setMentionsOptions(mentionedPersons);
     })
     .catch((error) => {
       console.error('Error fetching mentioned persons:', error);

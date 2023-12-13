@@ -75,7 +75,7 @@ const HadithQueryResults = () => {
                 border: 'none',
                 outline: 'none',
                 fontSize: '16px',
-                fontFamily: "'Lexend Deca', 'Jost', sans-serif", // Wrap font names in quotes and commas
+                fontFamily: "'Lexend Deca', 'Jost', sans-serif",
 
               }}
             >
