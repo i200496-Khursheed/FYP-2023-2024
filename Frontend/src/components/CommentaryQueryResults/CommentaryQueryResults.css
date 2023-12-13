@@ -243,5 +243,5 @@ td.text-cell {
 .details-table-CQR td:nth-child(3),
 .details-table-CQR th:nth-child(3) {
   /* Text column */
-  width: 40%; /* Adjusted width */
+  width: 5%; /* Adjusted width */
 }

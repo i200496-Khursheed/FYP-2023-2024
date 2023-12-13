@@ -247,7 +247,7 @@ useEffect(() => {
 // Chapter No
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/Chapter Information.txt')
+  fetch('/Drop-down-data/Latest Verse Chapter Information.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -266,7 +266,7 @@ useEffect(() => {
 // themes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+  fetch('/Drop-down-data/verse sub theme names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -286,7 +286,7 @@ useEffect(() => {
 // hadithThemes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+  fetch('/Drop-down-data/verse hadith theme names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2

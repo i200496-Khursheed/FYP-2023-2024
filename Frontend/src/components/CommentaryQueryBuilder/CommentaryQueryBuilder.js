@@ -18,12 +18,12 @@ import Footer from '../Footer/Footer'; // Import Footer component
 //   { value: '19', label: 'مريم 19' },
 // ];
 
-const subThemeOptions = [
-    { value: 'afaalibad', label: 'afaalibad' },
-    { value: 'khairshar', label: 'khairshar' },
-    { value: 'sifatilahi', label: 'sifatilahi' },
-    { value: 'murad', label: 'murad' },
-  ];
+// const subThemeOptions = [
+//     { value: 'qghairjaiz', label: 'qghairjaiz' },
+//     { value: 'khairshar', label: 'khairshar' },
+//     { value: 'sifatilahi', label: 'sifatilahi' },
+//     { value: 'murad', label: 'murad' },
+//   ];
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
@@ -187,6 +187,7 @@ const [chapterNoOptions, setChapterNoOptions] = useState([]);
 const [verseNoOptions, setVerseNoOptions] = useState([]);
 const [themeOptions, setThemeOptions] = useState([]);
 const [mentionsOptions, setMentionsOptions] = useState([]);
+const [subThemeOptions, setSubThemeOptions] = useState([]);
 
 // Commentary Number
 useEffect(() => {
@@ -243,7 +244,7 @@ useEffect(() => {
 // themes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/THEMES OF HADITH.txt')
+  fetch('/Drop-down-data/commentary theme names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -277,6 +278,26 @@ useEffect(() => {
     })
     .catch((error) => {
       console.error('Error fetching mentioned persons:', error);
+    });
+}, []);
+
+// Fetch sub theme from the text file
+useEffect(() => {
+  fetch('/Drop-down-data/commentary sub theme options.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      // Split the file content by lines
+      const lines = data.split('\n');
+      // Process each line to extract the full name
+      const subthemes = lines.slice(1).map((line) => {
+        const subtheme = line.trim();
+        return { value: subtheme, label: subtheme };
+      });
+      // Set the options in state
+      setSubThemeOptions(subthemes);
+    })
+    .catch((error) => {
+      console.error('Error fetching sub themes:', error);
     });
 }, []);
 
