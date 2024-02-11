@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './CommentaryQueryResults.css';
-import Footer from '../Footer/Footer'; // Import Footer component
+import Footer from '../Footer/Footer';
+
+const ITEMS_PER_PAGE = 1; // Number of items to display per page
 
 const CommentaryQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const [maxJump, setMaxJump] = useState(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
 
   const handleSort = (field) => {
     if (sortOrder === 'asc') {
@@ -25,69 +25,128 @@ const CommentaryQueryResults = () => {
   };
 
   const renderTableData = () => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
     return (
       resultsData &&
-      resultsData.map((data, index) => (
-        <tr key={index}>
-          <td>{data.number?.value}</td>
-          <td>{data.chapter_nos?.value}</td>
-          <td>{data.V_nos?.value}</td>
-          <td>{data.Texts?.value}</td>
-          <td>{data.sec_chps?.value}</td>
-          <td>{data.number?.value}</td>
-          <td className="commentary-text">{data.sec_texts?.value}</td>
-          <td>{data.sec_nos?.value}</td>
-          <td>{data.sec_texts?.value}</td>
-          <td>{data.person_names?.value}</td>
-          <td>{data.subthemes?.value}</td>
-          <td>{data.theme_names?.value}</td>
-          <td>{data.volumes?.value}</td>
-          <td>{data.editions?.value}</td>
-          <td>{data.pages?.value}</td>
-        </tr>
+      resultsData.slice(startIndex, endIndex).map((data, index) => (
+        <React.Fragment key={index}>
+          <tr>
+            <th className="sortable" onClick={() => handleSort('V_nos')}>
+              Commentary Number {sortOrder === 'asc' ? '▲' : '▼'}
+            </th>
+            <td>{data.number?.value}</td>
+          </tr>
+          <tr>
+            <th>Surah Number</th>
+            <td>{data.chapter_nos?.value}</td>
+          </tr>
+          <tr>
+            <th>Verse Number</th>
+            <td>{data.V_nos?.value}</td>
+          </tr>
+          <tr>
+            <th>Verse Text</th>
+            <td>{data.V_Texts?.value}</td>
+          </tr>
+          <tr>
+            <th>Text</th>
+            <td>{data.Texts?.value}</td>
+          </tr>
+          <tr>
+            <th>Section Chapter</th>
+            <td>{data.sec_chps?.value}</td>
+          </tr>
+          <tr className="commentary-text">
+            <th>Commentary Text</th>
+            <td>{data.sec_texts?.value}</td>
+          </tr>
+          <tr>
+            <th>Section Number</th>
+            <td>{data.sec_nos?.value}</td>
+          </tr>
+          <tr>
+            <th>Section Text</th>
+            <td>{data.sec_texts?.value}</td>
+          </tr>
+          <tr>
+            <th>Person Names</th>
+            <td>{data.person_names?.value}</td>
+          </tr>
+          <tr>
+            <th>Subthemes</th>
+            <td>{data.subthemes?.value}</td>
+          </tr>
+          <tr>
+            <th>Theme Names</th>
+            <td>{data.theme_names?.value}</td>
+          </tr>
+          <tr>
+            <th>Volumes</th>
+            <td>{data.volumes?.value}</td>
+          </tr>
+          <tr>
+            <th>Editions</th>
+            <td>{data.editions?.value}</td>
+          </tr>
+          <tr>
+            <th>Pages</th>
+            <td>{data.pages?.value}</td>
+          </tr>
+        </React.Fragment>
       ))
     );
   };
 
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+  const handleJumpToPage = (pageNumber) => {
+    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
+    setCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
   return (
     <div>
-      <div className={`verse-query-results ${isExpanded ? 'expanded' : ''}`}>
-        <div className="back-button-CQR" onClick={() => window.history.back()}>
-          <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      <div className="back-button-VQR" onClick={() => window.history.back()}>
+        <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      </div>
+      {resultsData && (
+        <div className="details-table-CQR">
+          <table>
+            <tbody>{renderTableData()}</tbody>
+          </table>
         </div>
-        <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
-          <div className="details-swipe-bar" onClick={toggleExpand}>
-            <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
-          </div>
-        </div>
-
-        {isExpanded && resultsData && (
-          <div className="details-table-CQR">
-            <table>
-              <thead>
-                <tr>
-                  <th className="sortable" onClick={() => handleSort('V_nos')}>
-                    Commentary Number {sortOrder === 'asc' ? '▲' : '▼'}</th>
-                  <th>Surah Number</th>
-                  <th>Verse Number</th>
-                  <th>Text</th>
-                  <th>Section Chapter</th>
-                  <th>Commentary Number</th>
-                  <th>Commentary Text</th>
-                  <th>Section Number</th>
-                  <th>Section Text</th>
-                  <th>Person Names</th>
-                  <th>Subthemes</th>
-                  <th>Theme Names</th>
-                  <th>Volumes</th>
-                  <th>Editions</th>
-                  <th>Pages</th>
-                </tr>
-              </thead>
-              <tbody>{renderTableData()}</tbody>
-            </table>
-          </div>
-        )}
+      )}
+      <div className="pagination top-right-CQR">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Prev
+        </button>
+        <span>{`Page ${currentPage}`}</span>
+        <button onClick={handleNextPage} disabled={currentPage * ITEMS_PER_PAGE >= resultsData.length}>
+          Next
+        </button>
+      </div>
+      <div className="pagination top-right-CQR-2">
+        <span id="page-jump-CQR">Jump to :</span>
+        <input
+          type="number"
+          value={currentPage}
+          onChange={(e) => setCurrentPage(e.target.value)}
+          min={1}
+          max={maxJump}
+        />
+        <span id="page-max-CQR">{`Max: ${maxJump}`}</span>
       </div>
       <div className="Footer-portion-CQR">
         <Footer />

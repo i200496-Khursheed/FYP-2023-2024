@@ -613,11 +613,11 @@ if __name__ == "__main__":
         
     print("\nQuery")
     query = constructHadithSparQLQueryString(theme='lugha')"""
-    # query = constructHadithSparQLQueryString()
+    query = constructHadithSparQLQueryString(theme='lugha')
 
     #query = constructVerseSparQLQueryString(verseNo=258)
 
-    query = constructCommentarySparQLQueryString(theme='asbab')
+    #query = constructCommentarySparQLQueryString(theme='asbab')
 
     print(query)
     results = []

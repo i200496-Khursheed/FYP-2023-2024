@@ -1,4 +1,4 @@
-/* VerseQueryResults.css */
+/* CommentaryQueryResults.css */
 
 .Footer-portion-CQR {
   position: absolute;
@@ -11,166 +11,26 @@
   overflow-x: hidden;
 }
 
-.verse-query-results {
-  text-shadow: 0 1px 2px rgba(0,0,0,.35);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 800px;
-  font-size: 18px;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
-  font-weight: bold;
-  transition: height 0.3s;
-  margin-top: 5%;
-}
-
-.verse-query-results.expanded {
-  height: auto;
-}
-
 .details-table-CQR {
-  max-width: 200%;
-  overflow-x: hidden;
   position: relative;
-  bottom: -20px;
-  max-height: 553px;
-  overflow: auto;
-  left: 70%;
-  margin-left: -50%; /* Offset half of the width */
-}
-
-.query-text-box {
-  text-align: center;
-  left: 45%;
-  width: 820px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  border: 1px solid #EE9AE5;
-  box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px; /* 10px */
-  margin-top: -0.5%;
-  padding-bottom: 0.5%;
-  position: relative;
-}
-
-.details-swipe-bar {
-  cursor: pointer;
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(to right, #4639E3, #381f6c);
-  height: 50px;
-  width: 848px;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: width 0.3s ease;
-}
-
-
-.details-swipe-bar:hover {
-  background: linear-gradient(to right, #4639E3, #381f6c); /* Adjust the gradient colors */
-  width: 900px;
-  top: calc(100% - 100px -10px); /* Maintain the bottom position */
-}
-
-.arrow {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 10px 20px 10px;
-  border-color: transparent transparent #EE9AE5 transparent;
-  stroke: #000000;
-  stroke-width: 2px;
-  transition: transform 0.3s ease;
-}
-
-.expanded .arrow {
-  transform: rotate(180deg);
-}
-
-.arrow.expanded {
-  transform: rotate(180deg);
-}
-
-details-table {
-  max-width: 100%;
-  overflow-x: hidden;
-  position: relative;
-  bottom: -20px; /* Adjust this value to create a gap between swipe bar and table */
-  max-height: 400px; /* Set a fixed max-height to limit the table's height */
-  overflow: auto; /* Add overflow: auto to enable scrolling */
-}
-
-.details-table-CQR th {
-  cursor: pointer; /* Add a pointer cursor to indicate it's clickable */
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-  font-family: 'Jost', sans-serif;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-width: 700px;
-}
-
-th {
-  background-color: #4639E3;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-tr {
-  background-color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f7f7f7;
-}
-
-tbody tr:hover {
-  background-color: #e0e0e0;
-}
-
-td.text-cell {
-  font-size: 18px;
-  color: #333;
+  bottom: -15px; 
+  max-height: 800px; 
+  overflow: auto; 
+  width: 79%; 
+  left: 6%; 
+  margin-left: 0; 
+  max-height: 110vh;
 }
 
 .expand-icon img {
   width: 20px;
 }
 
-th.sortable {
-  cursor: pointer; /* Add a pointer cursor to indicate it's clickable */
-  user-select: none; /* Prevent text selection while clicking */
-  transition: color 0.3s; /* Add a smooth color transition effect */
-}
-
-th.sortable:hover {
-  color: #c5e3c0; /* Change text color when hovered (adjust to your preferred color) */
-}
-
-
 .expand-icon {
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
-}
-
-h2 {
-  color: #4639E3;
-  font-size: 24px;
 }
 
 .back-button-CQR img {
@@ -189,59 +49,67 @@ h2 {
   background-color: transparent;
 }
 
-td.narrator-name {
-  cursor: pointer;
-  color: blue; 
-  text-decoration: underline; 
-  transition: color 0.3s; 
-}
-
-td.narrator-name:hover {
-  color: navy; 
-  text-decoration: none; 
-}
-
 /* Table */
 .details-table-CQR table {
-  width: 400%;
+  width: 100%;
   border-collapse: collapse;
-  border-spacing: 0;
 }
 
 .details-table-CQR th,
 .details-table-CQR td {
-  padding: 8px;
-  text-align: left;
-  border: 1px solid #ddd;
-  font-size: 14px;
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 15px; 
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
 }
 
 .details-table-CQR th {
-  background-color: #4639e3;
+  background-color: #211a70;
   color: #fff;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.details-table-CQR tr {
-  background-color: #fff;
+.pagination.top-right-CQR {
+  position: absolute;
+  top: 350px;
+  right: 20px;
 }
 
-.details-table-CQR tr:nth-child(even) {
-  background-color: #f7f7f7;
+.pagination.top-right-CQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 10px;
 }
 
-.details-table-CQR tbody tr:hover {
-  background-color: #e0e0e0;
-}
-
-td.text-cell {
+/* Prev and Next buttons */
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
   font-size: 16px;
-  color: #333;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.details-table-CQR td:nth-child(3),
-.details-table-CQR th:nth-child(3) {
-  /* Text column */
-  width: 5%; /* Adjusted width */
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+#page-jump-CQR{
+  font-size: 16px;
+  margin: 5px;
+}
+
+#page-max-CQR{
+  font-size: 16px;
+  margin: 5px;
 }

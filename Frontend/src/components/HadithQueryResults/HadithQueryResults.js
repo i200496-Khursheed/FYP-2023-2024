@@ -1,10 +1,10 @@
-// HadithQueryResults.js
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './HadithQueryResults.css';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 
+const ROWS_TO_SHOW_INITIAL = 5;
 
 const HadithQueryResults = () => {
   const location = useLocation();
@@ -13,9 +13,11 @@ const HadithQueryResults = () => {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [visibleRows, setVisibleRows] = useState(ROWS_TO_SHOW_INITIAL);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+    setVisibleRows(isExpanded ? ROWS_TO_SHOW_INITIAL : resultsData?.length);
   };
 
   const handleSort = (field) => {
@@ -32,7 +34,7 @@ const HadithQueryResults = () => {
     console.log("here", hadithNo)
     console.log('POST to a different backend endpoint');
     const url = 'http://127.0.0.1:8000/api/chain_narrators/';
-  
+
     fetch(url, {
       method: 'POST',
       headers: {
@@ -43,31 +45,32 @@ const HadithQueryResults = () => {
       .then((response) => response.json())
       .then((responseData) => {
         console.log('Success:', responseData);
-  
+
         // Use navigate to move to the Chain page
         navigate('/chain-page', { state: { resultsData: responseData } });
-  
+
         // Handle the response data as needed
       })
       .catch((error) => {
         console.error('Error:', error);
       });
   };
-  
+
   const handleHadithNumberClick = (hadithNo) => {
     sendHadithNumberToDifferentBackend(hadithNo);
   };
+
   const renderTableData = () => {
     return (
       resultsData &&
-      resultsData.map((data, index) => (
+      resultsData.slice(0, visibleRows).map((data, index) => (
         <tr key={index}>
           <td>
             <button
-              className="hadith-number-button"
+              className="hadith-number-button "
               onClick={() => handleHadithNumberClick(data.HadithNo?.value)}
               style={{
-                backgroundColor: '#4639E3',
+                backgroundColor: '#2e249e',
                 color: '#fff',
                 padding: '8px 20px',
                 borderRadius: '5px',
@@ -76,7 +79,6 @@ const HadithQueryResults = () => {
                 outline: 'none',
                 fontSize: '16px',
                 fontFamily: "'Lexend Deca', 'Jost', sans-serif",
-
               }}
             >
               {data.HadithNo?.value}
@@ -97,17 +99,11 @@ const HadithQueryResults = () => {
 
   return (
     <div>
-      <div className={`hadith-query-results ${isExpanded ? 'expanded' : ''}`}>
+      <div className="hadith-query-results">
         <div className="back-button-HQR" onClick={() => window.history.back()}>
           <img src={require('../../assets/back_button.png')} alt="Back Button" />
         </div>
-        <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
-          <div className="details-swipe-bar" onClick={toggleExpand}>
-            <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
-          </div>
-        </div>
-
-        {isExpanded && resultsData && (
+        {resultsData && (
           <div className="details-table">
             <table>
               <thead>
@@ -118,7 +114,7 @@ const HadithQueryResults = () => {
                   <th>Narrator Name</th>
                   <th>Narrator Type</th>
                   <th>Root Narrator</th>
-                  <th>Text</th>
+                  <th style={{ width: '30%' }}>Text</th> {/* Set the width directly here */}
                   <th>Theme</th>
                   <th>Mentioned</th>
                   <th>Root Narrator Type</th>
@@ -129,8 +125,15 @@ const HadithQueryResults = () => {
             </table>
           </div>
         )}
+        {resultsData && resultsData.length > ROWS_TO_SHOW_INITIAL && (
+          <div>
+            <button className="view-button" onClick={toggleExpand}>
+              {isExpanded ? 'View Less' : 'View More'} ({visibleRows} of {resultsData.length} rows shown)
+            </button>
+          </div>
+        )}
       </div>
-      <div className='Footer-portion-HQR'>
+      <div className="Footer-portion-HQR">
         <Footer />
       </div>
     </div>

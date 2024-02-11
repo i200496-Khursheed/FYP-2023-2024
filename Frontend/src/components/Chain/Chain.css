@@ -1,5 +1,5 @@
 .hadith-query-results-chain {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  /* text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,10 +9,6 @@
   font-weight: bold;
   transition: height 0.3s;
   margin-top: 5%;
-}
-
-.hadith-query-results-chain.expanded {
-  height: auto;
 }
 
 .query-text-box-chain {
@@ -48,47 +44,6 @@
   box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
-.details-swipe-bar-chain {
-  cursor: pointer;
-  position: absolute;
-  bottom: -25%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(to right, #4639E3, #381f6c);
-  height: 50px;
-  width: 100%;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: height 0.3s ease, background 0.3s ease;
-}
-
-.details-swipe-bar-chain:hover {
-  height: 55px;
-  width: 855px;
-  background: linear-gradient(to right, #4639E3, #381f6c);
-}
-
-.arrow {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 10px 20px 10px;
-  border-color: transparent transparent #EE9AE5 transparent;
-  stroke: #000000;
-  stroke-width: 2px;
-  transition: transform 0.3s ease;
-}
-
-.expanded .arrow {
-  transform: rotate(180deg);
-}
-
-.arrow.expanded {
-  transform: rotate(180deg);
-}
-
 .expand-icon {
   position: absolute;
   top: 10px;
@@ -116,7 +71,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 18%;
   margin-left: 90%;
 }
 
@@ -302,5 +257,40 @@
   background-color: #3d267a; /* Darker background color on hover */
 }
 
+.show-chain-button {
+  cursor: pointer;
+  position: absolute;
+  bottom: 355px;
+  left: 750px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #4639E3, #381f6c);
+  height: 10%;
+  width: 100px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.3s ease, background 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.show-chain-button:hover {
+  height: 10.5%;
+  width: 100px;
+  background: linear-gradient(to right, #4639E3, #381f6c);
+}
+
+.show-chain-button p {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Lexend Deca', 'Jost', sans-serif;
+  margin: 0;
+}
+
+.show-chain-button:hover p {
+  color: white; /* Set the desired font color on hover */
+}
 
 

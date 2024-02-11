@@ -6,24 +6,6 @@ import './VerseQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
 
 // Verse Contents
-// const verseNoOptions = [
-//   { value: '7', label: 'Verse 007' },
-//   { value: '6', label: 'Verse 006' },
-//   { value: '2', label: 'Verse 002' },
-// ];
-
-// const chapterNoOptions = [
-//   { value: 'الفاتحة', label: 'الفاتحة	' },
-//   { value: 'يونس', label: 'يونس' },
-//   { value: 'مريم', label: 'مريم ' },
-// ];
-
-const narratorTitleOptions = [
-  { value: 'sahabi', label: 'sahabi' },
-  { value: 'rawi', label: 'rawi' },
-  { value: 'shaykh', label: 'shaykh' },
-  { value: 'any', label: 'any' },
-];
 
 const VerseQueryBuilder = () => {
   const navigate = useNavigate();
@@ -123,45 +105,6 @@ const VerseQueryBuilder = () => {
     });
   };
 
-  // const SendDataToBackend = () => {
-  //   let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
-
-  //   if (data.hadith_number) {
-  //     url += `&hadith_number=${data.hadith_number}`;
-  //   }
-
-  //   if (data.organization) {
-  //     url += `&organization=${data.organization}`;
-  //   }
-
-  //   if (data.time) {
-  //     url += `&time=${data.time}`;
-  //   }
-
-  //   if (data.place) {
-  //     url += `&place=${data.place}`;
-  //   }
-
-  //   fetch(url, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Success:', data);
-  //       if (data.result) {
-  //         console.log('Result from backend:', data.result);
-  //         navigate('/verse-query-results', { state: { resultsData: data.result } });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error);
-  //     });
-  // };
-
-
   const SendDataToBackend = () => {
     console.log("POST")
     console.log(data.hadithTheme);  // Add this line
@@ -216,6 +159,79 @@ const handleNarratorLogicChange = (index) => {
   });
 };
 
+
+/* Verse Number Filter Selection */
+const [verseNumberInputValue, setVerseNumberInputValue] = useState('');
+const [filteredVerseNumbers, setFilteredVerseNumbers] = useState([]);
+
+const handleVerseNumberInputChange = (inputValue) => {
+  setVerseNumberInputValue(inputValue);
+  const filteredOptions = verseNoOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredVerseNumbers(filteredOptions.slice(0, 11));
+};
+
+/* Chapter Number Filter Selection */
+const [chapterNumberInputValue, setChapterNumberInputValue] = useState('');
+const [filteredChapterNumbers, setFilteredChapterNumbers] = useState([]);
+
+const handleChapterNumberInputChange = (inputValue) => {
+  setChapterNumberInputValue(inputValue);
+  const filteredOptions = chapterNoOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredChapterNumbers(filteredOptions.slice(0, 11));
+};
+
+/* Verse Commentary Theme Filter Selection */
+const [themeInputValue, setThemeInputValue] = useState('');
+const [filteredThemeOptions, setFilteredThemes] = useState([]);
+
+const handleThemeInputChange = (inputValue) => {
+  setThemeInputValue(inputValue);
+  const filteredOptions = themeOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredThemes(filteredOptions.slice(0, 8));
+};
+
+/* Verse Mentions Filter Selection */
+const [mentionsInputValue, setMentionsInputValue] = useState('');
+const [filteredMentions, setFilteredMentions] = useState([]);
+
+const handleMentionsInputChange = (inputValue) => {
+  setMentionsInputValue(inputValue);
+  const filteredOptions = mentionsOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredMentions(filteredOptions.slice(0, 8));
+};
+
+/* Verse Hadith Narrator Name Filter Selection */
+const [narratorNameInputValue, setNarratorNameInputValue] = useState('');
+const [filteredNarratorNames, setFilteredNarratorNames] = useState([]);
+
+const handleNarratorNameInputChange = (inputValue) => {
+  setNarratorNameInputValue(inputValue);
+  const filteredOptions = narratorNameOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredNarratorNames(filteredOptions.slice(0, 8));
+};
+
+/* Verse Hadith Theme Filter Selection */
+const [verseHadithThemeInputValue, setVerseHadithThemeInputValue] = useState('');
+const [filteredVerseHadithThemeOptions, setFilteredVerseHadithThemes] = useState([]);
+
+const handleVerseHadithThemeInputChange = (inputValue) => {
+  setVerseHadithThemeInputValue(inputValue);
+  const filteredOptions = hadithThemeOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredVerseHadithThemes(filteredOptions.slice(0, 8));
+};
+
 // Fetch TXT
 const [verseNoOptions, setVerseNoOptions] = useState([]);
 
@@ -226,47 +242,54 @@ const [mentionsOptions, setMentionsOptions] = useState([]);
 
 const [hadithThemeOptions, setHadithThemeOptions] = useState([]);
 
-
 // VerseNo
 useEffect(() => {
-  fetch('/Drop-down-data/Verse Information.txt')
+  fetch('/Drop-down-data/Verse Dropdowns/Verse Ayat Number.txt')
     .then((response) => response.text())
     .then((data) => {
-      const verses = data.split('\n').slice(1).map((verse) => ({
-        value: verse.trim(),
-        label: verse.trim(),
-      }));
+      const verses = data
+        .split('\n')
+        .map((verse) => verse.trim())
+        .filter((verse) => verse !== '') // Remove empty lines, if any
+        .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+        .map((sortedVerse) => ({
+          value: sortedVerse,
+          label: sortedVerse,
+        }));
       setVerseNoOptions(verses);
+      setFilteredVerseNumbers(verses.slice(0, 11));
     })
     .catch((error) => {
-      console.error('Error fetching verse numbers:', error);
+      console.error('Error fetching and sorting verse numbers:', error);
     });
 }, []);
 
-
 // Chapter No
 useEffect(() => {
-  // Fetch the text file from the public folder
-  fetch('/Drop-down-data/Latest Verse Chapter Information.txt')
-    .then((response) => response.text())
-    .then((data) => {
-      // Split the file content by lines and start from line 2
-      const chapters = data.split('\n').slice(1).map((chapter) => {
-        // Split each line to get the numeric value and chapter name
-        const [chapterNumber, chapterName] = chapter.split('\t');
-        return { value: chapterNumber, label: chapterName.trim() };
-      });
-      setChapterNoOptions(chapters);
-    })
-    .catch((error) => {
-      console.error('Error fetching chapterNo:', error);
-    });
+  fetch('/Drop-down-data/Verse Dropdowns/Verse Surah Number.txt')
+  .then((response) => response.text())
+  .then((data) => {
+    const chapters = data
+      .split('\n')
+      .map((chapter) => chapter.trim())
+      .filter((chapter) => chapter !== '') // Remove empty lines, if any
+      .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+      .map((sortedChapter) => ({
+        value: sortedChapter,
+        label: sortedChapter,
+      }));
+    setChapterNoOptions(chapters)
+    setFilteredChapterNumbers(chapters.slice(0, 11));
+  })
+  .catch((error) => {
+    console.error('Error fetching and sorting chapter numbers:', error);
+  });
 }, []);
 
 // themes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/verse sub theme names.txt')
+  fetch('/Drop-down-data/Verse Dropdowns/Verse Commentary Themes.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
@@ -277,6 +300,8 @@ useEffect(() => {
         return { value: themeWithoutColon, label: themeWithoutColon };
       });
       setThemeOptions(themes);
+      setFilteredThemes(themes.slice(0, 8));
+
     })
     .catch((error) => {
       console.error('Error fetching themes:', error);
@@ -286,17 +311,19 @@ useEffect(() => {
 // hadithThemes
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/verse hadith theme names.txt')
+  fetch('/Drop-down-data/Verse Dropdowns/Verse Hadith Themes.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
-      const hadithThemes = data.split('\n').slice(1).map((hadithTheme) => {
+      const hadithThemes = data.split('\n').map((hadithTheme) => {
         // Remove the leading colon from each theme
         const trimmedHadithTheme = hadithTheme.trim();
         const hadithThemeWithoutColon = trimmedHadithTheme.startsWith(':') ? trimmedHadithTheme.substring(1) : trimmedHadithTheme;
         return { value: hadithThemeWithoutColon, label: hadithThemeWithoutColon };
       });
       setHadithThemeOptions(hadithThemes);
+      setFilteredVerseHadithThemes(hadithThemes.slice(0, 8));
+
     })
     .catch((error) => {
       console.error('Error fetching hadithThemes:', error);
@@ -306,17 +333,19 @@ useEffect(() => {
 // Narrators
 useEffect(() => {
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/narrators.txt')
+  fetch('/Drop-down-data/Verse Dropdowns/Verse Hadith Narrator Names.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines and start from line 2
-      const narrator_name = data.split('\n').slice(1).map((narrator_name) => {
+      const narrator_name = data.split('\n').map((narrator_name) => {
         // Remove the leading colon from each narrator_name
         const trimmedNarratorName = narrator_name.trim();
         const narratorNameWithoutColon = trimmedNarratorName.startsWith(':') ? trimmedNarratorName.substring(1) : trimmedNarratorName;
         return { value: narratorNameWithoutColon, label: narratorNameWithoutColon };
       });
       setNarratorNameOptions(narrator_name);
+      setFilteredNarratorNames(narrator_name.slice(0, 8));
+
     })
     .catch((error) => {
       console.error('Error fetching narrator name:', error);
@@ -325,26 +354,25 @@ useEffect(() => {
 
 // Fetch mentioned persons from the text file
 useEffect(() => {
-  fetch('/Drop-down-data/verse mentions.txt')
+  fetch('/Drop-down-data/Verse Dropdowns/Verse Hadith Mentions.txt')
     .then((response) => response.text())
     .then((data) => {
       // Split the file content by lines
       const lines = data.split('\n');
       // Process each line to extract the full name
-      const mentionedPersons = lines.slice(1).map((line) => {
+      const mentionedPersons = lines.map((line) => {
         const fullName = line.trim();
         return { value: fullName, label: fullName };
       });
       // Set the options in state
       setMentionsOptions(mentionedPersons);
+      setFilteredMentions(mentionedPersons.slice(0, 8));
+
     })
     .catch((error) => {
       console.error('Error fetching mentioned persons:', error);
     });
 }, []);
-
-
-
 
 //end
 
@@ -395,16 +423,34 @@ useEffect(() => {
       <div className="dropdown-container-verse">
             <div className="dropdown-verse">
               <label htmlFor="chapterNo">Surah Number</label>
-              <Select options={chapterNoOptions} isSearchable={true} onChange={handleChapterNoChange} />
+              <Select
+              options={filteredChapterNumbers}
+              inputValue={chapterNumberInputValue}
+              isSearchable={true}
+              onInputChange={handleChapterNumberInputChange}
+              onChange={handleChapterNoChange}
+            />                    
             </div>
             <div className="dropdown-verse">
               <label htmlFor="Verseno">Ayat Number</label>
-              <Select options={verseNoOptions} isSearchable={true} onChange={handleVerseNoChange} />
+              <Select
+              options={filteredVerseNumbers}
+              inputValue={verseNumberInputValue}
+              isSearchable={true}
+              onInputChange={handleVerseNumberInputChange}
+              onChange={handleVerseNoChange}
+            />             
             </div>
 
             <div className="dropdown-verse">
               <label htmlFor="theme">Where its commentary has Theme</label>
-              <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+              <Select 
+                options={filteredThemeOptions}
+                inputValue={themeInputValue} 
+                isSearchable={true} 
+                onInputChange={handleThemeInputChange}
+                onChange={handleThemeChange} 
+              />
             </div>
           </div>
 
@@ -441,24 +487,21 @@ useEffect(() => {
 
               <div className="dropdown-verse">
                 <label> Theme </label>
-              <Select options={hadithThemeOptions} isSearchable={true} onChange={handleHadithThemeChange} />
+              <Select 
+                options={filteredVerseHadithThemeOptions}
+                inputValue={verseHadithThemeInputValue} 
+                isSearchable={true} 
+                onInputChange={handleVerseHadithThemeInputChange}
+                onChange={handleHadithThemeChange} />
               </div>
 
-              {/* <div className="dropdown-verse">
-                <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
-                <Select
-                  options={narratorTitleOptions}
-                  isSearchable={true}
-                  onChange={(selectedOption) =>
-                    handleNarratorChange(index, 'title', selectedOption.value)
-                  }
-                />
-              </div> */}
               <div className="dropdown-verse">
                 <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
                 <Select
-                  options={narratorNameOptions}
+                  options={filteredNarratorNames}
+                  inputValue={narratorNameInputValue}
                   isSearchable={true}
+                  onInputChange={handleNarratorNameInputChange}
                   onChange={(selectedOption) =>
                     handleNarratorChange(index, 'name', selectedOption.value)
                   }
@@ -481,7 +524,13 @@ useEffect(() => {
           <div className="search-text">That Mentions:</div>
           <div className="dropdown">
             <label htmlFor="mentions">Mentions</label>
-            <Select options={mentionsOptions} isSearchable={true} onChange={handleMentionsChange} />
+            <Select 
+              options={filteredMentions}
+              inputValue={mentionsInputValue} 
+              isSearchable={true} 
+              onInputChange={handleMentionsInputChange}
+              onChange={handleMentionsChange} 
+            />
           </div>
       </div>
         <div className="run-query-button-verse">
