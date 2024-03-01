@@ -14,30 +14,7 @@ from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, c
 
 class ReactView(APIView):
     print('sadsada')
-    
-# @csrf_exempt
-# def query_hadith(request):
-#     print("hello",request)
-#     print('popo',request)
-#     if request.method == 'GET':
-#         theme = request.GET.get('theme', '')  
-#         hadith_number = request.GET.get('hadith_number', None)  # Corrected to use `None` instead of `null`
 
-#         # Generate the SPARQL query based on the provided parameters
-#         if hadith_number is None:  # Corrected condition to check for `None`
-#             query = constructHadithSparQLQueryString(theme=theme)
-#         else:
-#             query = constructHadithSparQLQueryString(theme=theme, hadith_number=hadith_number)
-
-#         # Execute the SPARQL query and get the result
-#         prefix = "http://www.tafsirtabari.com/ontology"
-#         get_query = urllib.parse.quote(query)
-#         result = Sparql_Endpoint(get_query, prefix)
-#         print(result)
-
-#         return JsonResponse({'result': result})
-#     else:
-#         return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
 @csrf_exempt
 def query_hadith(request):
     print('backend/POST')
@@ -60,11 +37,9 @@ def query_hadith(request):
         narrator = data['narrators'][0]['name'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('name') != '' else '?narrator'
         narratortitle = data['narrators'][0]['title'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('title') != '' else 'narrator-title'
         applyLimit = data.get('applyLimit', True)
-       # limit = data.get('limit', '')
+        limit = data.get('limit', '')
 
-        limit = 100
-
-        print('narrator', narrator)
+        #print('narrator', narrator)
         query = constructHadithSparQLQueryString(versetext, chapterNo, verseNo, theme, mentions, subtheme,
                                                      hadith_number, RootNarrator, narrator, narratortitle,
                                                      applyLimit, limit)
@@ -74,7 +49,7 @@ def query_hadith(request):
         print(query)
         result = Sparql_Endpoint(get_query, prefix)
         # print("idhar", result)
-
+        print("Theme selected is:", theme)
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
@@ -102,8 +77,8 @@ def query_verse(request):
         narrator = data['narrator'][0]['name'] if 'narrator' in data and data['narrator'] and data['narrator'][0].get('name') != '' else '?narrator'
         commno = data['commno'] if 'commno' in data and data['commno'] != '' else '?commno'
         applyLimit = data.get('applyLimit', True)
-        #limit = data.get('limit', '')
-        limit = 100
+        limit = data.get('limit', '')
+        
         # print(hadithTheme)
         # print(request.body)
         print(hadithTheme)
@@ -140,8 +115,8 @@ def query_commentary(request):
         mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
         subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
         applyLimit = data.get('applyLimit', True)
-        #limit = data.get('limit', '')
-        limit = 100
+        limit = data.get('limit', '')
+       
         print(theme)
         query = constructCommentarySparQLQueryString(commno, chapterNo, verseNo, theme, mentions, subtheme,
                                                      applyLimit, limit)

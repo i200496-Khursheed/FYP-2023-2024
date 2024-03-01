@@ -1,20 +1,8 @@
 /* HadithQueryResults.css */
 
-.hadith-query-results {
-  /* text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  font-size: 15px;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
-  font-weight: bold;
-  margin-top: 30px;
-  padding-bottom: 100px; /* Adjust the value based on your footer height */
-  margin-left: 5%;
-}
-
 .Footer-portion-HQR {
+  position: absolute;
+  bottom: -31.8%;
   width: 100%;
   box-sizing: border-box;
   background-color: #fff;
@@ -23,16 +11,26 @@
   overflow-x: hidden;
 }
 
-.details-table {
-  overflow-x: hidden;
-  max-height: 85vh;
-  overflow: auto;
-  margin-bottom: 10px;
-  line-height: 2.5;
+.details-table-HQR {
+  position: relative;
+  bottom: -15px; 
+  max-height: 800px; 
+  overflow: auto; 
+  width: 79%; 
+  left: 6%; 
+  margin-left: 0; 
+  max-height: 110vh;
 }
 
 .expand-icon img {
   width: 20px;
+}
+
+.expand-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
 
 .back-button-HQR img {
@@ -51,55 +49,81 @@
   background-color: transparent;
 }
 
-/* Apply different font family to the rest of the table cells */
-.details-table th:not(.text-column),
-.details-table td:not(.text-column) {
+/* Table */
+.details-table-HQR table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #ddd;
+
+}
+
+.details-table-HQR th,
+.details-table-HQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 15px; 
   font-family: 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 3.5px;
 }
 
-
-
-/* Add the following styles to make table headings sticky */
-.details-table thead {
-  position: sticky;
-  top: 0;
-  background-color: #fff; /* Adjust background color as needed */
-  z-index: 1;
-}
-
-/* Adjust z-index for the table cells to appear above the sticky headings */
-.details-table th {
-  z-index: 2;
-}
-
-/* Add the following style for the button */
-.view-button {
-  background-color: #1b1565;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
-  margin-top: 10px; /* Adjust as needed */
-  z-index: 3; /* Ensure the button appears above the sticky headings */
-}
-
-.view-button:hover {
-  background-color: #2a257c;
-}
-
-.details-table th {
-  background-color: #2e249e;
+.details-table-HQR th {
+  background-color: #211a70;
   color: #fff;
   font-weight: bold;
   text-transform: uppercase;
 }
 
+.pagination.top-right-HQR {
+  position: absolute;
+  top: 350px;
+  right: 20px;
+}
+
+.pagination.top-right-HQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 10px;
+}
+
+/* Prev and Next buttons */
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+#page-jump-HQR{
+  font-size: 16px;
+  margin: 5px;
+}
+
+#page-max-HQR{
+  font-size: 16px;
+  margin: 5px;
+}
+
+
+
+
 .hadith-number-button {
   background-color: #2e249e;
   color: #fff;
+  margin-top: 5px;
   padding: 8px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -108,9 +132,26 @@
   font-size: 16px;
   font-family: 'Lexend Deca', 'Jost', sans-serif;
   transition: background-color 0.3s, transform 0.3s; /* Add transition for background-color and transform */
+  
+  /* Center the button horizontally */
+  display: block;
+  margin: 0 auto;
 }
+
 
 .hadith-number-button:hover {
   background-color: #3529de; /* Change the color on hover */
-  transform: scale(1.15); /* Add scale transform on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
 }
+
+.clickable-text {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue; /* Change color on hover */
+  transition: font-size 0.2s ease; /* Add transition for font size change */
+}
+
+.clickable-text:hover {
+  font-size: 1.2em; /* Enlarge font size on hover */
+}
+

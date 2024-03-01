@@ -23,6 +23,15 @@ const Chain = () => {
     { name: 'Narrator C' },
     { name: 'Narrator D' },
     { name: 'Narrator E' },
+    { name: 'Narrator F' },
+    { name: 'Narrator G' },
+    { name: 'Narrator H' },
+    { name: 'Narrator I' },
+    { name: 'Narrator J' },
+    { name: 'Narrator K' },
+    { name: 'Narrator L' },
+    { name: 'Narrator M' },
+    { name: 'Narrator N' },
     // Add more narrators as needed
   ];
 
@@ -86,63 +95,66 @@ const Chain = () => {
   }, [isExpanded]);
 
   return (
-    <div className={`hadith-query-results-chain ${isExpanded ? 'expanded' : ''}`}>
-      <div className="back-button-HQR" onClick={() => window.history.back()}>
-        <img src={require('../../assets/back_button.png')} alt="Back Button" />
-      </div>
-      <button className="show-chain-button" onClick={toggleExpand}>
-        {isExpanded ? 'Hide Chain' : 'Show Chain'}
-      </button>
-      <div className={`query-text-box-chain ${isExpanded ? 'expanded' : ''}`}>
-        <p>{displayText}</p>
-      </div>
+  <div className={`hadith-query-results-chain ${isExpanded ? 'expanded' : ''}`}>
+    <div className="back-button-HQR" onClick={() => window.history.back()}>
+      <img src={require('../../assets/back_button.png')} alt="Back Button" />
+    </div>
+    <button className="show-chain-button" onClick={toggleExpand}>
+      {isExpanded ? 'Hide Chain' : 'Show Chain'}
+    </button>
+    <div className={`query-text-box-chain ${isExpanded ? 'expanded' : ''}`}>
+      <p>{displayText}</p>
+    </div>
 
-      {isExpanded && narrators && narrators.length > 0 && (
-        <div className="details-chain">
-          <div className="chain-container">
-            <div className="container-with-stroke">
-              {narrators.map((narrator, index) => {
-                let narratorValue;
+    {isExpanded && narrators && narrators.length > 0 && (
+      <div className="details-chain">
+        <div className="chain-container">
+          <div className="container-with-stroke">
+            {narrators.map((narrator, index) => {
+              let narratorValue;
 
-                if (index === 0) {
-                  // Display RootNarrator in the first block
-                  narratorValue = resultsData.result.results.bindings[0]?.RootNarrator.value;
-                } else {
-                  // Extract unique NarratorName values for subsequent blocks
-                  const uniqueNarratorNames = Array.from(
-                    new Set(
-                      resultsData &&
-                        resultsData.result &&
-                        resultsData.result.results &&
-                        resultsData.result.results.bindings &&
-                        resultsData.result.results.bindings.map(
-                          (binding) => binding.NarratorName.value
-                        )
-                    )
-                  );
-
-                  // Get NarratorName value for the current index
-                  narratorValue = uniqueNarratorNames[index - 1]; // Subtract 1 to account for RootNarrator
-                }
-
-                return (
-                  <div key={index} className="narrator-block" id={`narrator-block-${index}`}>
-                    <p>{narratorValue}</p>
-                  </div>
+              if (index === 0) {
+                // Display RootNarrator in the first block
+                narratorValue = resultsData.result.results.bindings[0]?.RootNarrator.value;
+              } else {
+                // Extract unique NarratorName values for subsequent blocks
+                const uniqueNarratorNames = Array.from(
+                  new Set(
+                    resultsData &&
+                      resultsData.result &&
+                      resultsData.result.results &&
+                      resultsData.result.results.bindings &&
+                      resultsData.result.results.bindings.map(
+                        (binding) => binding.NarratorName.value
+                      )
+                  )
                 );
-              })}
-            </div>
-          </div>
-          <div className="chain-links">
-            {narrators.length > 1 &&
-              narrators.map((_, index) => (
-                <div key={index} className="link-line"></div>
-              ))}
+
+                // Get NarratorName value for the current index if available
+                narratorValue = uniqueNarratorNames[index - 1] || null; // Subtract 1 to account for RootNarrator
+              }
+
+              // Render the block only if narratorValue exists
+              return narratorValue && (
+                <div key={index} className="narrator-block" id={`narrator-block-${index}`}>
+                  <p>{narratorValue}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
-      )}
-    </div>
-  );
+        <div className="chain-links">
+          {narrators.length > 1 &&
+            narrators.map((_, index) => (
+              index < narrators.length - 1 && (
+                <div key={index} className="link-line"></div>
+              )
+            ))}
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default Chain;

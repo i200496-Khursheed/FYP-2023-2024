@@ -1,19 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './HadithQueryResults.css';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 
 const ROWS_TO_SHOW_INITIAL = 5;
+const ITEMS_PER_PAGE = 1; // Number of items to display per page
 
 const HadithQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
-  const navigate = useNavigate(); // Define navigate
+  const navigate = useNavigate();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortOrder, setSortOrder] = useState('asc');
   const [visibleRows, setVisibleRows] = useState(ROWS_TO_SHOW_INITIAL);
+  const [narratorNames, setNarratorNames] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxJump, setMaxJump] = useState(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+
+
+  useEffect(() => {
+    fetch('/Drop-down-data/Hadith Dropdowns/Hadith Narrator Names.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const names = data.split('\n').map(name => name.trim());
+        setNarratorNames(names);
+      })
+      .catch((error) => {
+        console.error('Error fetching narrator names:', error);
+      });
+  }, []);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -44,12 +62,8 @@ const HadithQueryResults = () => {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log('Success:', responseData);
-
         // Use navigate to move to the Chain page
         navigate('/chain-page', { state: { resultsData: responseData } });
-
-        // Handle the response data as needed
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -60,78 +74,158 @@ const HadithQueryResults = () => {
     sendHadithNumberToDifferentBackend(hadithNo);
   };
 
+  const handleRootNarratorClick = (rootNarrator) => {
+    // Define the action when root narrator is clicked
+    console.log("Root Narrator clicked:", rootNarrator);
+  };
+
+  const handleNarratorNameClick = (narratorName) => {
+    // Define the action when narrator name is clicked
+    console.log("Narrator Name clicked:", narratorName);
+  };
+
+  const handleReferClick = (Refer) => {
+    // Pass the Refer value to the People component
+    navigate('/people-page', { state: { Refer } });
+  };
+
+  const [isTextsExpanded, setIsTextsExpanded] = useState(false);
+
+  const toggleTextsExpansion = () => {
+    setIsTextsExpanded(!isTextsExpanded);
+  };
+
   const renderTableData = () => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+  
     return (
       resultsData &&
-      resultsData.slice(0, visibleRows).map((data, index) => (
-        <tr key={index}>
-          <td>
+      resultsData.slice(startIndex, endIndex).map((data, index) => (
+        <React.Fragment key={index}>
+          <tr>
+            <th className="sortable" onClick={() => handleSort('HadithNo')}>
+              HadithNo {sortOrder === 'asc' ? '▲' : '▼'}
+            </th>
             <button
-              className="hadith-number-button "
+              className="hadith-number-button"
               onClick={() => handleHadithNumberClick(data.HadithNo?.value)}
-              style={{
-                backgroundColor: '#2e249e',
-                color: '#fff',
-                padding: '8px 20px',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                border: 'none',
-                outline: 'none',
-                fontSize: '16px',
-                fontFamily: "'Lexend Deca', 'Jost', sans-serif",
-              }}
             >
               {data.HadithNo?.value}
-            </button>
-          </td>
-          <td>{data.NarratorName?.value}</td>
-          <td>{data.NarratorType?.value}</td>
-          <td>{data.RootNarrator?.value}</td>
-          <td>{data.Text?.value}</td>
-          <td>{data.Theme?.value}</td>
-          <td>{data.Refer?.value}</td>
-          <td>{data.rootNarratorType?.value}</td>
-          <td>{data.subtheme?.value}</td>
-        </tr>
+            </button>          
+          </tr>
+          <tr>
+            <th>Chapters</th>
+            <td>{data.Chapters?.value}</td>
+          </tr>
+          <tr>
+            <th>NarratorNames</th>
+            <td>{data.NarratorNames?.value.split(',').map(name => name.trim()).join('  ,  ')}</td>
+          </tr>
+          <tr>
+            <th>NarratorTypes</th>
+            <td>{data.NarratorTypes?.value.split(',').map(name => name.trim()).join('  ,  ')}</td>
+          </tr>
+          <tr>
+            <th>References</th>
+            <td>{data.RefTypes?.value}</td>
+          </tr>
+          <tr>
+            <th>Refers</th>
+            <td>{data.Refers?.value}</td>
+          </tr>
+          <tr>
+            <th>Root Narrator Types</th>
+            <td>{data.RootNarratorTypes?.value.split(',').map(name => name.trim()).join('  ,  ')}</td>
+          </tr>
+          <tr>
+            <th>Root Narrators</th>
+            <td>{data.RootNarrators?.value.split(',').map(name => name.trim()).join('  ,  ')}</td>
+          </tr>
+          <tr>
+            <th>Sub Themes</th>
+            <td>{data.Subthemes?.value}</td>
+          </tr>
+          {data.Texts?.value && (
+          <tr>
+            {index === 0 && <th>Hadith Text</th>}
+            <td>
+              {isTextsExpanded ? data.Texts?.value : `${data.Texts?.value.slice(0, 100)}...`}
+              {data.Texts?.value && (
+                <button className="view-more-button" onClick={toggleTextsExpansion}>
+                  {isTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
+          <tr>
+            <th>Themes</th>
+            <td>{data.Themes?.value}</td>
+          </tr>
+          <tr>
+            <th>Verse Nos</th>
+            <td>{data.VerseNos?.value}</td>
+          </tr>
+          <tr>
+            <th>Verse Texts</th>
+            <td>{data.VerseTexts?.value}</td>
+          </tr>
+        </React.Fragment>
       ))
     );
   };
+  
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+  const handleJumpToPage = (pageNumber) => {
+    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
+    setCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
 
   return (
     <div>
-      <div className="hadith-query-results">
-        <div className="back-button-HQR" onClick={() => window.history.back()}>
-          <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      <div className="back-button-VQR" onClick={() => window.history.back()}>
+        <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      </div>
+      {resultsData && (
+        <div className="details-table-HQR">
+          <table>
+            <tbody>{renderTableData()}</tbody>
+          </table>
         </div>
-        {resultsData && (
-          <div className="details-table">
-            <table>
-              <thead>
-                <tr>
-                  <th className="sortable" onClick={() => handleSort('HadithNo')}>
-                    Hadith Number {sortOrder === 'asc' ? '▲' : '▼'}
-                  </th>
-                  <th>Narrator Name</th>
-                  <th>Narrator Type</th>
-                  <th>Root Narrator</th>
-                  <th style={{ width: '30%' }}>Text</th> {/* Set the width directly here */}
-                  <th>Theme</th>
-                  <th>Mentioned</th>
-                  <th>Root Narrator Type</th>
-                  <th>Subtheme</th>
-                </tr>
-              </thead>
-              <tbody>{renderTableData()}</tbody>
-            </table>
-          </div>
-        )}
-        {resultsData && resultsData.length > ROWS_TO_SHOW_INITIAL && (
-          <div>
-            <button className="view-button" onClick={toggleExpand}>
-              {isExpanded ? 'View Less' : 'View More'} ({visibleRows} of {resultsData.length} rows shown)
-            </button>
-          </div>
-        )}
+      )}
+      <div className="pagination top-right-HQR">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Prev
+        </button>
+        <span>{`Page ${currentPage}`}</span>
+        <button onClick={handleNextPage} disabled={currentPage * ITEMS_PER_PAGE >= resultsData.length}>
+          Next
+        </button>
+      </div>
+      <div className="pagination top-right-HQR-2">
+        <span id="page-jump-HQR">Jump to :</span>
+        <input
+          type="number"
+          value={currentPage}
+          onChange={(e) => setCurrentPage(e.target.value)}
+          min={1}
+          max={maxJump}
+        />
+        <span id="page-max-HQR">{`Max: ${maxJump}`}</span>
       </div>
       <div className="Footer-portion-HQR">
         <Footer />

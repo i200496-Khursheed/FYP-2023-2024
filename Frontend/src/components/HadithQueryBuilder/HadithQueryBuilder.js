@@ -31,6 +31,8 @@ const HadithQueryBuilder = () => {
   const [narratorNameOptions, setNarratorNameOptions] = useState([]);
   const [mentionsOptions, setMentionsOptions] = useState([]);
 
+  const MAX_LIMIT = 20000; // Example value
+
   /* Hadith Number Filter Selection */
   const [hadithNumberInputValue, setHadithNumberInputValue] = useState('');
   const [filteredHadithNumbers, setFilteredHadithNumbers] = useState([]);
@@ -140,7 +142,21 @@ const HadithQueryBuilder = () => {
     setFilteredMentions(filteredOptions.slice(0, 8));
   };
 
+  // Update the SendDataToBackend function to include the limit value in the JSON data
   const SendDataToBackend = () => {
+    // Check if any field is selected
+    if (
+      data.theme === '' &&
+      data.hadith_number === '' &&
+      data.narrators.every((narrator) => narrator.title === '' && narrator.name === '') &&
+      data.mentions === ''
+    ) {
+      // If no field is selected, show alert
+      alert('Please select at least one option');
+      return;
+    }
+  
+    // Proceed with sending data to backend
     console.log('POST');
     const url = 'http://127.0.0.1:8000/api/query_hadith/';
     setLoading(true);
@@ -149,14 +165,18 @@ const HadithQueryBuilder = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, applyLimit: true, limit: limitValue }), // Include limit value in JSON data
     })
       .then((response) => response.json())
       .then((responseData) => {
         console.log('Success:', responseData);
-        if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+        if (
+          responseData.result &&
+          responseData.result.results &&
+          responseData.result.results.bindings
+        ) {
           const results = responseData.result.results.bindings;
-          console.log('Results:', results);
+          console.log('Results for new is :', results);
           navigate('/hadith-query-results', { state: { resultsData: results } });
         } else {
           console.error('Results or bindings not found in response data.');
@@ -169,6 +189,8 @@ const HadithQueryBuilder = () => {
         setLoading(false);
       });
   };
+  
+
 
   const incrementValue = () => {
     setLimitValue(Math.min(limitValue + 1, MAX_LIMIT));
@@ -246,6 +268,13 @@ const HadithQueryBuilder = () => {
       });
   }, []);
 
+
+  const handleNarratorLogicChange = (index, logic) => {
+    const updatedLogic = [...narratorLogic];
+    updatedLogic[index] = logic;
+    setNarratorLogic(updatedLogic);
+  };
+  
 // end
 
 return (
@@ -334,13 +363,13 @@ return (
             <div className="narrator-logic-buttons">
               <button
                 className={`logic-button ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
-                onClick={() => handleNarratorLogicChange(index)}
+                onClick={() => handleNarratorLogicChange(index, 'AND')}
               >
                 AND
               </button>
               <button
                 className={`logic-button ${narratorLogic[index] === 'OR' ? 'selected' : ''}`}
-                onClick={() => handleNarratorLogicChange(index)}
+                onClick={() => handleNarratorLogicChange(index, 'OR')}
               >
                 OR
               </button>
@@ -413,12 +442,15 @@ return (
           <button className="increment" onClick={incrementValue}>+</button>
         </div>
     </div>
-    </div>
+    
     {loading && (
-      <div className="loader-container">
+      <div className="loader-container2">
         <Loader type="Oval" color="#4639E3" height={40} width={40} />
       </div>
     )}
+
+    </div>
+
     <div className='Footer-portion'>
         <Footer />
     </div>

@@ -24,6 +24,25 @@ const CommentaryQueryResults = () => {
     }
   };
 
+  const [isTextsExpanded, setIsTextsExpanded] = useState(false);
+
+  const toggleTextsExpansion = () => {
+    setIsTextsExpanded(!isTextsExpanded);
+  };
+
+
+  const [isSecTextsExpanded, setIsSecTextsExpanded] = useState(false);
+
+  const toggleSecTextsExpansion = () => {
+    setIsSecTextsExpanded(!isSecTextsExpanded);
+  };
+
+  const [isVTextsExpanded, setIsVTextsExpanded] = useState(false);
+
+  const toggleVTextsExpansion = () => {
+    setIsVTextsExpanded(!isVTextsExpanded);
+  };
+
   const renderTableData = () => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -46,30 +65,53 @@ const CommentaryQueryResults = () => {
             <th>Verse Number</th>
             <td>{data.V_nos?.value}</td>
           </tr>
+          {data.V_Texts?.value && (
           <tr>
-            <th>Verse Text</th>
-            <td>{data.V_Texts?.value}</td>
+            {index === 0 && <th>Verse Text</th>}
+            <td>
+              {isVTextsExpanded ? data.V_Texts?.value : `${data.V_Texts?.value.slice(0, 100)}...`}
+              {data.V_Texts?.value && (
+                <button className="view-more-button" onClick={toggleVTextsExpansion}>
+                  {isVTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
           </tr>
+        )}
+          {data.Texts?.value && (
           <tr>
-            <th>Text</th>
-            <td>{data.Texts?.value}</td>
+            {index === 0 && <th>Text</th>}
+            <td>
+              {isTextsExpanded ? data.Texts?.value : `${data.Texts?.value.slice(0, 100)}...`}
+              {data.Texts?.value && (
+                <button className="view-more-button" onClick={toggleTextsExpansion}>
+                  {isTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
           </tr>
+        )}
           <tr>
             <th>Section Chapter</th>
             <td>{data.sec_chps?.value}</td>
-          </tr>
-          <tr className="commentary-text">
-            <th>Commentary Text</th>
-            <td>{data.sec_texts?.value}</td>
           </tr>
           <tr>
             <th>Section Number</th>
             <td>{data.sec_nos?.value}</td>
           </tr>
+          {data.sec_texts?.value && (
           <tr>
-            <th>Section Text</th>
-            <td>{data.sec_texts?.value}</td>
+            {index === 0 && <th>Section Text</th>}
+            <td>
+              {isSecTextsExpanded ? data.sec_texts?.value : `${data.sec_texts?.value.slice(0, 100)}...`}
+              {data.sec_texts?.value && (
+                <button className="view-more-button" onClick={toggleSecTextsExpansion}>
+                  {isSecTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
           </tr>
+        )}
           <tr>
             <th>Person Names</th>
             <td>{data.person_names?.value}</td>

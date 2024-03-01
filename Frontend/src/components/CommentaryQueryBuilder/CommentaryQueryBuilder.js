@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './CommentaryQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
+import { Oval as Loader } from 'react-loader-spinner';
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
@@ -77,15 +78,33 @@ const CommentaryQueryBuilder = () => {
   };
 
   const SendDataToBackend = () => {
+
+    // Check if any field is selected
+    if (
+      data.commno === '' &&
+      data.chapterNo === '' &&
+      data.narrators.every((narrator) => narrator.title === '' && narrator.name === '') &&
+      data.verseNo === '' &&
+      data.subtheme === '' &&
+      data.theme === '' && 
+      data.mentions === ''
+    ) {
+      // If no field is selected, show alert
+      alert('Please select at least one option');
+      return;
+    }
+
+
     console.log("POST")
     const url = 'http://127.0.0.1:8000/api/query_commentary/';
-    
+    setLoading(true);
+
     fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, applyLimit: true, limit: limitValue }), // Include limit value in JSON data
     })
       .then((response) => response.json())
       .then((responseData) => {
@@ -102,9 +121,13 @@ const CommentaryQueryBuilder = () => {
       })
       .catch((error) => {
         //console.error('Error:', error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
+  const [loading, setLoading] = useState(false);
   const [limitValue, setLimitValue] = useState(0);
 
 const incrementValue = () => {
@@ -472,7 +495,14 @@ useEffect(() => {
             <button className="increment-commentary" onClick={incrementValue}>+</button>
           </div>
       </div>
+      
+      {loading && (
+      <div className="loader-container4">
+        <Loader type="Oval" color="#4639E3" height={40} width={40} />
       </div>
+    )}
+      </div>
+
       <div className='Footer-portion'>
         <Footer />
       </div> 

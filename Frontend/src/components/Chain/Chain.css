@@ -5,7 +5,6 @@
   align-items: center;
   width: 800px;
   font-size: 18px;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
   font-weight: bold;
   transition: height 0.3s;
   margin-top: 5%;
@@ -15,7 +14,7 @@
   text-align: center;
   left: 45%;
   width: 850px;
-  height: 200px;
+  height: 300px;
   border-radius: 10px;
   background-color: #ffffff;
   border: 1px solid #EE9AE5;
@@ -30,13 +29,15 @@
   transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-/* Updated styles for the text */
 .query-text-box-chain p {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
-  margin: 0;
+  font-size: 16px !important; /* Decrease the font size here */
+  margin: 10px;
+  line-height: 50.9px;
+  font-family: 'Noto Sans Arabic', sans-serif; /* Change the font family here */
+  word-spacing: 3.5px;
 }
+
+
 
 /* Hover effect for a subtle change */
 .query-text-box-chain:hover {
@@ -139,7 +140,7 @@
 
 .link-line {
   position: absolute;
-  top: 50%;
+  top:-50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -260,7 +261,7 @@
 .show-chain-button {
   cursor: pointer;
   position: absolute;
-  bottom: 355px;
+  bottom: 255px;
   left: 750px;
   transform: translateX(-50%);
   background: linear-gradient(to right, #4639E3, #381f6c);

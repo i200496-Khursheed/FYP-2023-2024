@@ -64,6 +64,7 @@
   font-family: 'Noto Sans Arabic', sans-serif;
   font-weight: bold;
   line-height: 2.5;
+  word-spacing: 3.5px;
 }
 
 .details-table-CQR th {

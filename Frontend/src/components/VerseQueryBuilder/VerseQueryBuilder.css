@@ -462,3 +462,11 @@ body, p{
   max-width: 100%;
   overflow-x: hidden;
 }
+
+.loader-container3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -61%;
+  margin-left: 48%;
+}

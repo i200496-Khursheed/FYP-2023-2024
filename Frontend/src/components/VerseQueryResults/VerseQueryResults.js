@@ -11,9 +11,12 @@ const VerseQueryResults = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
-
   const [maxJump, setMaxJump] = useState(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
 
+  // State variables to track whether each section should be expanded
+  const [isCommentaryExpanded, setIsCommentaryExpanded] = useState(false);
+  const [isHadithExpanded, setIsHadithExpanded] = useState(false);
+  const [isSegmentExpanded, setIsSegmentExpanded] = useState(false);
 
   const handleSort = (field) => {
     if (sortOrder === 'asc') {
@@ -23,6 +26,18 @@ const VerseQueryResults = () => {
       resultsData?.sort((a, b) => b[field]?.value.localeCompare(a[field]?.value));
       setSortOrder('asc');
     }
+  };
+
+  const toggleCommentaryExpansion = () => {
+    setIsCommentaryExpanded(!isCommentaryExpanded);
+  };
+
+  const toggleHadithExpansion = () => {
+    setIsHadithExpanded(!isHadithExpanded);
+  };
+
+  const toggleSegmentExpansion = () => {
+    setIsSegmentExpanded(!isSegmentExpanded);
   };
 
   const renderTableData = () => {
@@ -39,55 +54,85 @@ const VerseQueryResults = () => {
           </tr>
           <tr>
             {index === 0 && <th>Surah Name</th>}
-            <td>{data.Surahname?.value}</td>
+            <td>{data.Surahnames?.value}</td>
           </tr>
           <tr>
             {index === 0 && <th>Text</th>}
-            <td>{data.Text?.value}</td>
+            <td>{data.Texts?.value}</td>
           </tr>
+          {/* Render the commentary text with "View more" button */}
+          {data.commtexts?.value && (
+          <tr>
+            {index === 0 && <th>Commentary Text</th>}
+            <td>
+              {isCommentaryExpanded ? data.commtexts?.value : `${data.commtexts?.value.slice(0, 150)}...`}
+              {data.commtexts?.value && (
+                <button className="view-more-button" onClick={toggleCommentaryExpansion}>
+                  {isCommentaryExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
+          {/* Render the Hadith text with "View more" button */}
+          {data.hadithtexts?.value && (
+          <tr>
+            {index === 0 && <th>Hadith Text</th>}
+            <td>
+              {isHadithExpanded ? data.hadithtexts?.value : `${data.hadithtexts?.value.slice(0, 100)}...`}
+              {data.hadithtexts?.value && (
+                <button className="view-more-button" onClick={toggleHadithExpansion}>
+                  {isHadithExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
+          {/* Render the segment text with "View more" button */}
+          {data.segment_texts?.value && (
+            <tr>
+              {index === 0 && <th>Segment Text</th>}
+              <td>
+                {isSegmentExpanded ? data.segment_texts?.value : `${data.segment_texts?.value.slice(0, 100)}...`}
+                {data.segment_texts?.value && (
+                  <button className="view-more-button" onClick={toggleSegmentExpansion}>
+                    {isSegmentExpanded ? 'View less' : 'View more'}
+                  </button>
+                )}
+              </td>
+            </tr>
+          )}
           <tr>
             {index === 0 && <th>Chapter</th>}
             <td>{data.chapter?.value}</td>
           </tr>
           <tr>
             {index === 0 && <th>Commentary Number</th>}
-            <td>{data.commno?.value}</td>
-          </tr>
-          <tr>
-            {index === 0 && <th>Commentary Text</th>}
-            <td>{data.commtext?.value}</td>
+            <td>{data.commnos?.value.split(';').map(name => name.trim()).join(' ;  ')}</td>
           </tr>
           <tr>
             {index === 0 && <th>Hadith Number</th>}
-            <td>{data.hadithno?.value}</td>
-          </tr>
-          <tr>
-            {index === 0 && <th>Hadith Text</th>}
-            <td>{data.hadithtext?.value}</td>
+            <td>{data.hadithnos?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
           </tr>
           <tr>
             {index === 0 && <th>Name</th>}
-            <td>{data.name?.value}</td>
+            <td>{data.names?.value.split(';').map(name => name.trim()).join(' ;  ')}</td>
           </tr>
           <tr>
             {index === 0 && <th>Reference</th>}
-            <td>{data.reference?.value}</td>
-          </tr>
-          <tr>
-            {index === 0 && <th>Segment Text</th>}
-            <td>{data.segment_text?.value}</td>
+            <td>{data.references?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
           </tr>
           <tr>
             {index === 0 && <th>Subtheme</th>}
-            <td>{data.subtheme?.value}</td>
+            <td>{data.subthemes?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
           </tr>
           <tr>
             {index === 0 && <th>Theme Name</th>}
-            <td>{data.themename?.value}</td>
+            <td>{data.themenames?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
           </tr>
           <tr>
             {index === 0 && <th>Hadith Theme</th>}
-            <td>{data.hadithTheme?.value}</td>
+            <td>{data.hadithThemes?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
           </tr>
         </React.Fragment>
       ))
