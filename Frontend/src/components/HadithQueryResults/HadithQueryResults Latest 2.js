@@ -96,14 +96,10 @@ const HadithQueryResults = () => {
     setIsTextsExpanded(!isTextsExpanded);
   };
 
-  const parseHadithText = (hadithText, narratorNames, rootNarrator) => {
+  const parseHadithText = (hadithText, narratorNames) => {
     if (!hadithText || !narratorNames) return hadithText;
   
-    const narratorNamesArray = narratorNames.split(',').map(name => name.trim());
-    const rootNarratorArray = rootNarrator.split(',').map(name => name.trim());
-    const namesArray = [...narratorNamesArray, ...rootNarratorArray];
-
-    console.log("Root Narrators are: ", rootNarrator)
+    const namesArray = narratorNames.split(',').map(name => name.trim());
     const textWithClickableNames = [];
     let currentIndex = 0;
   
@@ -159,6 +155,10 @@ const HadithQueryResults = () => {
           <tr>
             <th>NarratorTypes</th>
             <td>{data.NarratorTypes?.value}</td>
+          </tr>
+          <tr>
+            <th>References</th>
+            <td>{data.RefTypes?.value}</td>
           </tr>
           <tr>
             <th>Refers</th>

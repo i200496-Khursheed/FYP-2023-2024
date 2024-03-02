@@ -259,7 +259,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     baseQueryString += f'''\n  ?HadithNo1 :hasText ?Text.'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo ?HadithNo.'''
     baseQueryString += f'''\n  ?HadithNo1 :hasTheme ?Theme_url.'''
-    #baseQueryString += f'''\n  ?Theme_url :hasName ?Theme.'''
+    baseQueryString += f'''\n  ?Theme_url :hasName ?Theme.'''
     baseQueryString += f'''\n  OPTIONAL {{'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithText ?text.'''
     baseQueryString += f'''\n  ?text :containsSegment ?seg.'''
@@ -292,7 +292,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
 
 
     if theme != '?theme':
-        baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
+        baseQueryString += f'''\n  ?Theme_url :hasName "{theme}" .'''
 
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
@@ -614,10 +614,10 @@ if __name__ == "__main__":
     query = constructHadithSparQLQueryString(theme='lugha')"""
     # query = constructHadithSparQLQueryString()
 
-    query = constructVerseSparQLQueryString(verseNo=258)
+    #query = constructVerseSparQLQueryString(verseNo=258)
 
     #query = constructCommentarySparQLQueryString(theme='asbab')
-    #query = constructHadithSparQLQueryString(narrator='عثمان بن سعيد')
+    query = constructHadithSparQLQueryString(narrator='عثمان بن سعيد')
     #query = getNarratorChain(hadith_number="120")
     print(query)
     results = []

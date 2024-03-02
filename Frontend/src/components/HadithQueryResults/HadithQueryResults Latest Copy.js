@@ -96,28 +96,24 @@ const HadithQueryResults = () => {
     setIsTextsExpanded(!isTextsExpanded);
   };
 
-  const parseHadithText = (hadithText, narratorNames, rootNarrator) => {
+  const parseHadithText = (hadithText, narratorNames) => {
     if (!hadithText || !narratorNames) return hadithText;
   
-    const narratorNamesArray = narratorNames.split(',').map(name => name.trim());
-    const rootNarratorArray = rootNarrator.split(',').map(name => name.trim());
-    const namesArray = [...narratorNamesArray, ...rootNarratorArray];
-
-    console.log("Root Narrators are: ", rootNarrator)
+    const namesArray = narratorNames.split(',').map(name => name.trim());
     const textWithClickableNames = [];
     let currentIndex = 0;
   
     namesArray.forEach(name => {
       const index = hadithText.indexOf(name, currentIndex);
       if (index !== -1) {
-        textWithClickableNames.push(hadithText.substring(currentIndex, index));
-  
         textWithClickableNames.push(
-          <button className="narrator-name" onClick={() => handleNarratorNameClick(name)}>
-            {name}
-          </button>
+          <React.Fragment key={index}>
+            {hadithText.substring(currentIndex, index)}
+            <button className="narrator-name" onClick={() => handleNarratorNameClick(name)}>
+              {name}
+            </button>
+          </React.Fragment>
         );
-  
         currentIndex = index + name.length;
       }
     });
@@ -126,7 +122,6 @@ const HadithQueryResults = () => {
   
     return textWithClickableNames;
   };
-  
 
   
   const renderTableData = () => {
@@ -161,6 +156,10 @@ const HadithQueryResults = () => {
             <td>{data.NarratorTypes?.value}</td>
           </tr>
           <tr>
+            <th>References</th>
+            <td>{data.RefTypes?.value}</td>
+          </tr>
+          <tr>
             <th>Refers</th>
             <td>{data.Refers?.value}</td>
           </tr>
@@ -177,19 +176,18 @@ const HadithQueryResults = () => {
             <td>{data.Subthemes?.value}</td>
           </tr>
           {data.Texts?.value && (
-            <tr>
-              {index === 0 && <th>Hadith Text</th>}
-              <td>
-                {isTextsExpanded ? parseHadithText(data.Texts?.value, data.NarratorNames?.value, data.RootNarrators?.value) : `${data.Texts?.value.slice(0, 100)}...`}
-                {data.Texts?.value && (
-                  <button className="view-more-button" onClick={toggleTextsExpansion}>
-                    {isTextsExpanded ? 'View less' : 'View more'}
-                  </button>
-                )}
-              </td>
-            </tr>
-          )}
-
+          <tr>
+            {index === 0 && <th>Hadith Text</th>}
+            <td>
+              {isTextsExpanded ? data.Texts?.value : `${data.Texts?.value.slice(0, 100)}...`}
+              {data.Texts?.value && (
+                <button className="view-more-button" onClick={toggleTextsExpansion}>
+                  {isTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
           <tr>
             <th>Themes</th>
             <td>{data.Themes?.value}</td>
