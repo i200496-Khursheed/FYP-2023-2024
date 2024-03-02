@@ -16,8 +16,8 @@
   bottom: -15px; 
   max-height: 800px; 
   overflow: auto; 
-  width: 79%; 
-  left: 6%; 
+  width: 81.4%; 
+  left: 5%; 
   margin-left: 0; 
   max-height: 110vh;
 }
@@ -66,7 +66,7 @@
   font-family: 'Noto Sans Arabic', sans-serif;
   font-weight: bold;
   line-height: 2.5;
-  word-spacing: 3.5px;
+  word-spacing: -0.3px;
 }
 
 .details-table-HQR th {
@@ -79,13 +79,13 @@
 .pagination.top-right-HQR {
   position: absolute;
   top: 350px;
-  right: 20px;
+  right: 2px;
 }
 
 .pagination.top-right-HQR-2 {
   position: absolute;
   top: 400px;
-  right: 10px;
+  right: 2px;
 }
 
 /* Prev and Next buttons */
@@ -109,12 +109,12 @@
 
 #page-jump-HQR{
   font-size: 16px;
-  margin: 5px;
+  margin: 3px;
 }
 
 #page-max-HQR{
   font-size: 16px;
-  margin: 5px;
+  /*margin: 0px;*/
 }
 
 
@@ -155,14 +155,14 @@
   font-size: 1.2em; /* Enlarge font size on hover */
 }
 
-
-
-.clickable-part {
+/* Add animation for clickable names */
+.narrator-name {
   cursor: pointer;
   color: blue; /* Change color to your preference */
   text-decoration: underline;
 }
 
-.clickable-part:hover {
+/* Increase font size and change color on hover */
+.narrator-name:hover {
   color: darkblue; /* Change color to your preference */
 }

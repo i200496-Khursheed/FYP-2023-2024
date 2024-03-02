@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import './Chain.css';
 
 const Chain = () => {
@@ -12,6 +14,10 @@ const Chain = () => {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [displayText, setDisplayText] = useState('Dummy Text');
+
+  const [uniqueNarratorNames, setUniqueNarratorNames] = useState([]);
+
+  const navigate = useNavigate();
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -76,13 +82,26 @@ const Chain = () => {
   console.log("RESULTS DATA:", resultsData); // Log the resultsData here
 
   useEffect(() => {
-    console.log("RESULTS DATA:", resultsData); // Log the resultsData here
-
-    if (resultsData && resultsData.result && resultsData.result.results && resultsData.result.results.bindings) {
+    if (
+      resultsData &&
+      resultsData.result &&
+      resultsData.result.results &&
+      resultsData.result.results.bindings
+    ) {
       const textValue = resultsData.result.results.bindings[0].Text.value;
-      setDisplayText(textValue);
+      const rootNarrator = resultsData.result.results.bindings[0]?.RootNarrator.value;
+      setDisplayText(parseDisplayText(textValue, uniqueNarratorNames, rootNarrator));
     }
-
+  }, [resultsData, uniqueNarratorNames]);
+  
+useEffect(() => {
+    const uniqueNames = resultsData && resultsData.result && resultsData.result.results &&
+      Array.from(new Set(
+        resultsData.result.results.bindings.map(
+          (binding) => binding.NarratorName.value
+        )
+      ));
+    setUniqueNarratorNames(uniqueNames);
   }, [resultsData]);
 
   useEffect(() => {
@@ -93,7 +112,42 @@ const Chain = () => {
       window.removeEventListener('resize', calculateLinePositions);
     };
   }, [isExpanded]);
+  
 
+  const handleNarratorNameClick = (Refer) => {
+    // Define the action when narrator name is clicked
+    console.log("Narrator Name clicked:", Refer);
+    navigate('/people-page', { state: { Refer} });
+  };
+
+  const parseDisplayText = (text, uniqueNarratorNames, rootNarrator) => {
+    if (!text || !uniqueNarratorNames || uniqueNarratorNames.length === 0) return text;
+  
+    const textWithClickableNames = [];
+    let currentIndex = 0;
+  
+    const allNames = [...uniqueNarratorNames, rootNarrator];
+  
+    allNames.forEach(name => {
+      const index = text.indexOf(name, currentIndex);
+      if (index !== -1) {
+        textWithClickableNames.push(text.substring(currentIndex, index));
+  
+        textWithClickableNames.push(
+          <span className="narrator-name-Chain" onClick={() => handleNarratorNameClick(name)}>
+            {name}
+          </span>
+        );
+  
+        currentIndex = index + name.length;
+      }
+    });
+  
+    textWithClickableNames.push(text.substring(currentIndex));
+  
+    return textWithClickableNames;
+  };
+  
   return (
   <div className={`hadith-query-results-chain ${isExpanded ? 'expanded' : ''}`}>
     <div className="back-button-HQR" onClick={() => window.history.back()}>

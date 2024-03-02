@@ -295,3 +295,14 @@
 }
 
 
+/* Add animation for clickable names */
+.narrator-name-Chain {
+  cursor: pointer;
+  color: blue; /* Change color to your preference */
+  text-decoration: underline;
+}
+
+/* Increase font size and change color on hover */
+.narrator-name-Chain:hover {
+  color: darkblue; /* Change color to your preference */
+}

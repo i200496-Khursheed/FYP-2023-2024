@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import './CommentaryQueryResults.css';
 import Footer from '../Footer/Footer';
 
@@ -8,6 +10,9 @@ const ITEMS_PER_PAGE = 1; // Number of items to display per page
 const CommentaryQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
+
+  const navigate = useNavigate();
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
@@ -69,7 +74,7 @@ const CommentaryQueryResults = () => {
           <tr>
             {index === 0 && <th>Verse Text</th>}
             <td>
-              {isVTextsExpanded ? data.V_Texts?.value : `${data.V_Texts?.value.slice(0, 100)}...`}
+              {isVTextsExpanded ? parseText(data.V_Texts?.value, data.person_names?.value) : `${data.V_Texts?.value.slice(0, 100)}...`}
               {data.V_Texts?.value && (
                 <button className="view-more-button" onClick={toggleVTextsExpansion}>
                   {isVTextsExpanded ? 'View less' : 'View more'}
@@ -82,7 +87,7 @@ const CommentaryQueryResults = () => {
           <tr>
             {index === 0 && <th>Text</th>}
             <td>
-              {isTextsExpanded ? data.Texts?.value : `${data.Texts?.value.slice(0, 100)}...`}
+              {isTextsExpanded ? parseText(data.Texts?.value, data.person_names?.value) : `${data.Texts?.value.slice(0, 100)}...`}
               {data.Texts?.value && (
                 <button className="view-more-button" onClick={toggleTextsExpansion}>
                   {isTextsExpanded ? 'View less' : 'View more'}
@@ -103,7 +108,7 @@ const CommentaryQueryResults = () => {
           <tr>
             {index === 0 && <th>Section Text</th>}
             <td>
-              {isSecTextsExpanded ? data.sec_texts?.value : `${data.sec_texts?.value.slice(0, 100)}...`}
+              {isSecTextsExpanded ? parseText(data.sec_texts?.value, data.person_names?.value) : `${data.sec_texts?.value.slice(0, 100)}...`}
               {data.sec_texts?.value && (
                 <button className="view-more-button" onClick={toggleSecTextsExpansion}>
                   {isSecTextsExpanded ? 'View less' : 'View more'}
@@ -157,6 +162,44 @@ const CommentaryQueryResults = () => {
     setCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
     setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
   };
+
+
+  const handleNarratorNameClick = (Refer) => {
+    // Define the action when narrator name is clicked
+    console.log("Narrator Name clicked:", Refer);
+    navigate('/people-page', { state: { Refer} });
+  };
+  // 1) Parsing Hadith Text
+
+  const parseText = (hadithText, narratorNames) => {
+    if (!hadithText || !narratorNames) return hadithText;
+  
+    const narratorNamesArray = narratorNames.split(',').map(name => name.trim());
+    const namesArray = [...narratorNamesArray];
+  
+    const textWithClickableNames = [];
+    let currentIndex = 0;
+  
+    namesArray.forEach(name => {
+      const index = hadithText.indexOf(name, currentIndex);
+      if (index !== -1) {
+        textWithClickableNames.push(hadithText.substring(currentIndex, index));
+  
+        textWithClickableNames.push(
+          <span className="narrator-name-CQR" onClick={() => handleNarratorNameClick(name)}>
+            {name}
+          </span>
+        );
+  
+        currentIndex = index + name.length;
+      }
+    });
+  
+    textWithClickableNames.push(hadithText.substring(currentIndex));
+  
+    return textWithClickableNames;
+  };
+
 
   return (
     <div>

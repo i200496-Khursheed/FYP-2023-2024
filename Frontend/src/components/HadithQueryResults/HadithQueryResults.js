@@ -74,21 +74,22 @@ const HadithQueryResults = () => {
     sendHadithNumberToDifferentBackend(hadithNo);
   };
 
-  const handleRootNarratorClick = (rootNarrator) => {
-    // Define the action when root narrator is clicked
-    console.log("Root Narrator clicked:", rootNarrator);
-  };
+  // const handleRootNarratorClick = (rootNarrator) => {
+  //   // Define the action when root narrator is clicked
+  //   console.log("Root Narrator clicked:", rootNarrator);
+  // };
 
-  const handleNarratorNameClick = (narratorName) => {
+  const handleNarratorNameClick = (Refer) => {
     // Define the action when narrator name is clicked
-    console.log("Narrator Name clicked:", narratorName);
+    console.log("Narrator Name clicked:", Refer);
+    navigate('/people-page', { state: { Refer} });
   };
   
 
-  const handleReferClick = (Refer) => {
-    // Pass the Refer value to the People component
-    navigate('/people-page', { state: { Refer } });
-  };
+  // const handleReferClick = (Refer) => {
+  //   // Pass the Refer value to the People component
+  //   navigate('/people-page', { state: { Refer } });
+  // };
 
   const [isTextsExpanded, setIsTextsExpanded] = useState(false);
 
@@ -96,14 +97,14 @@ const HadithQueryResults = () => {
     setIsTextsExpanded(!isTextsExpanded);
   };
 
-  const parseHadithText = (hadithText, narratorNames, rootNarrator) => {
+  const parseHadithText = (hadithText, narratorNames, rootNarrator, refers) => {
     if (!hadithText || !narratorNames) return hadithText;
   
     const narratorNamesArray = narratorNames.split(',').map(name => name.trim());
     const rootNarratorArray = rootNarrator.split(',').map(name => name.trim());
-    const namesArray = [...narratorNamesArray, ...rootNarratorArray];
-
-    console.log("Root Narrators are: ", rootNarrator)
+    const refersArray = refers.split(',').map(name => name.trim());
+    const namesArray = [...narratorNamesArray, ...rootNarratorArray, ...refersArray];
+  
     const textWithClickableNames = [];
     let currentIndex = 0;
   
@@ -113,9 +114,9 @@ const HadithQueryResults = () => {
         textWithClickableNames.push(hadithText.substring(currentIndex, index));
   
         textWithClickableNames.push(
-          <button className="narrator-name" onClick={() => handleNarratorNameClick(name)}>
+          <span className="narrator-name" onClick={() => handleNarratorNameClick(name)}>
             {name}
-          </button>
+          </span>
         );
   
         currentIndex = index + name.length;
@@ -126,6 +127,7 @@ const HadithQueryResults = () => {
   
     return textWithClickableNames;
   };
+  
   
 
   
@@ -180,7 +182,7 @@ const HadithQueryResults = () => {
             <tr>
               {index === 0 && <th>Hadith Text</th>}
               <td>
-                {isTextsExpanded ? parseHadithText(data.Texts?.value, data.NarratorNames?.value, data.RootNarrators?.value) : `${data.Texts?.value.slice(0, 100)}...`}
+                {isTextsExpanded ? parseHadithText(data.Texts?.value, data.NarratorNames?.value, data.RootNarrators?.value, data.Refers?.value) : `${data.Texts?.value.slice(0, 100)}...`}
                 {data.Texts?.value && (
                   <button className="view-more-button" onClick={toggleTextsExpansion}>
                     {isTextsExpanded ? 'View less' : 'View more'}
@@ -266,3 +268,11 @@ const HadithQueryResults = () => {
 };
 
 export default HadithQueryResults;
+
+/*
+commtexts
+hadithtexts
+segment_texts
+names
+references
+*/
