@@ -16,8 +16,8 @@ const VerseQueryBuilder = () => {
     chapterNo: '',
     verseNo: '',
     theme: '',
-    hadithTheme: '',
-    narrator: [{ title: '', name: '' }],
+    //hadithTheme: '',
+    narrator: [{ hadithTheme: '', name: '' }],
     reference: '',
   });
 
@@ -54,7 +54,8 @@ const VerseQueryBuilder = () => {
 
   const handleNarratorChange = (index, type, value) => {
     const updatedNarrators = [...data.narrator];
-    updatedNarrators[index][type] = value;
+    const hadithTheme = value;
+    updatedNarrators[index][type] = hadithTheme;
     setData({
       ...data,
       narrator: updatedNarrators,
@@ -64,7 +65,7 @@ const VerseQueryBuilder = () => {
  const handleAddNarrator = () => {
   setData((prevData) => ({
     ...prevData,
-    narrator: [...prevData.narrator, { title: '', name: '' }],
+    narrator: [...prevData.narrator, { hadithTheme: '', name: '' }],
   }));
 
   setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
@@ -108,41 +109,52 @@ const VerseQueryBuilder = () => {
   };
 
   const SendDataToBackend = () => {
-
-     // Check if any field is selected
-     if (
+    // Check if any field is selected
+    if (
       data.chapterNo === '' &&
       data.verseNo === '' &&
-      data.narrator.every((narrator) => narrator.title === '' && narrator.name === '') &&
-      data.hadithTheme === '' &&
       data.reference === '' &&
-      data.theme === ''
+      data.theme === '' &&
+      data.narrator.every((narrator) => narrator.hadithTheme === '' && narrator.name === '')
     ) {
       // If no field is selected, show alert
       alert('Please select at least one option');
       return;
     }
+  
+    // Include narrator logic in the JSON data
+    const updatedNarrators = data.narrator.map((narrator, index) => ({
+      ...narrator,
+      narratorLogic: narratorLogic[index] // Include narrator logic for each narrator
+    }));
 
-    console.log("POST")
-    console.log(data.hadithTheme);  // Add this line
+    const requestData = {
+      ...data,
+      narrator: updatedNarrators, // Include updated narrators array with logic
+      applyLimit: true,
+      limit: limitValue
+    };
+  
+    console.log("POST");
+    console.log(data.hadithTheme); // Add this line
     const url = 'http://127.0.0.1:8000/api/query_verse/';
     setLoading(true);
-
+  
     fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...data, applyLimit: true, limit: limitValue }), // Include limit value in JSON data
+      body: JSON.stringify(requestData), // Only include the relevant data in the request
     })
       .then((response) => response.json())
       .then((responseData) => {
         console.log('Success:', responseData);
-
+  
         if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
           const results = responseData.result.results.bindings;
           console.log('Results:', results);
-
+  
           navigate('/verse-query-results', { state: { resultsData: results } });
         } else {
           console.error('Results or bindings not found in response data.');
@@ -155,6 +167,7 @@ const VerseQueryBuilder = () => {
         setLoading(false);
       });
   };
+  
 
   const [loading, setLoading] = useState(false);
 
@@ -509,13 +522,16 @@ useEffect(() => {
               </div>
 
               <div className="dropdown-verse">
-                <label> Theme </label>
+                <label htmlFor={`hadithTheme${index}`}> Theme </label>
               <Select 
                 options={filteredVerseHadithThemeOptions}
                 inputValue={verseHadithThemeInputValue} 
                 isSearchable={true} 
                 onInputChange={handleVerseHadithThemeInputChange}
-                onChange={handleHadithThemeChange} />
+                onChange={(selectedOption) =>
+                  handleNarratorChange(index, 'hadithTheme', selectedOption.value)
+                }
+              />
               </div>
 
               <div className="dropdown-verse">
