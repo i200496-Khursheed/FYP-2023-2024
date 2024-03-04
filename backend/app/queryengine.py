@@ -626,3 +626,4 @@ if __name__ == "__main__":
     #result = Sparql_Endpoint(get_query,prefix)
     #print(result)
     print("finish")
+    print("le fin")
