@@ -232,10 +232,14 @@ def getNarratorChain(hadith_number='?hadith_number',
 
 
 def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
-                                     theme='?theme', mentions="?mentions", subtheme="?subtheme",
+                                     theme=None, or_theme=None, mentions="?mentions", subtheme="?subtheme",
                                      hadith_number='?hadith_number', RootNarrator='?root_narrator',
                                      narrator='?narrator', narratortitle='narrator-title',
                                      applyLimit=True, limit=""):
+    if theme is None:
+        theme = ['?theme']             #for themes of and clause
+    if or_theme is None:                    
+        or_theme = ['?theme']          #for themes of or clause
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -287,13 +291,32 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     baseQueryString += f'''\n  ?RootPerson :hasName ?RootNarrator .'''
     baseQueryString += f'''\n  ?RootPerson :hasNarratorType ?Roottype.'''
     baseQueryString += f'''\n  ?Roottype :hasType ?rootNarratorType.'''
+    
 
-
-
-
-    if theme != '?theme':
-        baseQueryString += f'''\n  ?Theme_url :hasName "{theme}" .'''
-
+    if theme[0]!= '?theme':
+        length = len(theme)
+       
+        for i in range(len(theme)):
+            print(f"Theme at index {i}: {theme[i]}")
+            baseQueryString += f'''  
+  {{
+    SELECT ?HadithNo1
+    WHERE {{
+      ?HadithNo1 :hasTheme ?Theme_url1.
+      ?Theme_url1 :hasName ?Theme1.
+      FILTER (?Theme1 = "{theme[i]}")
+    }}
+  }}   '''
+  
+    if or_theme[0]!= '?theme':
+        length = len(or_theme)
+        baseQueryString += f'''\n   FILTER( '''
+        for i in range(len(or_theme)):
+            print(f"Theme at index {i}: {or_theme[i]}")
+            baseQueryString += f'''  ?Theme = "{or_theme[i]}"   '''
+            if i != length-1: 
+                baseQueryString += f'''  || '''
+        baseQueryString += f'''   ) .'''
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
@@ -615,9 +638,10 @@ if __name__ == "__main__":
     # query = constructHadithSparQLQueryString()
 
     #query = constructVerseSparQLQueryString(verseNo=258)
-
+    themes = ["lugha", "kalam"]
+    or_themes = ["sufism"]
     #query = constructCommentarySparQLQueryString(theme='asbab')
-    query = constructHadithSparQLQueryString(narrator='عثمان بن سعيد')
+    query = constructHadithSparQLQueryString(theme=themes,or_theme=or_themes)
     #query = getNarratorChain(hadith_number="120")
     print(query)
     results = []
