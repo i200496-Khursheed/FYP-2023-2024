@@ -234,12 +234,16 @@ def getNarratorChain(hadith_number='?hadith_number',
 def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
                                      theme=None, or_theme=None, mentions="?mentions", subtheme="?subtheme",
                                      hadith_number='?hadith_number', RootNarrator='?root_narrator',
-                                     narrator='?narrator', narratortitle='narrator-title',
+                                     narrator=None,or_narrator=None, narratortitle='narrator-title',
                                      applyLimit=True, limit=""):
     if theme is None:
         theme = ['?theme']             #for themes of and clause
     if or_theme is None:                    
         or_theme = ['?theme']          #for themes of or clause
+    if narrator is None:
+        narrator = ['?narrator']             #for themes of and clause
+    if or_narrator is None:                    
+        or_narrator = ['?narrator']
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -317,12 +321,37 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
             if i != length-1: 
                 baseQueryString += f'''  || '''
         baseQueryString += f'''   ) .'''
+
+    if narrator[0]!= '?narrator':
+        length = len(narrator)
+       
+        for i in range(len(narrator)):
+            print(f"narrator at index {i}: {narrator[i]}")
+            baseQueryString += f'''  
+  {{
+    SELECT ?HadithNo1
+    WHERE {{
+      ?HadithNo1 :containsNarratorChain ?Narrators.
+      ?Narrators :hasNarratorSegment ?segment.
+      ?segment :refersTo ?Person.
+      ?Person :hasName ?NarratorName1.
+    FILTER (?NarratorName1 = {narrator[i]})
+     
+    }}
+  }}   '''
+  
+    if or_narrator[0]!= '?narrator':
+        length = len(or_narrator)
+        baseQueryString += f'''\n   FILTER( '''
+        for i in range(len(or_narrator)):
+            print(f"narrator at index {i}: {or_narrator[i]}")
+            baseQueryString += f'''  ?NarratorName = "{or_narrator[i]}"   '''
+            if i != length-1: 
+                baseQueryString += f'''  || '''
+        baseQueryString += f'''   ) .'''
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
-
-    if narrator != '?narrator':
-        baseQueryString += f'''\n     FILTER(CONTAINS(?NarratorName,"{narrator}"))''' 
         
 
     if narratortitle != 'narrator-title':
@@ -640,8 +669,9 @@ if __name__ == "__main__":
     #query = constructVerseSparQLQueryString(verseNo=258)
     themes = ["lugha", "kalam"]
     or_themes = ["sufism"]
+    or_narrator = ["عثمان بن سعيد","محمد بن العلاء"]
     #query = constructCommentarySparQLQueryString(theme='asbab')
-    query = constructHadithSparQLQueryString(theme=themes,or_theme=or_themes)
+    query = constructHadithSparQLQueryString(theme=themes, or_narrator=or_narrator)
     #query = getNarratorChain(hadith_number="120")
     print(query)
     results = []
