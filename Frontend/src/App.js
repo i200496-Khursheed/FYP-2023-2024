@@ -22,6 +22,10 @@ import FAQResultsPage from './pages/FAQResultsPage';
 
 import PeoplePage from './pages/PeoplePage';
 
+import TafseerPage from './pages/TafseerPage';
+
+import GraphPage from './pages/GraphPage';
+
 
 function App() {
 
@@ -81,6 +85,16 @@ function App() {
           <Route
             path="/people-page"
             element={<PeoplePage />} 
+          />
+
+          <Route
+            path="/tafseer-page"
+            element={<TafseerPage />} 
+          />
+
+          <Route
+            path="/al-tabari-graph"
+            element={<GraphPage />} 
           />
 
         </Routes>

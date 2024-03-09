@@ -1,0 +1,253 @@
+/* Tafseer CSS */
+.details-T {
+  border: 1px solid black;
+  position: relative;
+  bottom: -15px; 
+  max-height: 800px; 
+  overflow: auto; 
+  width: 91.5%; 
+  left: 3%;
+  margin-top: -0.8%; 
+  font-family: 'Noto Sans Arabic', sans-serif;
+  text-align: right; /* Align all text to the right */
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+  padding-right: 3%;
+  color: rgb(18, 18, 154);
+}
+
+.details-T p{
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+  font-size: 15px; 
+  border: 1.5px solid #ddd;
+  padding: 10px;
+  background-color: #f0f0f1;
+  text-align: right;
+  padding-right: 3%;
+  color: black;
+}
+
+
+.next-button {
+  margin-bottom: 5px;
+  margin-left: 5%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.next-button:hover {
+  background-color: #0056b3;
+}
+
+.previous-button {
+  margin-bottom: 5px;
+  margin-left: 5%;
+  padding: 10px 20px;
+  background-color: #ffffff; /* White background */
+  color: #007bff; /* Blue text color */
+  border: 2px solid #007bff; /* Blue border */
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.previous-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  color: #ffffff; /* White text color on hover */
+}
+
+
+
+.folder{
+  margin-left: 27%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px; /* Add margin to the bottom */
+  max-width: 50%;
+}
+
+.select-option-folder{
+  margin-left: 9%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px; /* Add margin to the bottom */
+  max-width: 50%;
+}
+
+.select-option-file{
+  margin-left: 5%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px; /* Add margin to the bottom */
+  max-width: 50%;
+}
+
+.file{
+  margin-left: 27%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px; /* Add margin to the bottom */
+  max-width: 50%;
+}
+
+
+.clickable-name {
+  position: relative;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.person {
+  color: blue; /* Color for persons */
+}
+
+.organization {
+  color: green; /* Color for organizations */
+}
+
+.location {
+  color: rgb(157, 87, 1); /* Color for locations */
+}
+
+.other {
+  color: purple; /* Color for other roles */
+}
+
+/* Tooltip styling */
+.clickable-name[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  top: -60px; /* Adjust tooltip position above the clickable name */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* Ensure tooltip appears above other elements */
+  font-size: 15px;
+}
+
+/* Adjust spacing around names */
+.name {
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+}
+
+
+/* Scroll bar CSS */
+/* Define scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+/* Handle portion of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Color of the scrollbar handle */
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Track portion of the scrollbar */
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker color on hover */
+}
+
+
+/* Enlarged XML CSS */
+.full-xml {
+  max-width: 100%;
+  padding: 30px;
+  margin: 10px auto; /* Center the content vertically */
+  background-color: #fff; /* White background */
+  border: 10px solid #030303;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+
+.full-xml-container {
+  margin: 0;
+  font-size: 24px;
+  line-height: 3.0;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  text-align: right;
+  font-weight: bold;
+  color: rgb(18, 18, 154);
+}
+
+/* Tooltip styling */
+.full-xml-container .clickable-name[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.full-xml-container p{
+  color: rgb(3, 3, 3);
+  font-family: 'Noto Sans Arabic', sans-serif;
+  background-color: #f0f0f1;
+  padding-right: 3%;
+
+}
+
+.enlarge-button {
+  position: absolute;
+  right: 92.7%;
+  bottom: 65px;
+  margin-bottom: 30%;
+  padding: 10px;
+  background-color: rgba(0, 123, 255, 0.5); /* Translucent blue color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 1; /* Default opacity */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */
+  z-index: 999; /* Ensure the button stays above other content */
+}
+
+.enlarge-button:hover {
+  background-color: #0056b3;
+}
+
+.enlarge-button.shrink {
+  opacity: 0.5; /* Reduced opacity when enlarged */
+}
+
+.enlarge-button.shrink:hover {
+  opacity: 1; /* Restore opacity on hover */
+}
+

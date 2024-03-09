@@ -3,19 +3,27 @@ import { useLocation } from 'react-router-dom';
 import { Oval as Loader } from 'react-loader-spinner';
 import './People.css';
 import Footer from '../Footer/Footer';
+import Select from 'react-select'; // Import the Select component
 
 const People = () => {
   const location = useLocation();
-  const { resultsData } = location.state || {};
+  const { Refer } = location.state || {}; // Retrieve the Refer value from location state
 
   const [selectedValue, setSelectedValue] = useState('');
   const [showTable, setShowTable] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mentionOptions, setMentionOptions] = useState([]);
+  const [filteredMentions, setFilteredMentions] = useState([]);
 
   useEffect(() => {
-    setTableData(resultsData || []);
-  }, [resultsData]);
+    if (Refer) {
+      // Set the selected value to the Refer value if available
+      setSelectedValue({ value: Refer, label: Refer });
+      // Invoke query_federated with the Refer value
+      fetchData(Refer);
+    }
+  }, [Refer]);
 
   const renderTableData = () => {
     return (
@@ -29,14 +37,14 @@ const People = () => {
     );
   };
 
-  const handleDropdownChange = (event) => {
-    setSelectedValue(event.target.value);
+  const handleInputChange = (selectedOption) => {
+    setSelectedValue(selectedOption);
   };
 
   const handleRenderTable = () => {
     if (selectedValue) {
       setLoading(true);
-      fetchData(selectedValue);
+      fetchData(selectedValue.value);
     }
   };
 
@@ -76,18 +84,51 @@ const People = () => {
     }
   };
 
+  useEffect(() => {
+    fetch('/Drop-down-data/Hadith Dropdowns/Mentions Hadith.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const lines = data.split('\n');
+        const mentionedPersons = lines.slice(1).map((line) => {
+          const fullName = line.trim();
+          return { value: fullName, label: fullName };
+        });
+        setMentionOptions(mentionedPersons);
+        setFilteredMentions(mentionedPersons.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching mentioned persons:', error);
+      });
+  }, []);
+
+  const handleMentionsInputChange = (inputValue) => {
+    const filteredOptions = mentionOptions.filter(option =>
+      option.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    setFilteredMentions(filteredOptions);
+  };
+
   return (
     <div>
       <div className="back-button-VQR" onClick={() => window.history.back()}>
         <img src={require('../../assets/back_button.png')} alt="Back Button" />
       </div>
       <div className={`query-text-box-P`}>
-        <select onChange={handleDropdownChange} value={selectedValue}>
-          <option value="">Select...</option>
-          <option value="محمد">محمد</option>
-          {/* Add other options here */}
-        </select>
-
+        <Select
+          options={filteredMentions}
+          value={selectedValue}
+          onChange={handleInputChange}
+          onInputChange={handleMentionsInputChange}
+          isSearchable
+          placeholder="Select or type to search..."
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              width: '800px', // Adjust the width as needed
+              margin: '5px'
+            }),
+          }}
+        />
         <button onClick={handleRenderTable}>Learn About the Person</button>
       </div>
 

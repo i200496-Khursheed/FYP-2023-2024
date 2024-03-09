@@ -7,7 +7,7 @@ import urllib.parse
 
 def Sparql_Endpoint(query: str, prefix: str = "") -> dict:
     x = requests.get( 
-        'http://khursheed:7200/repositories/kg?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
+        'http://khursheed:7200/repositories/kg3?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
         headers={
             'Accept' : 'application/sparql-results+json', 
             'Host' : 'localhost:7200'
@@ -240,13 +240,26 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            SELECT DISTINCT ?ref_type ?Text ?rootNarratorType ?HadithNo ?Theme ?subtheme ?RootNarrator ?NarratorType ?NarratorName ?Refer   ?chapter ?Verse_Text ?Verse_No  WHERE {{
+            SELECT ?HadithNo
+       (GROUP_CONCAT(DISTINCT ?ref_type; SEPARATOR=",") AS ?RefTypes)
+       (GROUP_CONCAT(DISTINCT ?Text; SEPARATOR=",") AS ?Texts)
+       (GROUP_CONCAT(DISTINCT ?rootNarratorType; SEPARATOR=",") AS ?RootNarratorTypes)
+       (GROUP_CONCAT(DISTINCT ?Theme; SEPARATOR=",") AS ?Themes)
+       (GROUP_CONCAT(DISTINCT ?subtheme; SEPARATOR=",") AS ?Subthemes)
+       (GROUP_CONCAT(DISTINCT ?RootNarrator; SEPARATOR=",") AS ?RootNarrators)
+       (GROUP_CONCAT(DISTINCT ?NarratorType; SEPARATOR=",") AS ?NarratorTypes)
+       (GROUP_CONCAT(DISTINCT ?NarratorName; SEPARATOR=",") AS ?NarratorNames)
+       (GROUP_CONCAT(DISTINCT ?Refer; SEPARATOR=",") AS ?Refers)
+       (GROUP_CONCAT(DISTINCT ?chapter; SEPARATOR=",") AS ?Chapters)
+       (GROUP_CONCAT(DISTINCT ?Verse_Text; SEPARATOR=",") AS ?VerseTexts)
+       (GROUP_CONCAT(DISTINCT ?Verse_No; SEPARATOR=",") AS ?VerseNos) WHERE {{
     '''
 
     baseQueryString += f'''\n  ?HadithNo1 rdf:type :Hadith .'''
     baseQueryString += f'''\n  ?HadithNo1 :hasText ?Text.'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithNo ?HadithNo.'''
-    baseQueryString += f'''\n  ?HadithNo1 :hasTheme ?Theme.'''
+    baseQueryString += f'''\n  ?HadithNo1 :hasTheme ?Theme_url.'''
+    baseQueryString += f'''\n  ?Theme_url :hasName ?Theme.'''
     baseQueryString += f'''\n  OPTIONAL {{'''
     baseQueryString += f'''\n  ?HadithNo1 :hasHadithText ?text.'''
     baseQueryString += f'''\n  ?text :containsSegment ?seg.'''
@@ -279,7 +292,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
 
 
     if theme != '?theme':
-        baseQueryString += f'''\n  ?Theme :hasName "{theme}" .'''
+        baseQueryString += f'''\n  ?Theme_url :hasName "{theme}" .'''
 
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
@@ -301,9 +314,9 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     if mentions != '?mentions':
         baseQueryString += f'''\n  FILTER(?Refer = "{mentions}") .'''
         
-
+    
     baseQueryString += f'\n}}'
-
+    baseQueryString += f'''\n  GROUP BY ?HadithNo'''
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
         baseQueryString += f'''
         LIMIT {limit}
@@ -418,7 +431,21 @@ def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            SELECT DISTINCT ?Text ?chapter ?Verseno ?Surahname ?commno ?commtext ?reference ?themename ?subtheme ?segment_text ?hadithno ?hadithtext ?name ?page ?volume ?edition ?hadithTheme WHERE {{
+            SELECT  ?chapter ?Verseno (GROUP_CONCAT(DISTINCT ?Text; SEPARATOR=";") as ?Texts)
+       (GROUP_CONCAT(DISTINCT ?Surahname; SEPARATOR=";") as ?Surahnames)
+       (GROUP_CONCAT(DISTINCT ?commno; SEPARATOR=";") as ?commnos)
+       (GROUP_CONCAT(DISTINCT ?commtext; SEPARATOR=";") as ?commtexts)
+       (GROUP_CONCAT(DISTINCT ?reference; SEPARATOR=";") as ?references)
+       (GROUP_CONCAT(DISTINCT ?themename; SEPARATOR=";") as ?themenames)
+       (GROUP_CONCAT(DISTINCT ?subtheme; SEPARATOR=";") as ?subthemes)
+       (GROUP_CONCAT(DISTINCT ?segment_text; SEPARATOR=";") as ?segment_texts)
+       (GROUP_CONCAT(DISTINCT ?hadithno; SEPARATOR=";") as ?hadithnos)
+       (GROUP_CONCAT(DISTINCT ?hadithtext; SEPARATOR=";") as ?hadithtexts)
+       (GROUP_CONCAT(DISTINCT ?name; SEPARATOR=";") as ?names)
+       (GROUP_CONCAT(DISTINCT ?page; SEPARATOR=";") as ?pages)
+       (GROUP_CONCAT(DISTINCT ?volume; SEPARATOR=";") as ?volumes)
+       (GROUP_CONCAT(DISTINCT ?edition; SEPARATOR=";") as ?editions)
+       (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR=";") as ?hadithThemes) WHERE {{
     '''
 
     baseQueryString += f'''\n  ?Verse rdf:type :Verse .'''
@@ -503,7 +530,7 @@ def constructVerseSparQLQueryString(chapterNo='?chapterNo', verseNo='?verseNo',
     if hadith_number != '?hadith_number':
         baseQueryString += f'''\n     FILTER(CONTAINS(?hadithno,"{hadith_number}"))''' 
     baseQueryString += f'\n}}'
-
+    baseQueryString += f'''\n  GROUP BY ?chapter ?Verseno'''
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
         baseQueryString += f'''
         LIMIT {limit}
@@ -536,36 +563,8 @@ def competencyquestion1():
     baseQueryString += '\n  ?Commentary :hasText ?commtext.'
     baseQueryString += '\n  ?Commentary :mentions ?person.'
     baseQueryString += '\n  ?person :hasName ?reference.'
-    baseQueryString += '\n  ?Commentary :hasTheme ?theme.'
-    baseQueryString += '\n  ?theme :hasName ?themename.'
-    baseQueryString += '\n  ?Commentary :containsSegment ?seg.'
-    baseQueryString += '\n  optional {'
-    baseQueryString += '\n    ?Commentary :hasBookLocation ?BL.'
-    baseQueryString += '\n    ?BL :hasPageNo ?page.'
-    baseQueryString += '\n    ?BL :hasVolumeNo ?volume.'
-    baseQueryString += '\n    ?BL :hasEdition ?edition.'
-    baseQueryString += '\n  }'
-    baseQueryString += '\n  optional {'
-    baseQueryString += '\n    ?seg :hasText ?segment_text.'
-    baseQueryString += '\n    ?seg :hasSubTheme ?sub.'
-    baseQueryString += '\n    ?sub :hasName ?subtheme.'
-    baseQueryString += '\n  }'
-    baseQueryString += '\n  ?Hadith rdf:type :HadithText.'
-    baseQueryString += '\n  optional {'
-    baseQueryString += '\n    ?Hadith :references ?versefragment.'
-    baseQueryString += '\n    ?Hadith :hasHadithNo ?hadithno.'
-    baseQueryString += '\n    ?Hadith :hasText ?hadithtext.'
-    baseQueryString += '\n  }'
-    baseQueryString += '\n  optional {'
-    baseQueryString += '\n    ?Hadith_1 rdf:type :HadithText.'
-    baseQueryString += '\n    ?Hadith_1 :references ?versefragment.'
-    baseQueryString += '\n    ?Hadith_2 rdf:type :Hadith.'
-    baseQueryString += '\n    ?Hadith_2 :hasHadithText ?Hadith_1.'
-    baseQueryString += '\n    ?Hadith_2 :containsNarratorChain ?chain.'
-    baseQueryString += '\n    ?chain :hasNarratorSegment ?narrator.'
-    baseQueryString += '\n    ?narrator :refersTo ?nar.'
-    baseQueryString += '\n    ?nar :hasName ?name.'
-    baseQueryString += '\n  }'
+
+
     baseQueryString += '\n  FILTER(?reference = "ابن عباس").'
     baseQueryString += '\n}'
     baseQueryString += '\nLIMIT 100'  # Adjust the limit as needed
@@ -617,12 +616,13 @@ if __name__ == "__main__":
 
     #query = constructVerseSparQLQueryString(verseNo=258)
 
-    query = constructCommentarySparQLQueryString(theme='asbab')
-
+    #query = constructCommentarySparQLQueryString(theme='asbab')
+    query = constructHadithSparQLQueryString(narrator='عثمان بن سعيد')
+    #query = getNarratorChain(hadith_number="120")
     print(query)
     results = []
     
-    get_query = urllib.parse.quote(query)
-    result = Sparql_Endpoint(get_query,prefix)
-    print(result)
+    #get_query = urllib.parse.quote(query)
+    #result = Sparql_Endpoint(get_query,prefix)
+    #print(result)
     print("finish")

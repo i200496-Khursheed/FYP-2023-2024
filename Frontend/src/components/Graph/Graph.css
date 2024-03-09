@@ -1,0 +1,17 @@
+/* styles.css */
+.graph-container {
+    width: 100%;
+    height: 800px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden; /* Hide any overflow content */
+  }
+  
+  .graph-iframe {
+    width: 90%;
+    height: 90%;
+    border: 5px solid; /* Remove iframe border */
+    margin-left: 5%;
+    margin-top: 1%;
+  }
+  

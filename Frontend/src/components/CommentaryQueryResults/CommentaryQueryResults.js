@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import './CommentaryQueryResults.css';
-import Footer from '../Footer/Footer'; // Import Footer component
+import Footer from '../Footer/Footer';
+
+const ITEMS_PER_PAGE = 1; // Number of items to display per page
 
 const CommentaryQueryResults = () => {
   const location = useLocation();
   const { resultsData } = location.state || {};
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('asc'); // Initial sort order
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const [maxJump, setMaxJump] = useState(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
 
   const handleSort = (field) => {
     if (sortOrder === 'asc') {
@@ -24,70 +29,209 @@ const CommentaryQueryResults = () => {
     }
   };
 
+  const [isTextsExpanded, setIsTextsExpanded] = useState(false);
+
+  const toggleTextsExpansion = () => {
+    setIsTextsExpanded(!isTextsExpanded);
+  };
+
+
+  const [isSecTextsExpanded, setIsSecTextsExpanded] = useState(false);
+
+  const toggleSecTextsExpansion = () => {
+    setIsSecTextsExpanded(!isSecTextsExpanded);
+  };
+
+  const [isVTextsExpanded, setIsVTextsExpanded] = useState(false);
+
+  const toggleVTextsExpansion = () => {
+    setIsVTextsExpanded(!isVTextsExpanded);
+  };
+
   const renderTableData = () => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
     return (
       resultsData &&
-      resultsData.map((data, index) => (
-        <tr key={index}>
-          <td>{data.number?.value}</td>
-          <td>{data.chapter_nos?.value}</td>
-          <td>{data.V_nos?.value}</td>
-          <td>{data.Texts?.value}</td>
-          <td>{data.sec_chps?.value}</td>
-          <td>{data.number?.value}</td>
-          <td className="commentary-text">{data.sec_texts?.value}</td>
-          <td>{data.sec_nos?.value}</td>
-          <td>{data.sec_texts?.value}</td>
-          <td>{data.person_names?.value}</td>
-          <td>{data.subthemes?.value}</td>
-          <td>{data.theme_names?.value}</td>
-          <td>{data.volumes?.value}</td>
-          <td>{data.editions?.value}</td>
-          <td>{data.pages?.value}</td>
-        </tr>
+      resultsData.slice(startIndex, endIndex).map((data, index) => (
+        <React.Fragment key={index}>
+          <tr>
+            <th className="sortable" onClick={() => handleSort('V_nos')}>
+              Commentary Number {sortOrder === 'asc' ? '▲' : '▼'}
+            </th>
+            <td>{data.number?.value}</td>
+          </tr>
+          <tr>
+            <th>Surah Number</th>
+            <td>{data.chapter_nos?.value}</td>
+          </tr>
+          <tr>
+            <th>Verse Number</th>
+            <td>{data.V_nos?.value}</td>
+          </tr>
+          {data.V_Texts?.value && (
+          <tr>
+            {index === 0 && <th>Verse Text</th>}
+            <td>
+              {isVTextsExpanded ? parseText(data.V_Texts?.value, data.person_names?.value) : `${data.V_Texts?.value.slice(0, 100)}...`}
+              {data.V_Texts?.value && (
+                <button className="view-more-button" onClick={toggleVTextsExpansion}>
+                  {isVTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
+          {data.Texts?.value && (
+          <tr>
+            {index === 0 && <th>Text</th>}
+            <td>
+              {isTextsExpanded ? parseText(data.Texts?.value, data.person_names?.value) : `${data.Texts?.value.slice(0, 100)}...`}
+              {data.Texts?.value && (
+                <button className="view-more-button" onClick={toggleTextsExpansion}>
+                  {isTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
+          <tr>
+            <th>Section Chapter</th>
+            <td>{data.sec_chps?.value}</td>
+          </tr>
+          <tr>
+            <th>Section Number</th>
+            <td>{data.sec_nos?.value}</td>
+          </tr>
+          {data.sec_texts?.value && (
+          <tr>
+            {index === 0 && <th>Section Text</th>}
+            <td>
+              {isSecTextsExpanded ? parseText(data.sec_texts?.value, data.person_names?.value) : `${data.sec_texts?.value.slice(0, 100)}...`}
+              {data.sec_texts?.value && (
+                <button className="view-more-button" onClick={toggleSecTextsExpansion}>
+                  {isSecTextsExpanded ? 'View less' : 'View more'}
+                </button>
+              )}
+            </td>
+          </tr>
+        )}
+          <tr>
+            <th>Person Names</th>
+            <td>{data.person_names?.value}</td>
+          </tr>
+          <tr>
+            <th>Subthemes</th>
+            <td>{data.subthemes?.value}</td>
+          </tr>
+          <tr>
+            <th>Theme Names</th>
+            <td>{data.theme_names?.value}</td>
+          </tr>
+          <tr>
+            <th>Volumes</th>
+            <td>{data.volumes?.value}</td>
+          </tr>
+          <tr>
+            <th>Editions</th>
+            <td>{data.editions?.value}</td>
+          </tr>
+          <tr>
+            <th>Pages</th>
+            <td>{data.pages?.value}</td>
+          </tr>
+        </React.Fragment>
       ))
     );
   };
 
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+  const handleJumpToPage = (pageNumber) => {
+    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
+    setCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  };
+
+
+  const handleNarratorNameClick = (Refer) => {
+    // Define the action when narrator name is clicked
+    console.log("Narrator Name clicked:", Refer);
+    navigate('/people-page', { state: { Refer} });
+  };
+  // 1) Parsing Hadith Text
+
+  const parseText = (hadithText, narratorNames) => {
+    if (!hadithText || !narratorNames) return hadithText;
+  
+    const narratorNamesArray = narratorNames.split(',').map(name => name.trim());
+    const namesArray = [...narratorNamesArray];
+  
+    const textWithClickableNames = [];
+    let currentIndex = 0;
+  
+    namesArray.forEach(name => {
+      const index = hadithText.indexOf(name, currentIndex);
+      if (index !== -1) {
+        textWithClickableNames.push(hadithText.substring(currentIndex, index));
+  
+        textWithClickableNames.push(
+          <span className="narrator-name-CQR" onClick={() => handleNarratorNameClick(name)}>
+            {name}
+          </span>
+        );
+  
+        currentIndex = index + name.length;
+      }
+    });
+  
+    textWithClickableNames.push(hadithText.substring(currentIndex));
+  
+    return textWithClickableNames;
+  };
+
+
   return (
     <div>
-      <div className={`verse-query-results ${isExpanded ? 'expanded' : ''}`}>
-        <div className="back-button-CQR" onClick={() => window.history.back()}>
-          <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      <div className="back-button-VQR" onClick={() => window.history.back()}>
+        <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      </div>
+      {resultsData && (
+        <div className="details-table-CQR">
+          <table>
+            <tbody>{renderTableData()}</tbody>
+          </table>
         </div>
-        <div className={`query-text-box ${isExpanded ? 'expanded' : ''}`}>
-          <div className="details-swipe-bar" onClick={toggleExpand}>
-            <div className={`arrow ${isExpanded ? 'expanded' : ''}`}></div>
-          </div>
-        </div>
-
-        {isExpanded && resultsData && (
-          <div className="details-table-CQR">
-            <table>
-              <thead>
-                <tr>
-                  <th className="sortable" onClick={() => handleSort('V_nos')}>
-                    Commentary Number {sortOrder === 'asc' ? '▲' : '▼'}</th>
-                  <th>Surah Number</th>
-                  <th>Verse Number</th>
-                  <th>Text</th>
-                  <th>Section Chapter</th>
-                  <th>Commentary Number</th>
-                  <th>Commentary Text</th>
-                  <th>Section Number</th>
-                  <th>Section Text</th>
-                  <th>Person Names</th>
-                  <th>Subthemes</th>
-                  <th>Theme Names</th>
-                  <th>Volumes</th>
-                  <th>Editions</th>
-                  <th>Pages</th>
-                </tr>
-              </thead>
-              <tbody>{renderTableData()}</tbody>
-            </table>
-          </div>
-        )}
+      )}
+      <div className="pagination top-right-CQR">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Prev
+        </button>
+        <span>{`Page ${currentPage}`}</span>
+        <button onClick={handleNextPage} disabled={currentPage * ITEMS_PER_PAGE >= resultsData.length}>
+          Next
+        </button>
+      </div>
+      <div className="pagination top-right-CQR-2">
+        <span id="page-jump-CQR">Jump to :</span>
+        <input
+          type="number"
+          value={currentPage}
+          onChange={(e) => setCurrentPage(e.target.value)}
+          min={1}
+          max={maxJump}
+        />
+        <span id="page-max-CQR">{`Max: ${maxJump}`}</span>
       </div>
       <div className="Footer-portion-CQR">
         <Footer />

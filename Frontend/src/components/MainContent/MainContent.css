@@ -9,6 +9,7 @@
   min-height: calc(295vh - 10px); /* Adjusted to ensure a minimum height */
 }
 
+
 .animated {
   animation: slideIn 2s forwards;
 }
@@ -45,6 +46,7 @@
   border-radius: 59px 59px 350px 59px;
   background: linear-gradient(115deg, rgba(0, 25, 255, 0.75), rgba(238, 154, 229, 1));
   border: 2.5px solid #000000;
+  margin-top: 20px;
 }  
 
 .text {

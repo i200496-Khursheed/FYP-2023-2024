@@ -1,12 +1,34 @@
 /* MainContent.js */
-import React from 'react';
+import React, { useRef, useState } from 'react'; // Importing useRef and useState hooks
 import './MainContent.css';
 import InfoBox from '../InfoBox/InfoBox'; // Adjusting the path to match the actual file structure
 import Footer from '../Footer/Footer'; // Import Footer component
+import AboutDialog from './AboutDialog'; // Import the AboutDialog component
 
 function MainContent() {
+  const infoBoxesRef = useRef(null);
+  const [showAboutDialog, setShowAboutDialog] = useState(false); // State to control the visibility of the AboutDialog
+
+  const handleExploreClick = () => {
+    // Scroll to the info-boxes section
+    if (infoBoxesRef.current) {
+      infoBoxesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+  
+  const handleAboutClick = () => {
+    // Set the state to show the AboutDialog
+    setShowAboutDialog(true);
+  };
+
+  const handleCloseAboutDialog = () => {
+    // Set the state to hide the AboutDialog
+    setShowAboutDialog(false);
+  };
   return (
     <div>
+      {showAboutDialog && <AboutDialog onClose={handleCloseAboutDialog} />} {/* Render the AboutDialog component conditionally */}
+
       <div className="main-content">
         <div className="box">
           <div className="text">KnowledgeVerse</div>
@@ -21,13 +43,13 @@ function MainContent() {
               </span>
             </div>
             <div className="buttons">
-              <button className="explore-button">Explore</button>
-              <button className="about-button">About</button>
+              <button className="explore-button" onClick={handleExploreClick}>Explore</button>
+              <button className="about-button" onClick={handleAboutClick}>About</button>
             </div>
           </div>
           <img src={require('../../assets/kg-icon1.jpg')} alt="Knowledge Graph Image" className="box-image" />
           
-          <div className="info-boxes">
+          <div className="info-boxes" ref={infoBoxesRef}>
             <InfoBox 
               title="Verse" 
               description="Explore Tafseer Al-Tabari for verse commentary" 
@@ -53,22 +75,23 @@ function MainContent() {
               linkTo="/faq-page" 
             />
             <InfoBox 
-              title="Statistics" 
-              description="View statistical data of Al-Tabari knowledge graph" 
-              imageSrc={require('../../assets/statistics.png')}
+              title="Read Tafseer Al-Tabari" 
+              description="Access the complete Tafseer Al-Tabari" 
+              imageSrc={require('../../assets/stack-of-books.png')}
+              linkTo="/tafseer-page" 
             />
             <InfoBox 
               title="Graph View" 
               description="Visualize Tafseer Al-Tabari Graph" 
               imageSrc={require('../../assets/graph_view.png')}
+              linkTo="/al-tabari-graph" 
             />
         </div>
         </div>
       </div>
-      
+
       <div className='Footer-portion'>
           <Footer />
-      
       </div>
     </div>
   
