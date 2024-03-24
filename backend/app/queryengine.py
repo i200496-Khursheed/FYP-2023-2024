@@ -377,7 +377,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
 
     return baseQueryString
 def constructCommentarySparQLQueryString(commno='?number',chapterNo='?chapter_no', verseNo='?V_no',
-                                     theme='?theme', mentions="?mentions", subtheme="?subtheme", 
+                                     theme='?theme', mentions=None, or_mentions=None, subtheme="?subtheme", 
                                      applyLimit=True, limit=""):
     baseQueryString = f'''
 PREFIX : <http://www.tafsirtabari.com/ontology#>
@@ -441,6 +441,10 @@ WHERE {{
 
 
     '''
+    if mentions is None:
+        mentions = ['?mentions']             #for themes of and clause
+    if or_mentions is None:                    
+        or_mentions = ['?mentions'] 
 
     if commno != '?number':
         baseQueryString += f'''\n  FILTER(?number = "{commno}")'''
@@ -462,8 +466,33 @@ WHERE {{
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
 
-    if mentions != '?mentions':
-        baseQueryString += f'''\n  FILTER(?name = "{mentions}") .'''
+ #   if mentions[0]!= '?mentions':
+ #       length = len(mentions)
+ #      
+ #       for i in range(len(mentions)):
+ #           print(f"mentions at index {i}: {mentions[i]}")
+ #           baseQueryString += f'''  
+ # {{
+ #   SELECT ?Commentary1
+ #   WHERE {{
+ #   ?Commentary1 rdf:type :Commentary.
+ #   ?Commentary1 :mentions ?person.
+ #   ?person :hasName ?name.
+ #   FILTER (?name = "{mentions[i]}")
+#
+#
+#    }}
+#  }}   '''
+  
+    if or_mentions[0]!= '?mentions':
+        length = len(or_mentions)
+        baseQueryString += f'''\n   FILTER( '''
+        for i in range(len(or_mentions)):
+            print(f"mentions at index {i}: {or_mentions[i]}")
+            baseQueryString += f'''  ?name = "{or_mentions[i]}"   '''
+            if i != length-1: 
+                baseQueryString += f'''  || '''
+        baseQueryString += f'''   ) .'''
 
     baseQueryString += f'\n}}'
     baseQueryString += f'\n GROUP BY ?number'
@@ -666,12 +695,12 @@ if __name__ == "__main__":
     query = constructHadithSparQLQueryString(theme='lugha')"""
     # query = constructHadithSparQLQueryString()
 
-    #query = constructVerseSparQLQueryString(verseNo=258)
+    query = constructVerseSparQLQueryString(verseNo=258)
     themes = ["lugha", "kalam"]
     or_themes = ["sufism"]
-    or_narrator = ["عثمان بن سعيد","محمد بن العلاء"]
-    #query = constructCommentarySparQLQueryString(theme='asbab')
-    query = constructHadithSparQLQueryString(theme=themes, or_narrator=or_narrator)
+    mentions = ["عثمان بن سعيد","محمد بن العلاء"]
+    query = constructCommentarySparQLQueryString(mentions=mentions)
+    #query = constructHadithSparQLQueryString(theme=themes, or_narrator=or_narrator)
     #query = getNarratorChain(hadith_number="120")
     print(query)
     results = []
