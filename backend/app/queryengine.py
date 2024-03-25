@@ -483,7 +483,8 @@ WHERE {{
 #
 #    }}
 #  }}   '''
-  
+    if mentions[0] != '?mentions':
+        baseQueryString += f'''\n  FILTER(?name = "{mentions}") .'''
     if or_mentions[0]!= '?mentions':
         length = len(or_mentions)
         baseQueryString += f'''\n   FILTER( '''
