@@ -1,0 +1,7 @@
+Refer	ref_type
+ابن عباس	:Person
+جبريل	:Other
+محمد	:Person
+الإسلام	:Other
+المؤمنين	:Organization
+المسلمين	:Organization

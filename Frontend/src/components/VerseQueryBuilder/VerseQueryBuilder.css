@@ -462,3 +462,112 @@ body, p{
   max-width: 100%;
   overflow-x: hidden;
 }
+
+.loader-container3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -61%;
+  margin-left: 48%;
+}
+
+
+/* Responsiveness */
+
+@media (max-width: 1280px) 
+{
+  .query-box-verse {
+    width: 900px;
+    min-height: 1200px; /* Using min-height to prevent the container from shrinking */
+    border-radius: 50px;
+    background-color: #ffffff;
+    box-shadow: 0px 10px 50px 0px rgba(238, 154, 229, 0.55);
+    border: 1px solid #EE9AE5;
+    display: flex;
+    flex-direction: column; /* Changing to column layout to stack items vertically */
+    align-items: flex-start; /* Aligning items to the start (left) */
+    padding: 20px;
+    flex-wrap: wrap; /* Allowing items to wrap to the next line */
+  }
+
+  .dropdown-verse {
+    flex: 1; /* Allow each dropdown to take up equal space */
+    width: 350px;
+    height: 4%;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px 0px rgba(238, 154, 229, 0.55);
+    margin: 10px; /* Adding margin to create spacing */
+  }
+}
+
+@media (max-width: 1024px) 
+{
+  .query-box-verse {
+    width: 900px;
+    min-height: 1200px; /* Using min-height to prevent the container from shrinking */
+    border-radius: 50px;
+    background-color: #ffffff;
+    box-shadow: 0px 10px 50px 0px rgba(238, 154, 229, 0.55);
+    border: 1px solid #EE9AE5;
+    display: flex;
+    flex-direction: column; /* Changing to column layout to stack items vertically */
+    align-items: flex-start; /* Aligning items to the start (left) */
+    padding: 20px;
+    flex-wrap: wrap; /* Allowing items to wrap to the next line */
+  }
+
+  .dropdown-verse {
+    flex: 1; /* Allow each dropdown to take up equal space */
+    width: 350px;
+    height: 4%;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px 0px rgba(238, 154, 229, 0.55);
+    margin: 10px; /* Adding margin to create spacing */
+  }
+}
+
+
+@media (max-width: 767px) 
+{
+  .query-box-verse {
+    width: 90%;
+    min-height: 1200px; /* Using min-height to prevent the container from shrinking */
+    border-radius: 50px;
+    background-color: #ffffff;
+    box-shadow: 0px 10px 50px 0px rgba(238, 154, 229, 0.55);
+    border: 1px solid #EE9AE5;
+    display: flex;
+    flex-direction: column; /* Changing to column layout to stack items vertically */
+    align-items: flex-start; /* Aligning items to the start (left) */
+    padding: 20px;
+    flex-wrap: wrap; /* Allowing items to wrap to the next line */
+  }
+
+  .dropdown-verse {
+    flex: 1; /* Allow each dropdown to take up equal space */
+    width: 100%;
+    height: 4%;
+    border-radius: 20px;
+    box-shadow: 0px 10px 10px 0px rgba(238, 154, 229, 0.55);
+    margin: 10px; /* Adding margin to create spacing */
+  }
+
+  .radio-buttons-verse {
+    display: flex;
+    justify-content: center;
+    gap: 4%;
+    margin-top: 60px;
+  }
+  
+  .radio-button-verse {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #rH, #rV, #rC{
+    font-size: 19px;
+  }
+}

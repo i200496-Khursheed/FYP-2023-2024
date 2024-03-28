@@ -1,74 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import './CommentaryQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
-
-
-// Commentary Contents
-const ayatNumberOptions = [
-  { value: '15', label: 'Verse 015' },
-  { value: '6', label: 'Verse 006' },
-  { value: '13', label: 'Verse 013' },
-];
-
-const surahNumberOptions = [
-  { value: '12', label: 'يوسف 12' },
-  { value: '10', label: 'يونس 10' },
-  { value: '19', label: 'مريم 19' },
-];
-
-const themeOptions = [
-  { value: 'lugha', label: 'lugha' },
-  { value: 'kalam', label: 'kalam' },
-  { value: 'science', label: 'science' },
-];
-
-const subThemeOptions = [
-    { value: 'afaalibad', label: 'afaalibad' },
-    { value: 'khairshar', label: 'khairshar' },
-    { value: 'sifatilahi', label: 'sifatilahi' },
-  ];
-
-const narratorTitleOptions = [
-  { value: 'sahabi', label: 'sahabi' },
-  { value: 'rawi', label: 'rawi' },
-  { value: 'any', label: 'any' },
-];
-
-const narratorNameOptions = [
-  { value: 'ابن عباس', label: 'ابن عباس' },
-  { value: 'عثمان بن سعيد', label: 'عثمان بن سعيد' },
-  { value: 'أبو روق', label: 'أبو روق' },
-];
-
-const organizationOptions = [
-  { value: 'org1', label: 'Organization 1' },
-  { value: 'org2', label: 'Organization 2' },
-];
-
-const timeOptions = [
-  { value: 'time1', label: 'Time 1' },
-  { value: 'time2', label: 'Time 2' },
-];
-
-const placeOptions = [
-  { value: 'place1', label: 'Place 1' },
-  { value: 'place2', label: 'Place 2' },
-];
+import { Oval as Loader } from 'react-loader-spinner';
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('commentary');
   const [data, setData] = useState({
-    surah_number: '',
-    verse_number: '',
+    commno: '',
+    chapterNo: '',
+    verseNo: '',
     theme: '',
-    sub_theme: '',
+    subtheme: '',
     narrators: [{ title: '', name: '' }],
-    organization: '',
-    time: '',
-    place: '',
+    mentions: '',
   });
 
   const handleRadioChange = (option) => {
@@ -87,7 +34,6 @@ const CommentaryQueryBuilder = () => {
         break;
     }
   };
-  
 
   const handleThemeChange = (selectedOption) => {
     setData({
@@ -99,83 +45,89 @@ const CommentaryQueryBuilder = () => {
   const handleSubThemeChange = (selectedOption) => {
     setData({
       ...data,
-      sub_theme: selectedOption.value,
+      subtheme: selectedOption.value,
     });
   };
   
-  const handleOrganizationChange = (selectedOption) => {
+  const handleMentionsChange = (selectedOption) => {
     setData({
       ...data,
-      organization: selectedOption.value,
+      mentions: selectedOption.value,
     });
   };
 
-  const handleTimeChange = (selectedOption) => {
+  const handleChapterNoChange = (selectedOption) => {
     setData({
       ...data,
-      time: selectedOption.value,
+      chapterNo: selectedOption.value,
     });
   };
 
-  const handlePlaceChange = (selectedOption) => {
+  const handleCommentaryNoChange = (selectedOption) => {
     setData({
       ...data,
-      place: selectedOption.value,
-    });
-  };
-
-  const handleSurahNumberChange = (selectedOption) => {
-    setData({
-      ...data,
-      surah_number: selectedOption.value,
+      commno: selectedOption.value,
     });
   };
   
-  const handleAyatNumberChange = (selectedOption) => {
+  const handleVerseNoChange = (selectedOption) => {
     setData({
       ...data,
-      verse_number: selectedOption.value,
+      verseNo: selectedOption.value,
     });
   };
 
   const SendDataToBackend = () => {
-    let url = `http://127.0.0.1:8000/api/query_hadith/?theme=${data.theme}`;
 
-    if (data.hadith_number) {
-      url += `&hadith_number=${data.hadith_number}`;
+    // Check if any field is selected
+    if (
+      data.commno === '' &&
+      data.chapterNo === '' &&
+      data.narrators.every((narrator) => narrator.title === '' && narrator.name === '') &&
+      data.verseNo === '' &&
+      data.subtheme === '' &&
+      data.theme === '' && 
+      data.mentions === ''
+    ) {
+      // If no field is selected, show alert
+      alert('Please select at least one option');
+      return;
     }
 
-    if (data.organization) {
-      url += `&organization=${data.organization}`;
-    }
 
-    if (data.time) {
-      url += `&time=${data.time}`;
-    }
-
-    if (data.place) {
-      url += `&place=${data.place}`;
-    }
+    console.log("POST")
+    const url = 'http://127.0.0.1:8000/api/query_commentary/';
+    setLoading(true);
 
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ ...data, applyLimit: true, limit: limitValue }), // Include limit value in JSON data
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        if (data.result) {
-          console.log('Result from backend:', data.result);
-          navigate('/commentary-query-results', { state: { resultsData: data.result } });
+      .then((responseData) => {
+        console.log('Success:', responseData);
+
+        if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+          const results = responseData.result.results.bindings;
+          console.log('Results:', results);
+
+          navigate('/commentary-query-results', { state: { resultsData: results } });
+        } else {
+          console.error('Results or bindings not found in response data.');
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
+        //console.error('Error:', error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
+  const [loading, setLoading] = useState(false);
   const [limitValue, setLimitValue] = useState(0);
 
 const incrementValue = () => {
@@ -188,6 +140,214 @@ const decrementValue = () => {
 
 // Define MAX_LIMIT constant if needed
 const MAX_LIMIT = 2000; // Example value
+
+/* Commentary Number Filter Selection */
+const [commentaryNumberInputValue, setCommentaryNumberInputValue] = useState('');
+const [filteredCommentaryNumbers, setFilteredCommentaryNumbers] = useState([]);
+
+const handleCommentaryNumberInputChange = (inputValue) => {
+  setCommentaryNumberInputValue(inputValue);
+  const filteredOptions = commentaryNoOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredCommentaryNumbers(filteredOptions.slice(0, 11));
+};
+
+/* Commentary Theme Filter Selection */
+const [themeInputValue, setThemeInputValue] = useState('');
+const [filteredThemes, setFilteredThemes] = useState([]);
+
+const handleThemeInputChange = (inputValue) => {
+  setThemeInputValue(inputValue);
+  const filteredOptions = themeOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredThemes(filteredOptions.slice(0, 8));
+};
+
+/* Commentary Sub-Theme Filter Selection */
+const [subThemeInputValue, setSubThemeInputValue] = useState('');
+const [filteredSubThemes, setFilteredSubThemes] = useState([]);
+
+const handleSubThemeInputChange = (inputValue) => {
+  setSubThemeInputValue(inputValue);
+  const filteredOptions = subThemeOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredSubThemes(filteredOptions.slice(0, 8));
+};
+
+/* Commentary Mentions Filter Selection */
+const [mentionsInputValue, setMentionsInputValue] = useState('');
+const [filteredMentions, setFilteredMentions] = useState([]);
+
+const handleMentionsInputChange = (inputValue) => {
+  setMentionsInputValue(inputValue);
+  const filteredOptions = mentionsOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredMentions(filteredOptions.slice(0, 8));
+};
+
+/* Commentary Surah Number Filter Selection */
+const [chapterNumberInputValue, setChapterNumberInputValue] = useState('');
+const [filteredChapterNumber, setFilteredChapterNumber] = useState([]);
+
+const handleChapterNumberInputChange = (inputValue) => {
+  setChapterNumberInputValue(inputValue);
+  const filteredOptions = chapterNoOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredChapterNumber(filteredOptions.slice(0, 11));
+};
+
+/* Commentary Ayat Number Filter Selection */
+const [verseNumberInputValue, setVerseNumberInputValue] = useState('');
+const [filteredVerseNumber, setFilteredVerseNumber] = useState([]);
+
+const handleVerseNumberInputChange = (inputValue) => {
+  setVerseNumberInputValue(inputValue);
+  const filteredOptions = verseNoOptions.filter((option) =>
+    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+  );
+  setFilteredVerseNumber(filteredOptions.slice(0, 11));
+};
+
+// Fetch from txt
+const [commentaryNoOptions, setCommentaryNoOptions] = useState([]);
+
+const [chapterNoOptions, setChapterNoOptions] = useState([]);
+
+const [verseNoOptions, setVerseNoOptions] = useState([]);
+const [themeOptions, setThemeOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+const [subThemeOptions, setSubThemeOptions] = useState([]);
+
+// Commentary Number
+useEffect(() => {
+    // Fetch commentary numbers
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary No.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const comms = data
+          .split('\n')
+          .map((commentaryNo) => commentaryNo.trim())
+          .filter((commentaryNo) => commentaryNo !== '') // Remove empty lines, if any
+          .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+          .map((sortedCommentaryNo) => ({
+            value: sortedCommentaryNo,
+            label: sortedCommentaryNo,
+          }));
+        setCommentaryNoOptions(comms);
+        setFilteredCommentaryNumbers(comms.slice(0, 11));
+      })
+      .catch((error) => {
+        console.error('Error fetching and sorting commentary numbers:', error);
+      });
+
+
+// Chapter No
+    // Fetch chapter numbers
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Surah Number.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const chapters = data
+          .split('\n')
+          .map((chapter) => chapter.trim())
+          .filter((chapter) => chapter !== '') // Remove empty lines, if any
+          .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+          .map((sortedChapter) => ({
+            value: sortedChapter,
+            label: sortedChapter,
+          }));
+        setChapterNoOptions(chapters);
+        setFilteredChapterNumber(chapters.slice(0, 11));
+      })
+      .catch((error) => {
+        console.error('Error fetching chapterNo:', error);
+      });
+
+// VerseNo
+    // Fetch verse numbers
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Ayat Number.txt')
+    .then((response) => response.text())
+    .then((data) => {
+      const verses = data
+        .split('\n')
+        .map((verse) => verse.trim())
+        .filter((verse) => verse !== '') // Remove empty lines, if any
+        .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+        .map((sortedVerse) => ({
+          value: sortedVerse,
+          label: sortedVerse,
+        }));
+      setVerseNoOptions(verses);
+      setFilteredVerseNumber(chapters.slice(0, 11));
+    })
+    .catch((error) => {
+      console.error('Error fetching and sorting verse numbers:', error);
+    });
+    
+
+// themes
+
+  // Fetch the text file from the public folder
+    // Fetch themes
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Theme.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const themes = data.split('\n').slice(1).map((theme) => {
+          const trimmedTheme = theme.trim();
+          const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+          return { value: themeWithoutColon, label: themeWithoutColon };
+        });
+        setThemeOptions(themes);
+        setFilteredThemes(themes.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching themes:', error);
+      });
+
+
+// Fetch mentioned persons from the text file
+
+    // Fetch mentioned persons
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Mentions.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const lines = data.split('\n');
+        const mentionedPersons = lines.map((line) => {
+          const fullName = line.trim();
+          return { value: fullName, label: fullName };
+        });
+        setMentionsOptions(mentionedPersons);
+        setFilteredMentions(mentionedPersons.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching mentioned persons:', error);
+      });
+
+
+// Fetch sub theme from the text file
+
+    // Fetch sub themes
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Sub-themes.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const lines = data.split('\n');
+        const subthemes = lines.map((line) => {
+          const subtheme = line.trim();
+          return { value: subtheme, label: subtheme };
+        });
+        setSubThemeOptions(subthemes);
+        setFilteredSubThemes(subthemes.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching sub themes:', error);
+      });
+  }, []);
+
+//end
 
   return (
     <div className="commentary-query-builder">
@@ -209,7 +369,7 @@ const MAX_LIMIT = 2000; // Example value
             onChange={() => handleRadioChange('hadith')}
             checked={selectedOption === 'hadith'}
           />
-          <span> <p>Hadith</p> </span>
+          <span> <p id="rH">Hadith</p> </span>
         </label>
         <label className={`radio-button-commentary ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
@@ -219,7 +379,7 @@ const MAX_LIMIT = 2000; // Example value
             onChange={() => handleRadioChange('verse')}
             checked={selectedOption === 'verse'}
           />
-          <span> <p>Verse</p> </span>
+          <span> <p id="rV">Verse</p> </span>
         </label>
         <label className={`radio-button-commentary ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
@@ -229,7 +389,7 @@ const MAX_LIMIT = 2000; // Example value
             onChange={() => handleRadioChange('commentary')}
             checked={selectedOption === 'commentary'}
           />
-          <span> <p>Commentary</p> </span>
+          <span> <p id="rC">Commentary</p> </span>
         </label>
       </div>
 
@@ -237,38 +397,50 @@ const MAX_LIMIT = 2000; // Example value
       <div className="search-text-commentary">Find Commentary About:</div>
       <div className="dropdown-container-commentary">
         <div className="dropdown-commentary">
-            <label htmlFor="surah_number">Surah Number</label>
-            <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+            <label htmlFor="surah_number">Commentary Number</label>
+            <Select 
+              options={filteredCommentaryNumbers}
+              inputValue={commentaryNumberInputValue} 
+              isSearchable={true} 
+              onInputChange={handleCommentaryNumberInputChange}
+              onChange={handleCommentaryNoChange} 
+            />
         </div>
-        <div className="dropdown-commentary">
-            <label htmlFor="ayat_number">Ayat Number</label>
-            <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
-        </div>
-
+        
         <div className="dropdown-commentary">
             <label htmlFor="theme">Which has Theme</label>
-            <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+            <Select 
+              options={filteredThemes} 
+              inputValue={themeInputValue}
+              isSearchable={true}
+              onInputChange={handleThemeInputChange} 
+              onChange={handleThemeChange} 
+            />
         </div>
 
         <div className="dropdown-commentary">
             <label htmlFor="sub_theme">Which has the Sub-Theme</label>
-            <Select options={subThemeOptions} isSearchable={true} onChange={handleSubThemeChange} />
+            <Select 
+              options={filteredSubThemes}
+              inputValue={subThemeInputValue} 
+              isSearchable={true} 
+              onInputChange={handleSubThemeInputChange} 
+              onChange={handleSubThemeChange} 
+            />
         </div>
         </div>
 
-        <div className="that-mentions-commentary">
-          <div className="search-text-commentary">That Mentions:</div>
-          <div className="dropdown-commentary">
-            <label htmlFor="organization">Organization</label>
-            <Select options={organizationOptions} isSearchable={true} onChange={handleOrganizationChange} />
-          </div>
-          <div className="dropdown-commentary">
-            <label htmlFor="time">Time</label>
-            <Select options={timeOptions} isSearchable={true} onChange={handleTimeChange} />
-          </div>
-          <div className="dropdown-commentary">
-            <label htmlFor="place">Place</label>
-            <Select options={placeOptions} isSearchable={true} onChange={handlePlaceChange} />
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="mentions">Mentions</label>
+            <Select 
+              options={filteredMentions} 
+              inputValue={mentionsInputValue} 
+              isSearchable={true} 
+              onInputChange={handleMentionsInputChange}
+              onChange={handleMentionsChange} 
+            />
           </div>
         </div>
 
@@ -276,16 +448,23 @@ const MAX_LIMIT = 2000; // Example value
             <div className="search-text-commentary-2">Which References the Verse:</div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="surah_number">Surah Number</label>
-                <Select options={surahNumberOptions} isSearchable={true} onChange={handleSurahNumberChange} />
+                <Select 
+                  options={filteredChapterNumber}
+                  inputValue={chapterNumberInputValue}  
+                  isSearchable={true}
+                  onInputChange={handleChapterNumberInputChange} 
+                  onChange={handleChapterNoChange} 
+                />
             </div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="ayat_number">Ayat Number</label>
-                <Select options={ayatNumberOptions} isSearchable={true} onChange={handleAyatNumberChange} />
-            </div>
-
-            <div className="dropdown-commentary-2">
-                <label htmlFor="theme">Which has Theme</label>
-                <Select options={themeOptions} isSearchable={true} onChange={handleThemeChange} />
+                <Select 
+                  options={filteredVerseNumber} 
+                  inputValue={verseNumberInputValue}  
+                  isSearchable={true} 
+                  onInputChange={handleVerseNumberInputChange} 
+                  onChange={handleVerseNoChange} 
+                />
             </div>
         </div>
 
@@ -308,7 +487,14 @@ const MAX_LIMIT = 2000; // Example value
             <button className="increment-commentary" onClick={incrementValue}>+</button>
           </div>
       </div>
+      
+      {loading && (
+      <div className="loader-container4">
+        <Loader type="Oval" color="#4639E3" height={40} width={40} />
       </div>
+    )}
+      </div>
+
       <div className='Footer-portion'>
         <Footer />
       </div> 

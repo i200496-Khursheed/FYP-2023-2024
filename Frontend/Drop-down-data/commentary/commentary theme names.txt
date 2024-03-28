@@ -1,0 +1,11 @@
+theme_name
+kalam
+lugha
+rajeh
+takrar
+qiraat
+adyan
+kalalm
+sufism
+fiqh
+science

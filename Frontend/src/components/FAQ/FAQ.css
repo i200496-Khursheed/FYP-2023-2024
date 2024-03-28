@@ -1,6 +1,6 @@
 /* FAQ.css */
 .FAQ-page {
-    text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93);
+    /* text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93); */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,10 +23,10 @@
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 60px;
     left: 30px;
     cursor: pointer;
     transition: transform 0.3s, filter 0.3s;
+    margin-top: 1%;
 }
 
 .back-button-FAQ img:hover {
@@ -130,4 +130,324 @@
 .Footer-portion {
     max-width: 100%;
     overflow-x: hidden;
+}
+
+/* FAQ.css */
+.result-container {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 0 20px;
+    font-family: 'Lexend Deca', 'Jost', sans-serif;
+  }
+  
+  .result-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Lexend Deca', 'Jost', sans-serif;
+  }
+  
+  .result-container th,
+  .result-container td {
+    border: 1px solid #ddd;
+    padding: 12px; /* Adjusted padding */
+    font-family: 'Jost', sans-serif;
+    /* text-shadow: 0 1px 2px rgba(0,0,0,.35); */
+    font-size: 20px;
+    font-family: 'Noto Sans Arabic', sans-serif;
+    font-weight: bold;
+
+
+  }
+  
+  .result-container th {
+    background-color: #4639E3;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .result-container tr {
+    background-color: #fff;
+  }
+  
+  .result-container tr:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+  
+  .result-container tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Adjust text styles as needed */
+  td.text-cell {
+    font-size: 16px;
+    color: #333;
+    
+  }
+  
+
+@media (max-width: 1024px) 
+{
+    .FAQ-container-with-stroke .FAQ-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        width: 80%;
+        background: linear-gradient(45deg, #3d267a, #1c1666);
+        color: white;
+        padding: 30px;
+        margin: 0px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        margin-bottom: 0px;
+        transition: background 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform transition */
+    }
+
+    .back-button-FAQ img {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 30px;
+        cursor: pointer;
+        transition: transform 0.3s, filter 0.3s;
+        margin-top: 1%;
+    }
+
+    .FAQ-page {
+        /* text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93); */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1010px;
+        font-size: 18px;
+        font-family: 'Lexend Deca', 'Jost', sans-serif;
+        font-weight: bold;
+        transition: height 0.3s;
+        margin: 5% auto; /* Center the FAQ page horizontally */
+        box-shadow: 10px 10px 20px rgba(238, 154, 229, 1);
+        padding: 0;
+        overflow: hidden;
+        height: 180vh; /* Set height to 100% of the viewport height */
+        margin-top: 30px;
+        background: linear-gradient(75deg, rgba(238, 154, 230, 0.684), #4b00e0f3);
+        border-radius: 20px; /* Rounded borders */
+        margin: 60px 0px 0px 0px;
+    }
+}
+
+@media (max-width: 1280px) 
+{
+    .FAQ-container-with-stroke .FAQ-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        width: 70%;
+        background: linear-gradient(45deg, #3d267a, #1c1666);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        margin-bottom: 0px;
+        transition: background 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform transition */
+        height: 115px;
+        font-size: 15px;
+    }
+
+    .back-button-FAQ img {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 30px;
+        cursor: pointer;
+        transition: transform 0.3s, filter 0.3s;
+        margin-top: 1%;
+    }
+
+    .FAQ-page {
+        /* text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93); */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1200px;
+        font-size: 18px;
+        font-family: 'Lexend Deca', 'Jost', sans-serif;
+        font-weight: bold;
+        transition: height 0.3s;
+        margin: 5% auto; /* Center the FAQ page horizontally */
+        box-shadow: 10px 10px 20px rgba(238, 154, 229, 1);
+        padding: 10px;
+        overflow: hidden;
+        height: 180vh; /* Set height to 100% of the viewport height */
+        margin-top: 30px;
+        background: linear-gradient(75deg, rgba(238, 154, 230, 0.684), #4b00e0f3);
+        border-radius: 20px; /* Rounded borders */
+        margin: 60px 0px 0px 40px;
+    }
+}
+
+@media (max-width: 1360px) 
+{
+    .FAQ-container-with-stroke .FAQ-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        width: 70%;
+        background: linear-gradient(45deg, #3d267a, #1c1666);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        margin-bottom: 0px;
+        transition: background 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform transition */
+        height: 115px;
+        font-size: 15px;
+    }
+
+    .back-button-FAQ img {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 30px;
+        cursor: pointer;
+        transition: transform 0.3s, filter 0.3s;
+        margin-top: 1%;
+    }
+
+    .FAQ-page {
+        /* text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93); */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1200px;
+        font-size: 18px;
+        font-family: 'Lexend Deca', 'Jost', sans-serif;
+        font-weight: bold;
+        transition: height 0.3s;
+        margin: 5% auto; /* Center the FAQ page horizontally */
+        box-shadow: 10px 10px 20px rgba(238, 154, 229, 1);
+        padding: 10px;
+        overflow: hidden;
+        height: 180vh; /* Set height to 100% of the viewport height */
+        margin-top: 30px;
+        background: linear-gradient(75deg, rgba(238, 154, 230, 0.684), #4b00e0f3);
+        border-radius: 20px; /* Rounded borders */
+        margin: 60px 0px 0px 40px;
+    }
+}
+
+
+@media (max-width: 1366px) 
+{
+    .FAQ-container-with-stroke .FAQ-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        width: 75%;
+        background: linear-gradient(45deg, #3d267a, #1c1666);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        margin-bottom: 0px;
+        transition: background 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform transition */
+        height: 115px;
+        font-size: 15px;
+    }
+
+    .back-button-FAQ img {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 30px;
+        cursor: pointer;
+        transition: transform 0.3s, filter 0.3s;
+        margin-top: 1%;
+    }
+
+    .FAQ-page {
+        /* text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93); */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1200px;
+        font-size: 18px;
+        font-family: 'Lexend Deca', 'Jost', sans-serif;
+        font-weight: bold;
+        transition: height 0.3s;
+        margin: 5% auto; /* Center the FAQ page horizontally */
+        box-shadow: 10px 10px 20px rgba(238, 154, 229, 1);
+        padding: 10px;
+        overflow: hidden;
+        height: 180vh; /* Set height to 100% of the viewport height */
+        margin-top: 30px;
+        background: linear-gradient(75deg, rgba(238, 154, 230, 0.684), #4b00e0f3);
+        border-radius: 20px; /* Rounded borders */
+        margin: 60px 0px 0px 40px;
+    }
+}
+
+@media (max-width: 767px) 
+{
+    .FAQ-container-with-stroke .FAQ-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        width: 70%;
+        background: linear-gradient(45deg, #3d267a, #1c1666);
+        color: white;
+        padding: 30px;
+        margin: 0px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        margin-bottom: 0px;
+        transition: background 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform transition */
+        font-size: 12px;
+
+    }
+
+    .back-button-FAQ img {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: 30px;
+        cursor: pointer;
+        transition: transform 0.3s, filter 0.3s;
+        margin-top: 1%;
+    }
+
+    .FAQ-page {
+        /* text-shadow: 0 1px 2px rgba(4, 0, 9, 0.93); */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 1010px;
+        font-family: 'Lexend Deca', 'Jost', sans-serif;
+        font-weight: bold;
+        transition: height 0.3s;
+        margin: 5% auto; /* Center the FAQ page horizontally */
+        box-shadow: 10px 10px 20px rgba(238, 154, 229, 1);
+        padding: 0;
+        overflow: hidden;
+        height: 180vh; /* Set height to 100% of the viewport height */
+        margin-top: 30px;
+        background: linear-gradient(75deg, rgba(238, 154, 230, 0.684), #4b00e0f3);
+        border-radius: 20px; /* Rounded borders */
+        margin: 60px 0px 0px 0px;
+    }
 }

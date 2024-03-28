@@ -1,25 +1,20 @@
 .hadith-query-results-chain {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  /* text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); */
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 800px;
   font-size: 18px;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
   font-weight: bold;
   transition: height 0.3s;
   margin-top: 5%;
-}
-
-.hadith-query-results-chain.expanded {
-  height: auto;
 }
 
 .query-text-box-chain {
   text-align: center;
   left: 45%;
   width: 850px;
-  height: 200px;
+  height: 300px;
   border-radius: 10px;
   background-color: #ffffff;
   border: 1px solid #EE9AE5;
@@ -34,59 +29,20 @@
   transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-/* Updated styles for the text */
 .query-text-box-chain p {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: 'Lexend Deca', 'Jost', sans-serif;
-  margin: 0;
+  font-size: 16px !important; /* Decrease the font size here */
+  margin: 10px;
+  line-height: 50.9px;
+  font-family: 'Noto Sans Arabic', sans-serif; /* Change the font family here */
+  word-spacing: 3.5px;
 }
+
+
 
 /* Hover effect for a subtle change */
 .query-text-box-chain:hover {
   background-color: #f2f2f2; /* Lighter background on hover */
   box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-}
-
-.details-swipe-bar-chain {
-  cursor: pointer;
-  position: absolute;
-  bottom: -25%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(to right, #4639E3, #381f6c);
-  height: 50px;
-  width: 100%;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: height 0.3s ease, background 0.3s ease;
-}
-
-.details-swipe-bar-chain:hover {
-  height: 55px;
-  width: 855px;
-  background: linear-gradient(to right, #4639E3, #381f6c);
-}
-
-.arrow {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 10px 20px 10px;
-  border-color: transparent transparent #EE9AE5 transparent;
-  stroke: #000000;
-  stroke-width: 2px;
-  transition: transform 0.3s ease;
-}
-
-.expanded .arrow {
-  transform: rotate(180deg);
-}
-
-.arrow.expanded {
-  transform: rotate(180deg);
 }
 
 .expand-icon {
@@ -100,7 +56,7 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  top: 60px;
+  top: 75px;
   left: 30px;
   cursor: pointer;
   transition: transform 0.3s, filter 0.3s;
@@ -116,7 +72,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 18%;
   margin-left: 90%;
 }
 
@@ -146,6 +102,17 @@
   animation: gradientBorder 10s ease infinite;
 }
 
+.narrator-block p {
+  color: white; /* Set the desired font color */
+  font-size: 40px;
+}
+
+.query-text-box-chain p {
+  font-size: 20px;
+  margin: 10px;
+  line-height: 50.9px;
+}
+
 /* Keyframes for dynamic border animation */
 @keyframes gradientBorder {
   0% {
@@ -173,7 +140,7 @@
 
 .link-line {
   position: absolute;
-  top: 50%;
+  top:-50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -291,5 +258,332 @@
   background-color: #3d267a; /* Darker background color on hover */
 }
 
+.show-chain-button {
+  cursor: pointer;
+  position: absolute;
+  bottom: 240px;
+  left: 750px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #4639E3, #381f6c);
+  height: 10%;
+  width: 100px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.3s ease, background 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.show-chain-button:hover {
+  height: 10.5%;
+  width: 100px;
+  background: linear-gradient(to right, #4639E3, #381f6c);
+}
+
+.show-chain-button p {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Lexend Deca', 'Jost', sans-serif;
+  margin: 0;
+}
+
+.show-chain-button:hover p {
+  color: white; /* Set the desired font color on hover */
+}
 
 
+/* Add animation for clickable names */
+.narrator-name-Chain {
+  cursor: pointer;
+  color: blue; /* Change color to your preference */
+  text-decoration: underline;
+}
+
+/* Increase font size and change color on hover */
+.narrator-name-Chain:hover {
+  color: darkblue; /* Change color to your preference */
+}
+
+
+
+/* Responsiveness CSS */
+@media (max-width: 1366px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 35%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1360px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 35%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1280px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 30%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 767px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 30%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 170%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+
+  .container-with-stroke .narrator-block {
+    border-radius: 20px;
+    width: 200px;
+    background-color: #381f6c;
+    color: white;
+    padding: 40px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  
+    /* Gradient background animation */
+    background: linear-gradient(45deg, #f06, #9f6);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    width: 350px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 6.5%;
+    margin-right: 117%;
+
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .query-text-box-chain p {
+    font-size: 14px !important; /* Decrease the font size here */
+    margin: 10px;
+    line-height: 30.9px;
+    font-family: 'Noto Sans Arabic', sans-serif; /* Change the font family here */
+    word-spacing: 1.5px;
+  }
+
+}

@@ -1,0 +1,47 @@
+NarratorType	NarratorName
+shaykh	محمد بن العلاء
+rawi	عثمان بن سعيد
+rawi	بشر بن عمارة
+rawi	أبو روق
+rawi	الضحاك
+shaykh	سعيد بن عمرو السكوني
+rawi	بقية بن الوليد
+rawi	عيسى بن إبراهيم
+rawi	موسى بن أبي حبيب
+shaykh	يونس بن عبد الأعلى الصدفي
+rawi	ابن وهب
+rawi	عمر بن محمد
+rawi	سهيل بن أبي صالح
+rawi	أبيه
+rawi	السلولي
+shaykh	علي بن الحسن الخراز
+rawi	مسلم بن عبد الرحمن الجرمي
+rawi	محمد بن مصعب القرقساني
+rawi	مبارك بن فضالة
+rawi	الحسن
+shaykh	أبو كريب
+shaykh	أحمد بن حازم الغفاري
+sahabi	ابن عباس
+sahabi	الحكم بن عمير
+rawi	كعب
+sahabi	الأسود بن سريع
+rawi	أبي العالية
+sahabi	عبد الله بن عباس
+sahabi	ناس
+rawi	قتادة
+rawi	ابن جريج
+sahabi	علي
+sahabi	عبد الله
+rawi	عثمان بن سعيد
+rawi	ابن الحنفية
+rawi	ربيع
+rawi	وكيع
+rawi	عبد الرحمن بن زيد
+sahabi	عدي بن حاتم
+rawi	عبد الله بن شقيق
+sahabi	من
+rawi	مجاهد
+rawi	ابن زيد
+rawi	أبيه
+rawi	ابن وهب
+rawi	عبيد الله بن موسى

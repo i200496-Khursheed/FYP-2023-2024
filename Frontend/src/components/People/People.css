@@ -1,0 +1,388 @@
+/* VerseQueryResults.css */
+  
+  .query-text-box-P {
+    text-align: center;
+    left: 45%;
+    width: 55%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px; /* 10px */
+    margin-top: -0.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    font-family: 'Noto Sans Arabic', sans-serif;
+  }
+  
+  h2 {
+    color: #4639E3;
+    font-size: 20px;
+  }
+  
+.back-button-P img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.3s, filter 0.3s;
+  margin-left: 1%;
+  margin-top: 0%;
+}
+
+.back-button-P img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+  background-color: transparent;
+}
+
+
+/* Centering the query text box */
+.query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px; /* Adjust the top margin to create space between navbar and query box */
+    margin-left: -320px;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+/* Animation for dynamic RGB border */
+@keyframes dynamicBorder {
+  0% {
+    border-color: #f00; /* Red border */
+  }
+  25% {
+    border-color: #0f0; /* Green border */
+  }
+  50% {
+    border-color: #00f; /* Blue border */
+  }
+  75% {
+    border-color: #ff0; /* Yellow border */
+  }
+  100% {
+    border-color: #f00; /* Back to Red border */
+  }
+}
+  
+  /* Additional styles for select and input elements */
+  .query-text-box-P select, .query-text-box-P input {
+    margin-top: 10px; /* Adding space between select and input */
+  }
+  
+  /* People.css */
+
+/* Styling for select */
+.query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 800px;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+  
+  /* Styling for button */
+  .query-text-box-P button {
+    padding: 12px 20px; /* Increase padding for better size */
+    margin: 10px;
+    font-size: 16px; /* Increase font size */
+    background-color: #4639E3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .query-text-box-P button:hover {
+    background-color: #5f55ff;
+  }
+  
+/* Style for Table the container */
+.details-table-P {
+  text-align: center; /* Centering the table */
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.details-table-P table {
+  width: 90%;
+  margin: auto; /* Centering the table */
+  font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+}
+
+.details-table-P th,
+.details-table-P td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for table cells */
+  line-height: 1.6; /* Adjust line height to add space between lines of text */
+}
+
+.details-table-P th {
+  background-color: #5f55ff;
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh; /* Adjust as needed */
+}
+
+.loader-container > div {
+  text-align: center;
+}
+
+.loader-container > div > div {
+  width: 200px; /* Adjust the width as needed */
+  height: 200px; /* Adjust the height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-container > div > div > svg {
+  width: 100%; /* Make the SVG take 100% of the container */
+  height: 100%;
+}
+
+.custom-select {
+  width: 50%;
+  margin: 5px;
+}
+
+/* CSS for the "Back to Previous Results" button */
+.button-back {
+  padding: 10px 20px;
+  background-color: #ffffff; /* White background */
+  color: #000000; /* Black text color */
+  border: 2px solid #6c6c6d; /* Solid visible border */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px; /* Adjust margin as needed */
+}
+
+.button-back:hover {
+  background-color: #f0f0f0; /* Lighter shade on hover */
+  border-color: #0a0a0a; /* Darker border color on hover */
+  color: #0a0a0a; /* Darker text color on hover */
+}
+
+/* Style for all links */
+a {
+  color: blue; /* Change color as per your preference */
+  text-decoration: underline; /* Underline the links */
+}
+
+/* Style for the text after "/resource/" */
+a.resource-link::after {
+  content: attr(href); /* Show the text after "/resource/" */
+  color: green; /* Change color as per your preference */
+  font-weight: bold; /* Make the text bold */
+}
+
+.clickable-link {
+  cursor: pointer;
+}
+
+/* Responsiveness */
+
+@media (max-width: 767px) 
+{
+  .query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 35px 0px 0px -20%;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+  .query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 10%;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+
+  .custom-select {
+    width: 25%;
+    margin: 10px;
+  }
+
+  .details-table-P table {
+    width: 90%;
+    margin: auto; /* Centering the table */
+    font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1024px) 
+{
+  .query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 35px 0px 0px -20%;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+  .query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 10%;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+
+  .custom-select {
+    width: 350px;
+    margin: 10px;
+  }
+
+  .details-table-P table {
+    width: 90%;
+    margin: auto; /* Centering the table */
+    font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1280px) 
+{
+  .query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 35px 0px 0px -20%;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+  .query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 10%;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+
+  .custom-select {
+    width: 350px;
+    margin: 10px;
+  }
+
+  .details-table-P table {
+    width: 90%;
+    margin: auto; /* Centering the table */
+    font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1366px) 
+{
+  .query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 35px 0px 0px -20%;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+  .query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 10%;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+
+  .custom-select {
+    width: 350px;
+    margin: 10px;
+  }
+
+  .details-table-P table {
+    width: 90%;
+    margin: auto; /* Centering the table */
+    font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+    font-size: 13px;
+  }
+}
+
+
+@media (max-width: 767px) 
+{
+  .query-text-box-P {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 35px 0px 0px -20%;
+    border: 2px solid #f00; /* Red border */
+    animation: dynamicBorder 5s linear infinite; /* Animation for dynamic RGB border */
+  }
+
+  .query-text-box-P select {
+    padding: 10px; /* Increase padding for better size */
+    width: 10%;
+    font-size: 16px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Remove default arrow icon */
+    cursor: pointer;
+  }
+
+  .custom-select {
+    width: 200px;
+    margin: 50px;
+  }
+
+  .details-table-P table {
+    width: 90%;
+    margin: auto; /* Centering the table */
+    font-family: 'Lexend Deca', 'Jost', sans-serif; /* Set font family for the table */
+    font-size: 13px;
+  }
+  
+}

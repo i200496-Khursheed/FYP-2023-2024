@@ -23,6 +23,47 @@ const HadithQueryResults = () => {
       setSortOrder('asc');
     }
   };
+  
+  const handleNarratorClick = async (selectedNarrator) => {
+    try {
+      // Simulate fetching related narrators (replace this with your actual API call)
+      const relatedNarratorsResponse = await fetch(
+        `your_backend_url/narrators?selectedNarrator=${selectedNarrator}`
+      );
+      const relatedNarratorsData = await relatedNarratorsResponse.json();
+
+      // Add the selected narrator's name at the beginning of the array
+      const narratorsData = [selectedNarrator, ...relatedNarratorsData.narrators];
+
+      // Redirect to Chain page with the narrators' data
+      window.location.href = `/chain-page?narratorsData=${JSON.stringify(narratorsData)}`;
+    } catch (error) {
+      console.error('Error fetching related narrators:', error);
+    }
+  };
+
+  const renderTableData = () => {
+    return (
+      resultsData &&
+      resultsData.map((data, index) => (
+        <tr key={index}>
+          <td>{data.Verseno?.value}</td>
+          <td>{data.Surahname?.value}</td>
+          <td>{data.Text?.value}</td>
+          <td>{data.chapter?.value}</td>
+          <td>{data.commno?.value}</td>
+          <td>{data.commtext?.value}</td>
+          <td>{data.hadithno?.value}</td>
+          <td>{data.hadithtext?.value}</td>
+          <td>{data.name?.value}</td>
+          <td>{data.reference?.value}</td>
+          <td>{data.segment_text?.value}</td>
+          <td>{data.subtheme?.value}</td>
+          <td>{data.themename?.value}</td>
+        </tr>
+      ))
+    );
+  };
 
   return (
     <div className="hadith-query-results">
