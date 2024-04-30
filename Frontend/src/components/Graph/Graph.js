@@ -14,6 +14,9 @@ const Graph = () => {
 
   return (
     <div className="graph-container">
+      <div className="back-button-Graph" onClick={() => window.history.back()}>
+        <img src={require('../../assets/back_button.png')} alt="Back Button" />
+      </div>
       <iframe
         className="graph-iframe"
         src={srcUrl}

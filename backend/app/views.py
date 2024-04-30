@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString, getNarratorChain
+from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3
 
 class ReactView(APIView):
     print('sadsada')
@@ -158,10 +158,44 @@ def query_federated(request):
         result = Sparql_Endpoint(get_query, prefix)
         # Use your Sparql_Endpoint function to query the endpoint
         
-        return JsonResponse({'result': result})
+        abstracts = []
+        for results in result["results"]["bindings"]:
+            abstract = results["abstract"]["value"]
+            abstracts.append(abstract)
+        
+            if abstract:
+                return JsonResponse({'result': result})
+        # Check if abstracts are empty
+        if not abstracts:
+            # If abstracts are empty, do something
+            print("Abstracts are empty")
+            query = FederatedQuery1_2(person, applyLimit, limit)
+        
+            prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+            get_query = urllib.parse.quote(query)
+            print(query)
+            result = Sparql_Endpoint(get_query, prefix)
+            for results in result["results"]["bindings"]:
+                abstract = results["abstract"]["value"]
+                abstracts.append(abstract)
+
+            if not abstracts:
+                # If abstracts are empty, do something
+                print("Abstracts are empty")
+                query = FederatedQuery1_3(person, applyLimit, limit)
+            
+                prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+                get_query = urllib.parse.quote(query)
+                print(query)
+                result = Sparql_Endpoint(get_query, prefix)
+            # Check if abstracts are empty
+                return JsonResponse({'result': result})
+            else:
+                # If abstracts are not empty, do something else
+                print("Abstracts are not empty")
+                return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
-
 
 #Competency Question 1
 @csrf_exempt
@@ -205,5 +239,54 @@ def chain_narrators(request):
         # Use your Sparql_Endpoint function to query the endpoint
         
         return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+@csrf_exempt
+def query_federated2(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        information = data['information'] if 'information' in data and data['information'] != '' else 'information'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+
+        query = FederatedQuery_2(information, applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        print("Result is: ", result)
+        # Use your Sparql_Endpoint function to query the endpoint
+        abstracts = []
+        for results in result["results"]["bindings"]:
+            abstract = results["abstract"]["value"]
+            abstracts.append(abstract)
+        # Check if abstracts are empty
+        if not abstracts:
+            # If abstracts are empty, do something
+            print("Abstracts are empty")
+            query = FederatedQuery_3(information, applyLimit, limit)
+        
+            prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+            get_query = urllib.parse.quote(query)
+            print(query)
+            result = Sparql_Endpoint(get_query, prefix)
+
+            print("Result is: ", result)
+            return JsonResponse({'result': result})
+        else:
+            # If abstracts are not empty, do something else
+            print("Abstracts are not empty")
+            return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})

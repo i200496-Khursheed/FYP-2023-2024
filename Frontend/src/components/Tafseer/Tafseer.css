@@ -11,10 +11,10 @@
   font-family: 'Noto Sans Arabic', sans-serif;
   text-align: right; /* Align all text to the right */
   font-weight: bold;
-  line-height: 2.5;
-  word-spacing: 1.5px;
+  line-height: 3.5;
+  word-spacing: 2.5px;
   padding-right: 3%;
-  color: rgb(18, 18, 154);
+  color: rgb(3, 3, 3);
 }
 
 .details-T p{
@@ -31,6 +31,23 @@
   color: black;
 }
 
+.details-T head{
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+  font-size: 15px; 
+  border: 1.5px solid #ddd;
+  padding: 10px;
+  background-color: #f0f0f1;
+  text-align: right;
+  padding-right: 3%;
+  color: black;
+}
+
+.clickable-name-with-background {
+  background-color: #f0f0f1; /* Set the background color */
+}
 
 .next-button {
   margin-bottom: 5px;
@@ -136,6 +153,17 @@
   color: purple; /* Color for other roles */
 }
 
+.persName {
+  color: #a30e03; /* Choose your desired color */
+  /* Add any other styles you want for persName elements */
+}
+
+.time {
+  color: #ff6600; /* Choose your desired color */
+  /* Add any other styles you want for persName elements */
+}
+
+
 /* Tooltip styling */
 .clickable-name[title]:hover::after {
   content: attr(title);
@@ -200,6 +228,8 @@
   text-align: right;
   font-weight: bold;
   color: rgb(18, 18, 154);
+  color: rgb(3, 3, 3);
+
 }
 
 /* Tooltip styling */
@@ -213,6 +243,7 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
+  
 }
 
 .full-xml-container p{
@@ -225,9 +256,8 @@
 
 .enlarge-button {
   position: absolute;
-  right: 92.7%;
-  bottom: 65px;
-  margin-bottom: 30%;
+  right: 75%;
+  margin-top: -4%;
   padding: 10px;
   background-color: rgba(0, 123, 255, 0.5); /* Translucent blue color */
   color: #fff;
@@ -237,6 +267,7 @@
   opacity: 1; /* Default opacity */
   transition: opacity 0.3s ease; /* Smooth transition for opacity */
   z-index: 999; /* Ensure the button stays above other content */
+  
 }
 
 .enlarge-button:hover {
@@ -251,3 +282,36 @@
   opacity: 1; /* Restore opacity on hover */
 }
 
+.back-button-T img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.3s, filter 0.3s;
+  margin-left: 1%;
+  margin-top: 0%;
+}
+
+.back-button-T img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+  background-color: transparent;
+}
+
+@media (max-width: 767px)
+{
+  .enlarge-button {
+    position: absolute;
+    right: 75%;
+    margin-top: -15%;
+    padding: 10px;
+    background-color: rgba(0, 123, 255, 0.5); /* Translucent blue color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 1; /* Default opacity */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+    z-index: 999; /* Ensure the button stays above other content */
+  }
+}

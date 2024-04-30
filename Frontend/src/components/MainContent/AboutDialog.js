@@ -9,7 +9,7 @@ function AboutDialog({ onClose }) {
         <span className="close" onClick={onClose}>&times;</span>
         <h2>About</h2>
         <p>
-          Welcome to The Semantic Web Portal, a meticulously crafted platform dedicated to the study of Tafseer Al-Tabari. The portal is founded upon a robust knowledge graph derived from meticulously curated data sourced from Frankfurt, Germany.
+          Welcome to The Semantic Web Portal, a meticulously crafted platform dedicated to the study of Tafseer Al-Tabari. The portal is founded upon a robust knowledge graph derived from meticulously curated data sourced from Goethe University Frankfurt, Germany.
         </p>
         <p>This data, expertly annotated in XML format, has been further enriched through semantic annotation, providing users with a profoundly informative and navigable platform.</p>
         <p>

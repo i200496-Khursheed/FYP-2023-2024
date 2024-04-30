@@ -149,6 +149,7 @@ class AllVerseText:
 
 def FederatedQuery(person='?person', 
                     applyLimit=True, limit=""):
+    newline=r"\n\n"
     baseQueryString = f'''
 PREFIX dbr: <http://dbpedia.org/resource/>
 PREFIX dbp: <http://dbpedia.org/property/>
@@ -156,39 +157,244 @@ PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            SELECT DISTINCT  ?death  ?abstract    WHERE {{
-                    ?person rdf:type :Person.
-                    ?person :hasName "{person}".
 
-                    ?pn rdf:type :Person.
-                    ?pn owl:sameAs ?person.
+SELECT ?death ?abstract (GROUP_CONCAT(DISTINCT ?data; separator="{newline}") AS ?concatenatedData) (GROUP_CONCAT(DISTINCT ?quote; separator="{newline}") AS ?concatenatedQuotes) (GROUP_CONCAT(DISTINCT ?children; separator="{newline}") AS ?concatenatedChildren) (GROUP_CONCAT(DISTINCT ?parents; separator="{newline}") AS ?concatenatedParents) (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline}") AS ?concatenatedRelatives)
+WHERE {{
+  ?person rdf:type :Person.
+  ?person :hasName "{person}".
 
-                       SERVICE <https://dbpedia.org/sparql> {{
-       
-             ?pn dbo:abstract ?abstract .
-             ?pn dbo:deathDate ?death.
-     
-        	FILTER(LANG(?abstract) = "en")
-        
-       
-            }}
+  ?pn rdf:type :Person.
+  ?pn owl:sameAs ?person.
+
+  SERVICE <https://dbpedia.org/sparql> {{
+    ?pn dbo:wikiPageWikiLink ?data.
+    ?pn dbo:abstract ?abstract.
+  
+    OPTIONAL {{
+      ?pn dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?pn dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?pn dbp:quote ?quote.
+    }}
+    OPTIONAL {{
+      ?pn dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?pn dbp:relatives ?relatives.
+    }}
+    
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?death ?abstract
+
     '''
+    return baseQueryString
 
+
+def FederatedQuery1_2(person='?person', 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?death ?abstract (GROUP_CONCAT(DISTINCT ?data; separator="{newline}") AS ?concatenatedData) (GROUP_CONCAT(DISTINCT ?quote; separator="{newline}") AS ?concatenatedQuotes) (GROUP_CONCAT(DISTINCT ?children; separator="{newline}") AS ?concatenatedChildren) (GROUP_CONCAT(DISTINCT ?parents; separator="{newline}") AS ?concatenatedParents) (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline}") AS ?concatenatedRelatives)
+WHERE {{
+  ?person rdf:type :Other.
+  ?person :hasName "{person}".
+
+  ?pn rdf:type :Other.
+  ?pn owl:sameAs ?person.
+
+  SERVICE <https://dbpedia.org/sparql> {{
+    ?pn dbo:wikiPageWikiLink ?data.
+    ?pn dbo:abstract ?abstract.
+  
+    OPTIONAL {{
+      ?pn dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?pn dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?pn dbp:quote ?quote.
+    }}
+    OPTIONAL {{
+      ?pn dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?pn dbp:relatives ?relatives.
+    }}
     
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?death ?abstract
 
+    '''
+    return baseQueryString
+
+
+def FederatedQuery1_3(person='?person', 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?death ?abstract (GROUP_CONCAT(DISTINCT ?data; separator="{newline}") AS ?concatenatedData) (GROUP_CONCAT(DISTINCT ?quote; separator="{newline}") AS ?concatenatedQuotes) (GROUP_CONCAT(DISTINCT ?children; separator="{newline}") AS ?concatenatedChildren) (GROUP_CONCAT(DISTINCT ?parents; separator="{newline}") AS ?concatenatedParents) (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline}") AS ?concatenatedRelatives)
+WHERE {{
+  ?person rdf:type :Organization.
+  ?person :hasName "{person}".
+
+  ?pn rdf:type :Organization.
+  ?pn owl:sameAs ?person.
+
+  SERVICE <https://dbpedia.org/sparql> {{
+    ?pn dbo:wikiPageWikiLink ?data.
+    ?pn dbo:abstract ?abstract.
+  
+    OPTIONAL {{
+      ?pn dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?pn dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?pn dbp:quote ?quote.
+    }}
+    OPTIONAL {{
+      ?pn dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?pn dbp:relatives ?relatives.
+    }}
     
-        
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?death ?abstract
 
-    baseQueryString += f'\n}}'
+    '''
+    return baseQueryString
+
+
+def FederatedQuery_2(information="?information", 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"                
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?abstract
+       (GROUP_CONCAT(DISTINCT ?data; separator="{newline} ") AS ?concatenatedData) 
+       (GROUP_CONCAT(DISTINCT ?parents; separator="{newline} ") AS ?concatenatedParents)
+       (GROUP_CONCAT(DISTINCT ?children; separator="{newline} ") AS ?concatenatedChildren) 
+       (GROUP_CONCAT(DISTINCT ?quote; separator="{newline} ") AS ?concatenatedQuotes) 
+       (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline} ") AS ?concatenatedRelatives)
+WHERE {{
+  SERVICE <https://dbpedia.org/sparql> {{
+    BIND(<{information}> as ?link)
+    ?link dbo:wikiPageWikiLink ?data.
+    ?link dbo:abstract ?abstract.
+  
+    OPTIONAL{{
+      ?link dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?link dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?link dbp:quote ?quote.
+    }}
+    OPTIONAL{{
+      ?link dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?link dbp:relatives ?relatives.
+        }}
+    
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?abstract
+
+    '''
 
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
         baseQueryString += f'''
         LIMIT {limit}
         '''
-        
-
     return baseQueryString
 
+#this is used when the link from dbpedia is not same for resource page
+def FederatedQuery_3(information="?information", 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"                
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?abstract
+       (GROUP_CONCAT(DISTINCT ?data; separator="{newline} ") AS ?concatenatedData) 
+       (GROUP_CONCAT(DISTINCT ?parents; separator="{newline} ") AS ?concatenatedParents)
+       (GROUP_CONCAT(DISTINCT ?children; separator="{newline} ") AS ?concatenatedChildren) 
+       (GROUP_CONCAT(DISTINCT ?quote; separator="{newline} ") AS ?concatenatedQuotes) 
+       (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline} ") AS ?concatenatedRelatives)
+WHERE {{
+  SERVICE <https://dbpedia.org/sparql> {{
+    <{information}> ?predicate ?link .
+    ?link dbo:wikiPageWikiLink ?data.
+    ?link dbo:abstract ?abstract.
+  
+    OPTIONAL{{
+      ?link dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?link dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?link dbp:quote ?quote.
+    }}
+    OPTIONAL{{
+      ?link dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?link dbp:relatives ?relatives.
+        }}
+    
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?abstract
+
+    '''
+
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
+        baseQueryString += f'''
+        LIMIT {limit}
+        '''
+    return baseQueryString
 def getNarratorChain(hadith_number='?hadith_number', 
                     applyLimit=True, limit=""):
     baseQueryString = f'''
@@ -619,10 +825,20 @@ if __name__ == "__main__":
     #query = constructCommentarySparQLQueryString(theme='asbab')
     query = constructHadithSparQLQueryString(narrator='عثمان بن سعيد')
     #query = getNarratorChain(hadith_number="120")
+    
+    #query=FederatedQuery_2(information="http://dbpedia.org/resource/Muhammad")
+    query=FederatedQuery_2(information="http://dbpedia.org/resource/Amina_bint_Wahb")
     print(query)
     results = []
     
-    #get_query = urllib.parse.quote(query)
-    #result = Sparql_Endpoint(get_query,prefix)
+    get_query = urllib.parse.quote(query)
+    result = Sparql_Endpoint(get_query,prefix)
     #print(result)
-    print("finish")
+"""    abstracts = []
+
+for results in result["results"]["bindings"]:
+    abstract = results["abstract"]["value"]
+    abstracts.append(abstract)
+
+print(abstracts)"""
+print("finish")

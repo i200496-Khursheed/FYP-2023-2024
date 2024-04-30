@@ -4,8 +4,6 @@ import Select from 'react-select';
 import './CommentaryQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
 import { Oval as Loader } from 'react-loader-spinner';
-import { v4 as uuidv4 } from 'uuid';
-
 
 const CommentaryQueryBuilder = () => {
   const navigate = useNavigate();
@@ -16,8 +14,8 @@ const CommentaryQueryBuilder = () => {
     verseNo: '',
     theme: '',
     subtheme: '',
-    mentionArray: [{ mentions: '' }],
-    // mentions: '',
+    narrators: [{ title: '', name: '' }],
+    mentions: '',
   });
 
   const handleRadioChange = (option) => {
@@ -51,12 +49,12 @@ const CommentaryQueryBuilder = () => {
     });
   };
   
-  // const handleMentionsChange = (selectedOption) => {
-  //   setData({
-  //     ...data,
-  //     mentions: selectedOption.value,
-  //   });
-  // };
+  const handleMentionsChange = (selectedOption) => {
+    setData({
+      ...data,
+      mentions: selectedOption.value,
+    });
+  };
 
   const handleChapterNoChange = (selectedOption) => {
     setData({
@@ -85,11 +83,11 @@ const CommentaryQueryBuilder = () => {
     if (
       data.commno === '' &&
       data.chapterNo === '' &&
-      data.mentionArray.every((mention) => mention.mentions === '') &&
+      data.narrators.every((narrator) => narrator.title === '' && narrator.name === '') &&
       data.verseNo === '' &&
       data.subtheme === '' &&
-      data.theme === '' 
-      //data.mentions === ''
+      data.theme === '' && 
+      data.mentions === ''
     ) {
       // If no field is selected, show alert
       alert('Please select at least one option');
@@ -215,67 +213,18 @@ const handleVerseNumberInputChange = (inputValue) => {
   setFilteredVerseNumber(filteredOptions.slice(0, 11));
 };
 
-
-// handle for adding
-const [mentionLogic, setMentionLogic] = useState(Array(data.mentionArray.length).fill('AND'));
-
-
-const handleAddMention = () => {
-  const newIdentifier = uuidv4(); // Generate a unique identifier
-  setData((prevData) => ({
-    ...prevData,
-    mentionArray: [...prevData.mentionArray, { mentions: '', identifier: newIdentifier }],
-  }));
-  setMentionLogic([...mentionLogic, 'AND']);
-};
-
-
-const handleRemoveMention = (identifier) => {
-  console.log('Removing mention with identifier:', identifier);
-
-  // Filter out the mention and its corresponding logic
-  const updatedMentionArray = data.mentionArray.filter((mention) => mention.identifier !== identifier);
-  const updatedMentionLogic = mentionLogic.filter((_, index) => data.mentionArray[index].identifier !== identifier);
-
-  console.log('Updated mention array:', updatedMentionArray);
-  console.log('Updated mention logic:', updatedMentionLogic);
-
-  // Update the state with the filtered arrays
-  setData((prevData) => ({
-    ...prevData,
-    mentionArray: updatedMentionArray,
-  }));
-
-  setMentionLogic(updatedMentionLogic);
-};
-
-
-// Logic Button 
-const handleMentionLogicChange = (index, logic) => {
-  const updatedLogic = [...mentionLogic];
-  updatedLogic[index] = logic;
-  setMentionLogic(updatedLogic);
-};
-
-const handleMentionChange = (index, type, value) => {
-  const updatedMentionArray = [...data.mentionArray];
-  updatedMentionArray[index][type] = value;
-  setData({
-    ...data,
-    mentionArray: updatedMentionArray,
-  });
-};
-
-
 // Fetch from txt
-  const [commentaryNoOptions, setCommentaryNoOptions] = useState([]);
-  const [chapterNoOptions, setChapterNoOptions] = useState([]);
-  const [verseNoOptions, setVerseNoOptions] = useState([]);
-  const [themeOptions, setThemeOptions] = useState([]);
-  const [mentionsOptions, setMentionsOptions] = useState([]);
-  const [subThemeOptions, setSubThemeOptions] = useState([]);
+const [commentaryNoOptions, setCommentaryNoOptions] = useState([]);
 
-  useEffect(() => {
+const [chapterNoOptions, setChapterNoOptions] = useState([]);
+
+const [verseNoOptions, setVerseNoOptions] = useState([]);
+const [themeOptions, setThemeOptions] = useState([]);
+const [mentionsOptions, setMentionsOptions] = useState([]);
+const [subThemeOptions, setSubThemeOptions] = useState([]);
+
+// Commentary Number
+useEffect(() => {
     // Fetch commentary numbers
     fetch('/Drop-down-data/Commentary Dropdowns/Commentary No.txt')
       .then((response) => response.text())
@@ -296,6 +245,8 @@ const handleMentionChange = (index, type, value) => {
         console.error('Error fetching and sorting commentary numbers:', error);
       });
 
+
+// Chapter No
     // Fetch chapter numbers
     fetch('/Drop-down-data/Commentary Dropdowns/Commentary Surah Number.txt')
       .then((response) => response.text())
@@ -316,26 +267,31 @@ const handleMentionChange = (index, type, value) => {
         console.error('Error fetching chapterNo:', error);
       });
 
+// VerseNo
     // Fetch verse numbers
     fetch('/Drop-down-data/Commentary Dropdowns/Commentary Ayat Number.txt')
-      .then((response) => response.text())
-      .then((data) => {
-        const verses = data
-          .split('\n')
-          .map((verse) => verse.trim())
-          .filter((verse) => verse !== '') // Remove empty lines, if any
-          .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
-          .map((sortedVerse) => ({
-            value: sortedVerse,
-            label: sortedVerse,
-          }));
-        setVerseNoOptions(verses);
-        setFilteredVerseNumber(chapters.slice(0, 11));
-      })
-      .catch((error) => {
-        console.error('Error fetching and sorting verse numbers:', error);
-      });
+    .then((response) => response.text())
+    .then((data) => {
+      const verses = data
+        .split('\n')
+        .map((verse) => verse.trim())
+        .filter((verse) => verse !== '') // Remove empty lines, if any
+        .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+        .map((sortedVerse) => ({
+          value: sortedVerse,
+          label: sortedVerse,
+        }));
+      setVerseNoOptions(verses);
+      setFilteredVerseNumber(chapters.slice(0, 11));
+    })
+    .catch((error) => {
+      console.error('Error fetching and sorting verse numbers:', error);
+    });
+    
 
+// themes
+
+  // Fetch the text file from the public folder
     // Fetch themes
     fetch('/Drop-down-data/Commentary Dropdowns/Commentary Theme.txt')
       .then((response) => response.text())
@@ -352,6 +308,9 @@ const handleMentionChange = (index, type, value) => {
         console.error('Error fetching themes:', error);
       });
 
+
+// Fetch mentioned persons from the text file
+
     // Fetch mentioned persons
     fetch('/Drop-down-data/Commentary Dropdowns/Commentary Mentions.txt')
       .then((response) => response.text())
@@ -367,6 +326,9 @@ const handleMentionChange = (index, type, value) => {
       .catch((error) => {
         console.error('Error fetching mentioned persons:', error);
       });
+
+
+// Fetch sub theme from the text file
 
     // Fetch sub themes
     fetch('/Drop-down-data/Commentary Dropdowns/Commentary Sub-themes.txt')
@@ -407,7 +369,7 @@ const handleMentionChange = (index, type, value) => {
             onChange={() => handleRadioChange('hadith')}
             checked={selectedOption === 'hadith'}
           />
-          <span> <p>Hadith</p> </span>
+          <span> <p id="rH">Hadith</p> </span>
         </label>
         <label className={`radio-button-commentary ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
@@ -417,7 +379,7 @@ const handleMentionChange = (index, type, value) => {
             onChange={() => handleRadioChange('verse')}
             checked={selectedOption === 'verse'}
           />
-          <span> <p>Verse</p> </span>
+          <span> <p id="rV">Verse</p> </span>
         </label>
         <label className={`radio-button-commentary ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
@@ -427,7 +389,7 @@ const handleMentionChange = (index, type, value) => {
             onChange={() => handleRadioChange('commentary')}
             checked={selectedOption === 'commentary'}
           />
-          <span> <p>Commentary</p> </span>
+          <span> <p id="rC">Commentary</p> </span>
         </label>
       </div>
 
@@ -468,58 +430,18 @@ const handleMentionChange = (index, type, value) => {
         </div>
         </div>
 
-        <div className="add-mention-button">
-            <div className="add-content" onClick={handleAddMention}>
-              <img
-                src={require('../../assets/add.png')} 
-                alt="Add Narrator"
-                className="add-image"
-              />
-              <p id="add-mention-text">Add Mentions</p>
-            </div>
-        </div>
-
-        <div className="mentionArray">
-          {data.mentionArray.map((mention, index) => (
-            <div key={mention.identifier} className="mention">
-
-              <div className="mention-logic-buttons">
-                <button
-                  className={`logic-button ${mentionLogic[index] === 'AND' ? 'selected' : ''}`}
-                  onClick={() => handleMentionLogicChange(index, 'AND')}
-                >
-                  AND
-                </button>
-                <button
-                  className={`logic-button ${mentionLogic[index] === 'OR' ? 'selected' : ''}`}
-                  onClick={() => handleMentionLogicChange(index, 'OR')}
-                >
-                  OR
-                </button>
-              </div>
-
-              <div className="dropdown">
-                <label htmlFor={`mentionArray_mentions_${index}`}>That Mentions</label>
-                <Select
-                  options={filteredMentions}
-                  inputValue={mentionsInputValue}
-                  isSearchable={true}
-                  onInputChange={handleMentionsInputChange}
-                  onChange={(selectedOption) =>
-                    handleMentionChange(index, 'mentions', selectedOption.value)
-                  }
-                />
-              </div>
-
-              <div className="remove-mention-button" onClick={() => handleRemoveMention(mention.identifier)}>
-                <img
-                  src={require('../../assets/remove.png')}
-                  alt="Remove Mention"
-                  className="remove-image"
-                />
-              </div>
-            </div>
-          ))}
+        <div className="that-mentions">
+          <div className="search-text">That Mentions:</div>
+          <div className="dropdown">
+            <label htmlFor="mentions">Mentions</label>
+            <Select 
+              options={filteredMentions} 
+              inputValue={mentionsInputValue} 
+              isSearchable={true} 
+              onInputChange={handleMentionsInputChange}
+              onChange={handleMentionsChange} 
+            />
+          </div>
         </div>
 
         <div className="dropdown-container-commentary-2">

@@ -5,7 +5,6 @@ import Select from 'react-select';
 import './VerseQueryBuilder.css';
 import Footer from '../Footer/Footer'; // Import Footer component
 import { Oval as Loader } from 'react-loader-spinner';
-import { v4 as uuidv4 } from 'uuid'; // Import uuidv4 for generating unique identifiers
 
 
 // Verse Contents
@@ -63,25 +62,29 @@ const VerseQueryBuilder = () => {
     });
   };
 
-  const handleAddNarrator = () => {
-    const newNarrator = { 
-      identifier: uuidv4(), // Generate unique identifier
-      hadithTheme: '', 
-      name: '' 
-    };
-    setData(prevData => ({
-      ...prevData,
-      narrator: [...prevData.narrator, newNarrator],
-    }));
-    setNarratorLogic(prevLogic => [...prevLogic, 'AND']); // Initialize logic for the new narrator
-  };
+ const handleAddNarrator = () => {
+  setData((prevData) => ({
+    ...prevData,
+    narrator: [...prevData.narrator, { hadithTheme: '', name: '' }],
+  }));
+
+  setNarratorLogic((prevLogic) => [...prevLogic, 'AND']); // Initialize logic for the new narrator
+};
+
+
+  const handleRemoveNarrator = (index) => {
+    const updatedNarrators = [...data.narrator];
+    const updatedLogic = [...narratorLogic];
   
-  const handleRemoveNarrator = (identifier) => {
-    const updatedNarrators = data.narrator.filter(narrator => narrator.identifier !== identifier);
+    updatedNarrators.splice(index, 1);
+    updatedLogic.splice(index, 1);
+  
     setData({
       ...data,
       narrator: updatedNarrators,
     });
+  
+    setNarratorLogic(updatedLogic);
   };
 
   const handleMentionsChange = (selectedOption) => {
@@ -427,7 +430,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('hadith')}
             checked={selectedOption === 'hadith'}
           />
-          <span> <p>Hadith</p> </span>
+          <span> <p id="rH">Hadith</p> </span>
         </label>
         <label className={`radio-button-verse ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
@@ -437,7 +440,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('verse')}
             checked={selectedOption === 'verse'}
           />
-          <span> <p>Verse</p> </span>
+          <span> <p id="rV">Verse</p> </span>
         </label>
         <label className={`radio-button-verse ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
@@ -447,7 +450,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('commentary')}
             checked={selectedOption === 'commentary'}
           />
-          <span> <p>Commentary</p> </span>
+          <span> <p id="rC">Commentary</p> </span>
         </label>
       </div>
 
@@ -500,9 +503,9 @@ useEffect(() => {
 
 
         <div className="narrators-verse">
-        <p style={{ fontWeight: 'bold' }}> Where the verse is referenced by Hadith</p> 
           {data.narrator.map((narrator, index) => (
-            <div key={narrator.identifier} className="narrator">
+            <div key={index} className="narrator-verse">
+              <p> Where the verse is referenced by Hadith</p>
               <div className="narrator-logic-buttons-verse">
                 <button
                   className={`logic-button-verse ${narratorLogic[index] === 'AND' ? 'selected' : ''}`}
@@ -546,12 +549,13 @@ useEffect(() => {
 
               <div className="remove-narrator-button-verse">
                 <img
-                  src={require('../../assets/remove.png')}
+                  src={require('../../assets/remove.png')} // Updated image path
                   alt="Remove Narrator"
                   className="remove-image-verse"
-                  onClick={() => handleRemoveNarrator(narrator.identifier)}
+                  onClick={() => handleRemoveNarrator(index)}
                 />
               </div>
+              
             </div>
           ))}
         </div>

@@ -120,12 +120,34 @@ const VerseQueryResults = () => {
           </tr>
           <tr>
             {index === 0 && <th>Name</th>}
-            <td>{data.names?.value.split(';').map(name => name.trim()).join(' ;  ')}</td>
+            <td>
+              {data.names?.value.split(';').map((name, index) => (
+                <span
+                  key={index}
+                  className="narrator-name-VQR"
+                  onClick={() => handleNarratorNameClick(name.trim())}
+                >
+                  {name.trim()}
+                </span>
+              )).reduce((prev, curr) => [prev, ', ', curr])}
+            </td>
           </tr>
+
           <tr>
             {index === 0 && <th>Reference</th>}
-            <td>{data.references?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
+            <td>
+              {data.references?.value.split(';').map((reference, index) => (
+                <span
+                  key={index}
+                  className="narrator-name-VQR"
+                  onClick={() => handleNarratorNameClick(reference.trim())} // Define handleReferenceClick function
+                >
+                  {reference.trim()}
+                </span>
+              )).reduce((prev, curr) => [prev, ', ', curr])}
+            </td>
           </tr>
+
           <tr>
             {index === 0 && <th>Subtheme</th>}
             <td>{data.subthemes?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
@@ -234,9 +256,7 @@ const VerseQueryResults = () => {
           </div>
         )}
       </div>
-      <div className="Footer-portion-VQR">
-        <Footer />
-      </div>
+
     </div>
   );
 };

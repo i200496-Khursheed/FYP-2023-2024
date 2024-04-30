@@ -1,8 +1,442 @@
 {
-    "S000A MuqadimaA": ["sure_0_section.xml"],
-    "S001M": ["sure_1_section_0.11-0.16.xml", "sure_1_section_1.1-1.14.xml"],
-    "S003A": ["sure_3_section_3.1-3.48.xml", "sure_3_section_3.49-3.95.xml", "sure_3_section_3.96-3.138.xml"
-            , "sure_3_section_3.139-3.171.xml", "sure_3_section_3.172-3.210.xml", "sure_3_section_3.211-3.249.xml"
-            , "sure_3_section_3.250-3.290.xml", "sure_3_section_3.291-3.301.xml"]
+    "S000A MuqadimaA": [
+        "sure_0_section.xml"
+    ],
+    "S001M": [
+        "sure_1_section_0.11-0.16.xml",
+        "sure_1_section_1.1-1.14.xml"
+    ],
+    "S002A": [
+        "sure_2_section_2.1-2.42.xml",
+        "sure_2_section_2.113-2.165.xml",
+        "sure_2_section_2.166-2.210.xml",
+        "sure_2_section_2.211-2.263.xml",
+        "sure_2_section_2.264-2.297.xml",
+        "sure_2_section_2.298-2.344.xml",
+        "sure_2_section_2.345-2.395.xml",
+        "sure_2_section_2.396-2.439.xml",
+        "sure_2_section_2.43-2.77.xml",
+        "sure_2_section_2.440-2.482.xml",
+        "sure_2_section_2.483-2.498.xml",
+        "sure_2_section_2.499-2.523.xml",
+        "sure_2_section_2.524-2.532.xml",
+        "sure_2_section_2.533-2.548.xml",
+        "sure_2_section_2.549-2.582.xml",
+        "sure_2_section_2.583-2.613.xml",
+        "sure_2_section_2.614-2.626.xml",
+        "sure_2_section_2.627-2.648.xml",
+        "sure_2_section_2.649-2.672.xml",
+        "sure_2_section_2.673-2.685.xml",
+        "sure_2_section_2.686-2.717.xml",
+        "sure_2_section_2.718-2.750.xml",
+        "sure_2_section_2.751-2.797.xml",
+        "sure_2_section_2.78-2.112.xml",
+        "sure_2_section_2.798-2.830.xml"
+    ],
+    "S003A": [
+        "sure_3_section_3.1-3.48.xml",
+        "sure_3_section_3.139-3.171.xml",
+        "sure_3_section_3.172-3.210.xml",
+        "sure_3_section_3.211-3.249.xml",
+        "sure_3_section_3.250-3.290.xml",
+        "sure_3_section_3.291-3.301.xml",
+        "sure_3_section_3.49-3.95.xml",
+        "sure_3_section_3.96-3.138.xml"
+    ],
+    "S004N": [
+        "sure_4_section_4.1-4.27.xml",
+        "sure_4_section_4.115-4.148.xml",
+        "sure_4_section_4.149-4.197.xml",
+        "sure_4_section_4.198-4.208.xml",
+        "sure_4_section_4.209-4.241.xml",
+        "sure_4_section_4.242-4.277.xml",
+        "sure_4_section_4.278-4.302.xml",
+        "sure_4_section_4.28-4.57.xml",
+        "sure_4_section_4.58-4.84.xml",
+        "sure_4_section_4.85-4.114.xml"
+    ],
+    "S005Cat NER MA": [
+        "sure_5_section_5.1-5.35.xml",
+        "sure_5_section_5.106-5.125.xml",
+        "sure_5_section_5.126-5.137.xml",
+        "sure_5_section_5.138-5.178.xml",
+        "sure_5_section_5.179-5.205.xml",
+        "sure_5_section_5.206-5.224.xml",
+        "sure_5_section_5.225-5.256.xml",
+        "sure_5_section_5.36-5.52.xml",
+        "sure_5_section_5.53-5.105.xml"
+    ],
+    "S006N": [
+        "sure_6_section_6.1-6.63.xml",
+        "sure_6_section_6.101-6.144.xml",
+        "sure_6_section_6.145-6.199.xml",
+        "sure_6_section_6.200-6.234.xml",
+        "sure_6_section_6.235-6.241.xml",
+        "sure_6_section_6.64-6.100.xml"
+    ],
+    "S007A": [
+        "sure_7_section_7.1-7.48.xml",
+        "sure_7_section_7.151-7.191.xml",
+        "sure_7_section_7.192-7.232.xml",
+        "sure_7_section_7.233-7.235.xml",
+        "sure_7_section_7.49-7.89.xml",
+        "sure_7_section_7.90-7.150.xml"
+    ],
+    "S008CatA": [
+        "sure_8_section_8.1-8.26.xml",
+        "sure_8_section_8.27-8.56.xml",
+        "sure_8_section_8.57-8.83.xml"
+    ],
+    "S009CatA": [
+        "sure_9_section_9.1-9.28.xml",
+        "sure_9_section_9.116-9.131.xml",
+        "sure_9_section_9.29-9.62.xml",
+        "sure_9_section_9.63-9.92.xml",
+        "sure_9_section_9.93-9.115.xml"
+    ],
+    "S010M": [
+        "sure_10_section_10.1-10.68.xml",
+        "sure_10_section_10.69-10.108.xml"
+    ],
+    "S011CatA": [
+        "sure_11_section_11.1-11.42.xml",
+        "sure_11_section_11.43-11.81.xml",
+        "sure_11_section_11.82-11.112.xml"
+    ],
+    "S012CatA": [
+        "sure_12_section_12.1-12.22.xml",
+        "sure_12_section_12.23-12.60.xml",
+        "sure_12_section_12.61-12.84.xml",
+        "sure_12_section_12.85-12.91.xml"
+    ],
+    "S013M": [
+        "sure_13_section_13.1-13.21.xml",
+        "sure_13_section_13.22-13.39.xml"
+    ],
+    "S014M": [
+        "sure_14_section_14.1-14.34.xml",
+        "sure_14_section_14.35-14.44.xml"
+    ],
+    "S015M": [
+        "sure_15_section_15.1-15.44.xml",
+        "sure_15_section_15.45-15.51.xml"
+    ],
+    "S016A": [
+        "sure_16_section_16.1-16.61.xml",
+        "sure_16_section_16.112-16.112.xml",
+        "sure_16_section_16.62-16.111.xml"
+    ],
+    "S017N": [
+        "sure_17_section_17.1-17.13.xml",
+        "sure_17_section_17.14-17.53.xml",
+        "sure_17_section_17.54-17.86.xml",
+        "sure_17_section_17.87-17.102.xml"
+    ],
+    "S018CatA": [
+        "sure_18_section_18.1-18.26.xml",
+        "sure_18_section_18.27-18.64.xml",
+        "sure_18_section_18.65-18.77.xml"
+    ],
+    "S019N": [
+        "sure_19_section_19.1-19.38.xml",
+        "sure_19_section_19.39-19.67.xml"
+    ],
+    "S020CatA": [
+        "sure_20_section_20.1-20.42.xml",
+        "sure_20_section_20.43-20.71.xml"
+    ],
+    "S021CatA": [
+        "sure_21_section_21.1-21.61.xml",
+        "sure_21_section_21.62-21.85.xml"
+    ],
+    "S022CatA": [
+        "sure_22_section_22.1-22.27.xml",
+        "sure_22_section_22.28-22.63.xml"
+    ],
+    "S023CatN": [
+        "sure_23_section_23.1-23.67.xml"
+    ],
+    "S024CatA": [
+        "sure_24_section_24.1-24.27.xml",
+        "sure_24_section_24.28-24.52.xml",
+        "sure_24_section_24.53-24.55.xml"
+    ],
+    "S025N": [
+        "sure_25_section_25.1-25.46.xml",
+        "sure_25_section_25.47-25.52.xml"
+    ],
+    "S026N": [
+        "sure_26_section_26.1-26.67.xml",
+        "sure_26_section_26.68-26.69.xml"
+    ],
+    "S027N": [
+        "sure_27_section_27.1-27.50.xml",
+        "sure_27_section_27.51-27.56.xml"
+    ],
+    "S028N": [
+        "sure_28_section_28.1-28.38.xml",
+        "sure_28_section_28.39-28.73.xml"
+    ],
+    "S029M": [
+        "sure_29_section_29.1-29.60.xml"
+    ],
+    "S030M": [
+        "sure_30_section_30.1-30.50.xml"
+    ],
+    "S031M": [
+        "sure_31_section_31.1-31.28.xml"
+    ],
+    "S032M": [
+        "sure_32_section_32.1-32.21.xml"
+    ],
+    "S033N": [
+        "sure_33_section_33.1-33.26.xml",
+        "sure_33_section_33.27-33.51.xml"
+    ],
+    "S034N": [
+        "sure_34_section_34.1-34.45.xml"
+    ],
+    "S035N": [
+        "sure_35_section_35.1-35.31.xml"
+    ],
+    "S036N": [
+        "sure_36_section_36.1-36.39.xml"
+    ],
+    "S037CatA": [
+        "sure_37_section_37.1-37.32.xml",
+        "sure_37_section_37.33-37.47.xml"
+    ],
+    "S038A": [
+        "sure_38_section_38.1-38.23.xml",
+        "sure_38_section_38.24-38.34.xml"
+    ],
+    "S039A": [
+        "sure_39_section_39.1-39.51.xml"
+    ],
+    "S040A": [
+        "sure_40_section_40.1-40.53.xml"
+    ],
+    "S041CatN": [
+        "sure_41_section_41.1-41.39.xml"
+    ],
+    "S042A": [
+        "sure_42_section_42.1-42.36.xml"
+    ],
+    "S043A": [
+        "sure_43_section_43.1-43.50.xml"
+    ],
+    "S044M": [
+        "sure_44_section_44.1-44.20.xml"
+    ],
+    "S045M": [
+        "sure_45_section_45.1-45.30.xml"
+    ],
+    "S046CatN": [
+        "sure_46_section_46.1-46.28.xml"
+    ],
+    "S047M": [
+        "sure_47_section_47.1-47.24.xml"
+    ],
+    "S048A": [
+        "sure_48_section_48.1-48.20.xml"
+    ],
+    "S049CatN": [
+        "sure_49_section_49.1-49.16.xml"
+    ],
+    "S050CatN": [
+        "sure_50_section_50.1-50.22.xml"
+    ],
+    "S051A": [
+        "sure_51_section_51.1-51.25.xml"
+    ],
+    "S052A": [
+        "sure_52_section_52.1-52.19.xml"
+    ],
+    "S053AN": [
+        "sure_53_section_53.1-53.18.xml"
+    ],
+    "S054A": [
+        "sure_54_section_54.1-54.20.xml"
+    ],
+    "S055N": [
+        "sure_55_section_55.1-55.20.xml"
+    ],
+    "S056N": [
+        "sure_56_section_56.1-56.20.xml"
+    ],
+    "S057N": [
+        "sure_57_section_57.1-57.23.xml"
+    ],
+    "S058N": [
+        "sure_58_section_58.1-58.20.xml"
+    ],
+    "S059N": [
+        "sure_59_section_59.1-59.17.xml"
+    ],
+    "S060A": [
+        "sure_60_section_60.1-60.12.xml"
+    ],
+    "S061M": [
+        "sure_61_section_61.1-61.10.xml"
+    ],
+    "S062M": [
+        "sure_62_section_62.1-62.10.xml"
+    ],
+    "S063CatM": [
+        "sure_63_section_63.1-63.10.xml"
+    ],
+    "S064M": [
+        "sure_64_section_64.1-64.14.xml"
+    ],
+    "S065A": [
+        "sure_65_section_65.1-65.8.xml"
+    ],
+    "S066A": [
+        "sure_66_section_66.1-66.12.xml"
+    ],
+    "S067M": [
+        "sure_67_section_67.1-67.19.xml"
+    ],
+    "S068N": [
+        "sure_68_section_68.1-68.19.xml"
+    ],
+    "S069N": [
+        "sure_69_section_69.1-69.13.xml"
+    ],
+    "S070N": [
+        "sure_70_section_70.1-70.11.xml"
+    ],
+    "S071M": [
+        "sure_71_section_71.1-71.9.xml"
+    ],
+    "S072CatN": [
+        "sure_72_section_72.1-72.11.xml"
+    ],
+    "S073N": [
+        "sure_73_section_73.1-73.8.xml"
+    ],
+    "S074N": [
+        "sure_74_section_74.1-74.10.xml",
+        "TT_s074_div010.xml"
+    ],
+    "S075N": [
+        "sure_75_section_75.1-75.8.xml"
+    ],
+    "S076M": [
+        "sure_76_section_76.1-76.14.xml"
+    ],
+    "S077N": [
+        "sure_77_section_77.1-77.10.xml"
+    ],
+    "S078N": [
+        "sure_78_section_78.1-78.9.xml"
+    ],
+    "S079N": [
+        "sure_79_section_79.1-79.9.xml"
+    ],
+    "S080M": [
+        "sure_80_section_80.1-80.6.xml"
+    ],
+    "S081M": [
+        "sure_81_section_81.1-81.6.xml"
+    ],
+    "S082M": [
+        "sure_82_section_82.1-82.4.xml"
+    ],
+    "S083M": [
+        "sure_83_section_83.1-83.9.xml"
+    ],
+    "S084M": [
+        "sure_84_section_84.1-84.5.xml"
+    ],
+    "S085CatM": [
+        "sure_85_section_85.1-85.6.xml"
+    ],
+    "S086M": [
+        "sure_86_section_86.1-86.2.xml"
+    ],
+    "S087M": [
+        "sure_87_section_87.1-87.3.xml"
+    ],
+    "S088M": [
+        "sure_88_section_88.1-88.4.xml"
+    ],
+    "S089CatN": [
+        "sure_89_section_89.1-89.6.xml"
+    ],
+    "S090A": [
+        "sure_90_section_90.1-90.3.xml"
+    ],
+    "S091M": [
+        "sure_91_section_91.1-91.2.xml"
+    ],
+    "S092CatM": [
+        "sure_92_section_92.1-92.3.xml"
+    ],
+    "S093M": [
+        "sure_93_section_93.1-93.2.xml"
+    ],
+    "S094M": [
+        "sure_94_section_94.1-94.1.xml"
+    ],
+    "S095M": [
+        "sure_95_section_95.1-95.2.xml"
+    ],
+    "S096M": [
+        "sure_96_section_96.1-96.5.xml"
+    ],
+    "S097M": [
+        "sure_97_section_97.1-97.1.xml"
+    ],
+    "S098M": [
+        "sure_98_section_98.1-98.4.xml"
+    ],
+    "S099M": [
+        "sure_99_section_99.1-99.1.xml"
+    ],
+    "S100M": [
+        "sure_100_section_100.1-100.1.xml"
+    ],
+    "S101M": [
+        "sure_101_section_101.1-101.1.xml"
+    ],
+    "S102M": [
+        "sure_102_section_102.1-102.1.xml"
+    ],
+    "S103CatM": [
+        "sure_103_section_103.1-103.1.xml"
+    ],
+    "S104CatM": [
+        "sure_104_section_104.1-104.1.xml"
+    ],
+    "S105CatM": [
+        "sure_105_section_105.1-105.1.xml"
+    ],
+    "S106CatM": [
+        "sure_106_section_106.1-106.1.xml"
+    ],
+    "S107M": [
+        "sure_107_section_107.1-107.1.xml"
+    ],
+    "S108NM": [
+        "sure_108_section_108.1-108.1.xml"
+    ],
+    "S109CatM": [
+        "sure_109_section_109.1-109.1.xml"
+    ],
+    "S110M": [
+        "sure_110_section_110.1-110.1.xml"
+    ],
+    "S111CatM": [
+        "sure_111_section_111.1-111.1.xml"
+    ],
+    "S112CatM": [
+        "sure_112_section_112.1-112.1.xml"
+    ],
+    "S113CatM": [
+        "sure_113_section_113.1-113.1.xml"
+    ],
+    "S114\u0658M": [
+        "sure_114_section_114.1-114.1.xml"
+    ]
 }
-  

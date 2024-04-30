@@ -36,7 +36,6 @@ function MainContent() {
             <div className="secondary-heading">
               Knowledge Driven Semantic Web portal for Tafsir Al-Tabari
             </div>
-            <div className="square"></div>
             <div className="side-text">
               <span className="italic-text">
                 Semantic Web Portal to Facilitate in Research & Self-Learning of Tafseer Al-Tabari
@@ -86,12 +85,11 @@ function MainContent() {
               imageSrc={require('../../assets/graph_view.png')}
               linkTo="/al-tabari-graph" 
             />
+          </div>
+            <div className='Footer-portion'>
+                <Footer />
+            </div>
         </div>
-        </div>
-      </div>
-
-      <div className='Footer-portion'>
-          <Footer />
       </div>
     </div>
   
