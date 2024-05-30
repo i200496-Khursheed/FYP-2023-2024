@@ -282,7 +282,7 @@ useEffect(() => {
           label: sortedVerse,
         }));
       setVerseNoOptions(verses);
-      setFilteredVerseNumber(chapters.slice(0, 11));
+      setFilteredVerseNumber(verses.slice(0, 11));
     })
     .catch((error) => {
       console.error('Error fetching and sorting verse numbers:', error);
