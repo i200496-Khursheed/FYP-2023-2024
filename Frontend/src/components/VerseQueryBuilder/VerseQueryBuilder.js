@@ -430,7 +430,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('hadith')}
             checked={selectedOption === 'hadith'}
           />
-          <span> <p>Hadith</p> </span>
+          <span> <p id="rH">Hadith</p> </span>
         </label>
         <label className={`radio-button-verse ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
@@ -440,7 +440,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('verse')}
             checked={selectedOption === 'verse'}
           />
-          <span> <p>Verse</p> </span>
+          <span> <p id="rV">Verse</p> </span>
         </label>
         <label className={`radio-button-verse ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
@@ -450,7 +450,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('commentary')}
             checked={selectedOption === 'commentary'}
           />
-          <span> <p>Commentary</p> </span>
+          <span> <p id="rC">Commentary</p> </span>
         </label>
       </div>
 

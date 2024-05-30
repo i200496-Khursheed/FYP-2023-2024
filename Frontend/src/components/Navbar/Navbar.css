@@ -10,7 +10,7 @@ body, html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 0.5% 4%;
     background-color: #0A1828;
   }
   
@@ -26,8 +26,8 @@ body, html {
   }
   
   .nav-link {
-    margin: 0 10px;
-    padding: 8px 20px;
+    margin: 0px auto;
+    padding: 0px 10px 0px 10px;
     border-radius: 50px;
     color: #BFA181;
     text-decoration: none;
@@ -40,3 +40,35 @@ body, html {
     color: #0A1828;
   }
   
+
+  @media (max-width: 767px) 
+  {
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5% 0% 0.5% 0%;
+      background-color: #0A1828;
+      width: 100%;
+      
+    }
+
+    .nav-link {
+      margin: 0px auto;
+      padding: 0px auto;
+      border-radius: 50px;
+      color: #BFA181;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: 'Open Sans', sans-serif;
+      
+    }
+
+    .brand {
+      font-size: 1.2em;
+      color: #BFA181;
+      font-weight: bold;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+  } 

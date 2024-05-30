@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'UthmanTN';
+  src: url('../../fonts/UthmanTN_v2-0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .hadith-query-results-chain {
   /* text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); */
   display: flex;
@@ -27,13 +34,16 @@
   padding-bottom: 0.5%;
   position: relative;
   transition: background-color 0.3s, box-shadow 0.3s;
+  margin-left: -10%;
 }
 
 .query-text-box-chain p {
-  font-size: 16px !important; /* Decrease the font size here */
+  /* font-size: 16px !important; */
+  font-size: 20px !important;
   margin: 10px;
   line-height: 50.9px;
-  font-family: 'Noto Sans Arabic', sans-serif; /* Change the font family here */
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
   word-spacing: 3.5px;
 }
 
@@ -56,7 +66,7 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  top: 60px;
+  top: 75px;
   left: 30px;
   cursor: pointer;
   transition: transform 0.3s, filter 0.3s;
@@ -186,6 +196,8 @@
   transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
   position: relative;
   overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+  margin-left: -10%;
+
 }
 
 .container-with-stroke::before {
@@ -261,7 +273,7 @@
 .show-chain-button {
   cursor: pointer;
   position: absolute;
-  bottom: 255px;
+  bottom: 240px;
   left: 750px;
   transform: translateX(-50%);
   background: linear-gradient(to right, #4639E3, #381f6c);
@@ -305,4 +317,671 @@
 /* Increase font size and change color on hover */
 .narrator-name-Chain:hover {
   color: darkblue; /* Change color to your preference */
+}
+
+
+
+/* Responsiveness CSS */
+
+@media (max-width: 1680px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 4%;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 35%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1600px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 4%;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 50%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -3%;
+    right: -4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1440px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 4%;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 40%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -1%;
+    right: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1400px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 8%;
+    overflow-x: hidden;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 40%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    margin-right: 15%;
+    overflow-x: hidden;
+
+  }
+
+  .container-with-stroke {
+    margin-top: -1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+    left: -32%;
+    overflow-x: hidden;
+    max-width: 600px;
+  }
+
+  .container-with-stroke .narrator-block {
+    border-radius: 20px;
+    width: 500px;
+    background-color: #381f6c;
+    color: white;
+    padding: 40px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  
+    /* Gradient background animation */
+    background: linear-gradient(45deg, #f06, #9f6);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    
+  }
+
+}
+
+@media (max-width: 1366px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 45%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+    left: -15%;
+  }
+
+  .container-with-stroke .narrator-block {
+    border-radius: 20px;
+    width: 500px;
+    background-color: #381f6c;
+    color: white;
+    padding: 40px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  
+    /* Gradient background animation */
+    background: linear-gradient(45deg, #f06, #9f6);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    
+  }
+}
+
+@media (max-width: 1360px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 42%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+}
+
+@media screen and (max-width: 1280px) and (max-height: 1024px)
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 17%;
+    left: 52%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 25%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -4.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+    left: -52%;
+    overflow-x: hidden;
+    max-width: 600px;
+  }
+
+  .container-with-stroke .narrator-block {
+    border-radius: 20px;
+    width: 350px;
+    background-color: #381f6c;
+    color: white;
+    padding: 40px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  
+    /* Gradient background animation */
+    background: linear-gradient(45deg, #f06, #9f6);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-height: 720px)
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 0%;
+    left: 52%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 40%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -4.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+    left: -22%;
+    overflow-x: hidden;
+    max-width: 600px;
+  }
+
+  .container-with-stroke .narrator-block {
+    border-radius: 20px;
+    width: 350px;
+    background-color: #381f6c;
+    color: white;
+    padding: 40px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  
+    /* Gradient background animation */
+    background: linear-gradient(45deg, #f06, #9f6);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    
+  }
+}
+
+@media (max-width: 767px) 
+{
+  .show-chain-button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #4639E3, #381f6c);
+    height: 10%;
+    width: 100px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: height 0.3s ease, background 0.3s ease;
+    color: white;
+    font-size: 20px;
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    left: 30%;
+    width: 850px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-top: -6.5%;
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .container-with-stroke {
+    margin-top: -5%;
+    right: 170%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f7f7f7;
+    box-shadow: 0px 4px 15px 0px rgba(3, 3, 67, 0.9);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+    position: relative;
+    overflow: hidden; /* Hide overflow to contain the dynamic border animation */
+    margin-bottom: 40px;
+  }
+
+  .container-with-stroke .narrator-block {
+    border-radius: 20px;
+    width: 200px;
+    background-color: #381f6c;
+    color: white;
+    padding: 40px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 45px; /* Adjusting the value to set the desired gap between blocks */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
+  
+    /* Gradient background animation */
+    background: linear-gradient(45deg, #f06, #9f6);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    
+  }
+
+  .query-text-box-chain {
+    text-align: center;
+    width: 350px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #EE9AE5;
+    box-shadow: 0px 4px 15px 0px rgb(108, 108, 108);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 6.5%;
+    margin-right: 117%;
+
+    padding-bottom: 0.5%;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .query-text-box-chain p {
+    font-size: 14px !important; /* Decrease the font size here */
+    margin: 10px;
+    line-height: 30.9px;
+    font-family: 'Noto Sans Arabic', sans-serif; /* Change the font family here */
+    word-spacing: 1.5px;
+  }
+
 }

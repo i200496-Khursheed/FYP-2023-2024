@@ -117,10 +117,23 @@ const CommentaryQueryResults = () => {
             </td>
           </tr>
         )}
-          <tr>
-            <th>Person Names</th>
-            <td>{data.person_names?.value}</td>
-          </tr>
+        <tr>
+          <th>Person Names</th>
+          <td>
+            {data.person_names?.value.split(',').map((name, i) => (
+              <React.Fragment key={i}>
+                <span
+                  className="narrator-name-CQR"
+                  onClick={() => handleNarratorNameClick(name.trim())}
+                >
+                  {name.trim()}
+                </span>
+                {i !== data.person_names?.value.split(',').length - 1 && ', '}
+              </React.Fragment>
+            ))}
+          </td>
+        </tr>
+
           <tr>
             <th>Subthemes</th>
             <td>{data.subthemes?.value}</td>
@@ -233,9 +246,7 @@ const CommentaryQueryResults = () => {
         />
         <span id="page-max-CQR">{`Max: ${maxJump}`}</span>
       </div>
-      <div className="Footer-portion-CQR">
-        <Footer />
-      </div>
+
     </div>
   );
 };

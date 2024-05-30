@@ -309,7 +309,7 @@ return (
           onChange={() => handleRadioChange('hadith')}
           checked={selectedOption === 'hadith'}
         />
-        <span> <p>Hadith</p> </span>
+        <span> <p id="rH">Hadith</p> </span>
       </label>
       <label className={`radio-button ${selectedOption === 'verse' ? 'selected' : ''}`}>
         <input
@@ -319,7 +319,7 @@ return (
           onChange={() => handleRadioChange('verse')}
           checked={selectedOption === 'verse'}
         />
-        <span> <p>Verse</p> </span>
+        <span> <p id="rV">Verse</p> </span>
       </label>
       <label className={`radio-button ${selectedOption === 'commentary' ? 'selected' : ''}`}>
         <input
@@ -329,7 +329,7 @@ return (
           onChange={() => handleRadioChange('commentary')}
           checked={selectedOption === 'commentary'}
         />
-        <span> <p>Commentary</p> </span>
+        <span> <p id="rC">Commentary</p> </span>
       </label>
     </div>
 

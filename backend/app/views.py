@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString, getNarratorChain
+from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
 
 class ReactView(APIView):
     print('sadsada')
@@ -158,10 +158,44 @@ def query_federated(request):
         result = Sparql_Endpoint(get_query, prefix)
         # Use your Sparql_Endpoint function to query the endpoint
         
-        return JsonResponse({'result': result})
+        abstracts = []
+        for results in result["results"]["bindings"]:
+            abstract = results["abstract"]["value"]
+            abstracts.append(abstract)
+        
+            if abstract:
+                return JsonResponse({'result': result})
+        # Check if abstracts are empty
+        if not abstracts:
+            # If abstracts are empty, do something
+            print("Abstracts are empty")
+            query = FederatedQuery1_2(person, applyLimit, limit)
+        
+            prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+            get_query = urllib.parse.quote(query)
+            print(query)
+            result = Sparql_Endpoint(get_query, prefix)
+            for results in result["results"]["bindings"]:
+                abstract = results["abstract"]["value"]
+                abstracts.append(abstract)
+
+            if not abstracts:
+                # If abstracts are empty, do something
+                print("Abstracts are empty")
+                query = FederatedQuery1_3(person, applyLimit, limit)
+            
+                prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+                get_query = urllib.parse.quote(query)
+                print(query)
+                result = Sparql_Endpoint(get_query, prefix)
+            # Check if abstracts are empty
+                return JsonResponse({'result': result})
+            else:
+                # If abstracts are not empty, do something else
+                print("Abstracts are not empty")
+                return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
-
 
 #Competency Question 1
 @csrf_exempt
@@ -207,3 +241,208 @@ def chain_narrators(request):
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+@csrf_exempt
+def query_federated2(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        information = data['information'] if 'information' in data and data['information'] != '' else 'information'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+
+        query = FederatedQuery_2(information, applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        print("Result is: ", result)
+        # Use your Sparql_Endpoint function to query the endpoint
+        abstracts = []
+        for results in result["results"]["bindings"]:
+            abstract = results["abstract"]["value"]
+            abstracts.append(abstract)
+        # Check if abstracts are empty
+        if not abstracts:
+            # If abstracts are empty, do something
+            print("Abstracts are empty")
+            query = FederatedQuery_3(information, applyLimit, limit)
+        
+            prefix = "http://www.tafsirtabari.com/ontology"  # Change this as needed
+            get_query = urllib.parse.quote(query)
+            print(query)
+            result = Sparql_Endpoint(get_query, prefix)
+
+            print("Result is: ", result)
+            return JsonResponse({'result': result})
+        else:
+            # If abstracts are not empty, do something else
+            print("Abstracts are not empty")
+            return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+# Competency Question 2
+@csrf_exempt
+def competency_question2(request):
+    if request.method == 'GET':
+        query_string = competencyquestion2()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        print({"Result is: ": result})
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+
+# Competency Question 3
+@csrf_exempt
+def competency_question3(request):
+    if request.method == 'GET':
+        query_string = competencyquestion3()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+
+# Competency Question 4
+@csrf_exempt
+def competency_question4(request):
+    if request.method == 'GET':
+        query_string = competencyquestion4()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+
+# Competency Question 5
+@csrf_exempt
+def competency_question5(request):
+    if request.method == 'GET':
+        query_string = competencyquestion5()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+
+# Competency Question 6
+@csrf_exempt
+def competency_question6(request):
+    if request.method == 'GET':
+        query_string = competencyquestion6()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+    
+# Competency Question 7
+@csrf_exempt
+def competency_question7(request):
+    if request.method == 'GET':
+        query_string = competencyquestion7()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+    
+# Competency Question 8
+@csrf_exempt
+def competency_question8(request):
+    if request.method == 'GET':
+        query_string = competencyquestion8()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+    
+# Competency Question 9
+@csrf_exempt
+def competency_question9(request):
+    if request.method == 'GET':
+        query_string = competencyquestion9()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+    
+# Competency Question 10
+@csrf_exempt
+def competency_question10(request):
+    if request.method == 'GET':
+        query_string = competencyquestion10()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+    
+# Competency Question 11
+@csrf_exempt
+def competency_question11(request):
+    if request.method == 'GET':
+        query_string = competencyquestion11()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})
+    
+# Competency Question 12
+@csrf_exempt
+def competency_question12(request):
+    if request.method == 'GET':
+        query_string = competencyquestion12()
+
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query_string)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed for this endpoint'})

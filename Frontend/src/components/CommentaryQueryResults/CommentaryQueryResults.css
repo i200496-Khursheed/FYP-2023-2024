@@ -1,4 +1,10 @@
 /* CommentaryQueryResults.css */
+@font-face {
+  font-family: 'UthmanTN';
+  src: url('../../fonts/UthmanTN_v2-0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .Footer-portion-CQR {
   position: absolute;
@@ -37,7 +43,7 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  top: 60px;
+  top: 75px;
   left: 30px;
   cursor: pointer;
   transition: transform 0.3s, filter 0.3s;
@@ -60,10 +66,13 @@
   padding: 2px;
   text-align: center;
   border: 2px solid #ddd;
-  font-size: 15px; 
-  font-family: 'Noto Sans Arabic', sans-serif;
+  /* font-size: 15px;  */
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
   font-weight: bold;
-  line-height: 2.5;
+  /* line-height: 2.5; */
+  line-height: 2.0;
   word-spacing: 3.5px;
 }
 
@@ -126,3 +135,199 @@
 .narrator-name-CQR:hover {
   color: darkblue; /* Change color to your preference */
 }
+
+
+
+/* Responsiveness CSS */
+
+@media (max-width: 1400px) 
+{
+  .details-table-CQR {
+    position: relative;
+    bottom: -15px; 
+    max-height: 800px; 
+    overflow-y: auto;  /* Allow vertical scroll only */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    max-height: 110vh;
+    margin-top: 5%;
+    padding-right: 1%;  /* Adjust this to ensure no overflow */
+    box-sizing: border-box;  /* Include padding and border in the element's total width and height */
+  }
+  
+  .details-table-CQR table {
+    width: 100%;  /* Ensure table takes full width of its container */
+    border-collapse: collapse;
+    margin-left: 0%;  /* Ensure no left margin */
+  }
+  
+  .details-table-CQR th, .details-table-CQR td {
+    word-wrap: break-word;  /* Break long words to fit within the cell */
+  }
+  
+
+.pagination.top-right-CQR {
+  position: absolute;
+  top: 350px;
+  right: 0%;
+  font-size: 16px;
+}
+
+.pagination.top-right-CQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 0%;
+}
+
+/* Prev and Next buttons */
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+#page-jump-VQR{
+  margin: 5px;
+  font-size: 16px;
+
+}
+
+#page-max-VQR{
+  font-size: 16px;
+  margin: 5px;
+}
+}
+
+@media (max-width: 1366px) 
+{
+  .details-table-CQR {
+    position: relative;
+    bottom: -15px; 
+    max-height: 800px; 
+    overflow: auto; 
+    width: 76%; 
+    left: 6%; 
+    margin-left: 0; 
+    max-height: 110vh;
+  }
+
+.pagination.top-right-VQR {
+  position: absolute;
+  top: 350px;
+  right: 2%;
+  font-size: 16px;
+}
+
+.pagination.top-right-VQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 1%;
+}
+
+/* Prev and Next buttons */
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+#page-jump-VQR{
+  margin: 10px;
+  font-size: 16px;
+
+}
+
+#page-max-VQR{
+  font-size: 16px;
+  margin: 10px;
+}
+}
+
+@media (max-width: 1280px) 
+{
+  .details-table-CQR {
+    overflow-x: hidden;
+    position: relative;
+    bottom: 10px;
+    max-height: 653px;
+    overflow: auto;
+    left: 38%;
+    max-height: 190vh;
+    max-width: 120%; 
+    margin-left: -35%;
+  }
+
+  .details-table-CQR table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2%;
+    margin-left: 0%;
+  }
+
+.pagination.top-right-VQR {
+  position: absolute;
+  top: 350px;
+  right: 2%;
+  font-size: 16px;
+}
+
+.pagination.top-right-VQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 1%;
+}
+
+/* Prev and Next buttons */
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+#page-jump-VQR{
+  margin: 10px;
+  font-size: 16px;
+
+}
+
+#page-max-VQR{
+  font-size: 16px;
+  margin: 10px;
+}
+}
+

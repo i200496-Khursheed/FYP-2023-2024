@@ -149,6 +149,7 @@ class AllVerseText:
 
 def FederatedQuery(person='?person', 
                     applyLimit=True, limit=""):
+    newline=r"\n\n"
     baseQueryString = f'''
 PREFIX dbr: <http://dbpedia.org/resource/>
 PREFIX dbp: <http://dbpedia.org/property/>
@@ -156,39 +157,244 @@ PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            SELECT DISTINCT  ?death  ?abstract    WHERE {{
-                    ?person rdf:type :Person.
-                    ?person :hasName "{person}".
 
-                    ?pn rdf:type :Person.
-                    ?pn owl:sameAs ?person.
+SELECT ?death ?abstract (GROUP_CONCAT(DISTINCT ?data; separator="{newline}") AS ?concatenatedData) (GROUP_CONCAT(DISTINCT ?quote; separator="{newline}") AS ?concatenatedQuotes) (GROUP_CONCAT(DISTINCT ?children; separator="{newline}") AS ?concatenatedChildren) (GROUP_CONCAT(DISTINCT ?parents; separator="{newline}") AS ?concatenatedParents) (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline}") AS ?concatenatedRelatives)
+WHERE {{
+  ?person rdf:type :Person.
+  ?person :hasName "{person}".
 
-                       SERVICE <https://dbpedia.org/sparql> {{
-       
-             ?pn dbo:abstract ?abstract .
-             ?pn dbo:deathDate ?death.
-     
-        	FILTER(LANG(?abstract) = "en")
-        
-       
-            }}
+  ?pn rdf:type :Person.
+  ?pn owl:sameAs ?person.
+
+  SERVICE <https://dbpedia.org/sparql> {{
+    ?pn dbo:wikiPageWikiLink ?data.
+    ?pn dbo:abstract ?abstract.
+  
+    OPTIONAL {{
+      ?pn dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?pn dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?pn dbp:quote ?quote.
+    }}
+    OPTIONAL {{
+      ?pn dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?pn dbp:relatives ?relatives.
+    }}
+    
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?death ?abstract
+
     '''
+    return baseQueryString
 
+
+def FederatedQuery1_2(person='?person', 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?death ?abstract (GROUP_CONCAT(DISTINCT ?data; separator="{newline}") AS ?concatenatedData) (GROUP_CONCAT(DISTINCT ?quote; separator="{newline}") AS ?concatenatedQuotes) (GROUP_CONCAT(DISTINCT ?children; separator="{newline}") AS ?concatenatedChildren) (GROUP_CONCAT(DISTINCT ?parents; separator="{newline}") AS ?concatenatedParents) (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline}") AS ?concatenatedRelatives)
+WHERE {{
+  ?person rdf:type :Other.
+  ?person :hasName "{person}".
+
+  ?pn rdf:type :Other.
+  ?pn owl:sameAs ?person.
+
+  SERVICE <https://dbpedia.org/sparql> {{
+    ?pn dbo:wikiPageWikiLink ?data.
+    ?pn dbo:abstract ?abstract.
+  
+    OPTIONAL {{
+      ?pn dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?pn dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?pn dbp:quote ?quote.
+    }}
+    OPTIONAL {{
+      ?pn dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?pn dbp:relatives ?relatives.
+    }}
     
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?death ?abstract
 
+    '''
+    return baseQueryString
+
+
+def FederatedQuery1_3(person='?person', 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?death ?abstract (GROUP_CONCAT(DISTINCT ?data; separator="{newline}") AS ?concatenatedData) (GROUP_CONCAT(DISTINCT ?quote; separator="{newline}") AS ?concatenatedQuotes) (GROUP_CONCAT(DISTINCT ?children; separator="{newline}") AS ?concatenatedChildren) (GROUP_CONCAT(DISTINCT ?parents; separator="{newline}") AS ?concatenatedParents) (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline}") AS ?concatenatedRelatives)
+WHERE {{
+  ?person rdf:type :Organization.
+  ?person :hasName "{person}".
+
+  ?pn rdf:type :Organization.
+  ?pn owl:sameAs ?person.
+
+  SERVICE <https://dbpedia.org/sparql> {{
+    ?pn dbo:wikiPageWikiLink ?data.
+    ?pn dbo:abstract ?abstract.
+  
+    OPTIONAL {{
+      ?pn dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?pn dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?pn dbp:quote ?quote.
+    }}
+    OPTIONAL {{
+      ?pn dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?pn dbp:relatives ?relatives.
+    }}
     
-        
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?death ?abstract
 
-    baseQueryString += f'\n}}'
+    '''
+    return baseQueryString
+
+
+def FederatedQuery_2(information="?information", 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"                
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?abstract
+       (GROUP_CONCAT(DISTINCT ?data; separator="{newline} ") AS ?concatenatedData) 
+       (GROUP_CONCAT(DISTINCT ?parents; separator="{newline} ") AS ?concatenatedParents)
+       (GROUP_CONCAT(DISTINCT ?children; separator="{newline} ") AS ?concatenatedChildren) 
+       (GROUP_CONCAT(DISTINCT ?quote; separator="{newline} ") AS ?concatenatedQuotes) 
+       (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline} ") AS ?concatenatedRelatives)
+WHERE {{
+  SERVICE <https://dbpedia.org/sparql> {{
+    BIND(<{information}> as ?link)
+    ?link dbo:wikiPageWikiLink ?data.
+    ?link dbo:abstract ?abstract.
+  
+    OPTIONAL{{
+      ?link dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?link dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?link dbp:quote ?quote.
+    }}
+    OPTIONAL{{
+      ?link dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?link dbp:relatives ?relatives.
+        }}
+    
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?abstract
+
+    '''
 
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
         baseQueryString += f'''
         LIMIT {limit}
         '''
-        
-
     return baseQueryString
 
+#this is used when the link from dbpedia is not same for resource page
+def FederatedQuery_3(information="?information", 
+                    applyLimit=True, limit=""):
+    newline=r"\n\n"                
+    baseQueryString = f'''
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?abstract
+       (GROUP_CONCAT(DISTINCT ?data; separator="{newline} ") AS ?concatenatedData) 
+       (GROUP_CONCAT(DISTINCT ?parents; separator="{newline} ") AS ?concatenatedParents)
+       (GROUP_CONCAT(DISTINCT ?children; separator="{newline} ") AS ?concatenatedChildren) 
+       (GROUP_CONCAT(DISTINCT ?quote; separator="{newline} ") AS ?concatenatedQuotes) 
+       (GROUP_CONCAT(DISTINCT ?relatives; separator="{newline} ") AS ?concatenatedRelatives)
+WHERE {{
+  SERVICE <https://dbpedia.org/sparql> {{
+    <{information}> ?predicate ?link .
+    ?link dbo:wikiPageWikiLink ?data.
+    ?link dbo:abstract ?abstract.
+  
+    OPTIONAL{{
+      ?link dbo:deathDate ?death.
+    }}
+    OPTIONAL {{
+      ?link dbp:children ?children.
+    }}
+    OPTIONAL {{
+      ?link dbp:quote ?quote.
+    }}
+    OPTIONAL{{
+      ?link dbp:parents ?parents.
+    }}
+    OPTIONAL {{
+      ?link dbp:relatives ?relatives.
+        }}
+    
+    FILTER(LANG(?abstract) = "en")
+  }}
+}}
+GROUP BY ?abstract
+
+    '''
+
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
+        baseQueryString += f'''
+        LIMIT {limit}
+        '''
+    return baseQueryString
 def getNarratorChain(hadith_number='?hadith_number', 
                     applyLimit=True, limit=""):
     baseQueryString = f'''
@@ -232,18 +438,10 @@ def getNarratorChain(hadith_number='?hadith_number',
 
 
 def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo', verseNo='?verseNo',
-                                     theme=None, or_theme=None, mentions="?mentions", subtheme="?subtheme",
+                                     theme='?theme', mentions="?mentions", subtheme="?subtheme",
                                      hadith_number='?hadith_number', RootNarrator='?root_narrator',
-                                     narrator=None,or_narrator=None, narratortitle='narrator-title',
+                                     narrator='?narrator', narratortitle='narrator-title',
                                      applyLimit=True, limit=""):
-    if theme is None:
-        theme = ['?theme']             #for themes of and clause
-    if or_theme is None:                    
-        or_theme = ['?theme']          #for themes of or clause
-    if narrator is None:
-        narrator = ['?narrator']             #for themes of and clause
-    if or_narrator is None:                    
-        or_narrator = ['?narrator']
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
             PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -295,63 +493,19 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
     baseQueryString += f'''\n  ?RootPerson :hasName ?RootNarrator .'''
     baseQueryString += f'''\n  ?RootPerson :hasNarratorType ?Roottype.'''
     baseQueryString += f'''\n  ?Roottype :hasType ?rootNarratorType.'''
-    
 
-    if theme[0]!= '?theme':
-        length = len(theme)
-       
-        for i in range(len(theme)):
-            print(f"Theme at index {i}: {theme[i]}")
-            baseQueryString += f'''  
-  {{
-    SELECT ?HadithNo1
-    WHERE {{
-      ?HadithNo1 :hasTheme ?Theme_url1.
-      ?Theme_url1 :hasName ?Theme1.
-      FILTER (?Theme1 = "{theme[i]}")
-    }}
-  }}   '''
-  
-    if or_theme[0]!= '?theme':
-        length = len(or_theme)
-        baseQueryString += f'''\n   FILTER( '''
-        for i in range(len(or_theme)):
-            print(f"Theme at index {i}: {or_theme[i]}")
-            baseQueryString += f'''  ?Theme = "{or_theme[i]}"   '''
-            if i != length-1: 
-                baseQueryString += f'''  || '''
-        baseQueryString += f'''   ) .'''
 
-    if narrator[0]!= '?narrator':
-        length = len(narrator)
-       
-        for i in range(len(narrator)):
-            print(f"narrator at index {i}: {narrator[i]}")
-            baseQueryString += f'''  
-  {{
-    SELECT ?HadithNo1
-    WHERE {{
-      ?HadithNo1 :containsNarratorChain ?Narrators.
-      ?Narrators :hasNarratorSegment ?segment.
-      ?segment :refersTo ?Person.
-      ?Person :hasName ?NarratorName1.
-    FILTER (?NarratorName1 = {narrator[i]})
-     
-    }}
-  }}   '''
-  
-    if or_narrator[0]!= '?narrator':
-        length = len(or_narrator)
-        baseQueryString += f'''\n   FILTER( '''
-        for i in range(len(or_narrator)):
-            print(f"narrator at index {i}: {or_narrator[i]}")
-            baseQueryString += f'''  ?NarratorName = "{or_narrator[i]}"   '''
-            if i != length-1: 
-                baseQueryString += f'''  || '''
-        baseQueryString += f'''   ) .'''
+
+
+    if theme != '?theme':
+        baseQueryString += f'''\n  ?Theme_url :hasName "{theme}" .'''
+
     if subtheme != '?subtheme':
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
+
+    if narrator != '?narrator':
+        baseQueryString += f'''\n     FILTER(CONTAINS(?NarratorName,"{narrator}"))''' 
         
 
     if narratortitle != 'narrator-title':
@@ -377,7 +531,7 @@ def constructHadithSparQLQueryString(versetext='?vtext', chapterNo='?chapterNo',
 
     return baseQueryString
 def constructCommentarySparQLQueryString(commno='?number',chapterNo='?chapter_no', verseNo='?V_no',
-                                     theme='?theme', mentions=None, or_mentions=None, subtheme="?subtheme", 
+                                     theme='?theme', mentions="?mentions", subtheme="?subtheme", 
                                      applyLimit=True, limit=""):
     baseQueryString = f'''
 PREFIX : <http://www.tafsirtabari.com/ontology#>
@@ -441,10 +595,6 @@ WHERE {{
 
 
     '''
-    if mentions is None:
-        mentions = ['?mentions']             #for themes of and clause
-    if or_mentions is None:                    
-        or_mentions = ['?mentions'] 
 
     if commno != '?number':
         baseQueryString += f'''\n  FILTER(?number = "{commno}")'''
@@ -466,34 +616,8 @@ WHERE {{
         baseQueryString += f'''\n     FILTER(?subtheme = "{subtheme}").''' 
         baseQueryString += f'''\n  FILTER(?subtheme = "{subtheme}" || !BOUND(?subtheme))'''
 
- #   if mentions[0]!= '?mentions':
- #       length = len(mentions)
- #      
- #       for i in range(len(mentions)):
- #           print(f"mentions at index {i}: {mentions[i]}")
- #           baseQueryString += f'''  
- # {{
- #   SELECT ?Commentary1
- #   WHERE {{
- #   ?Commentary1 rdf:type :Commentary.
- #   ?Commentary1 :mentions ?person.
- #   ?person :hasName ?name.
- #   FILTER (?name = "{mentions[i]}")
-#
-#
-#    }}
-#  }}   '''
-    if mentions[0] != '?mentions':
+    if mentions != '?mentions':
         baseQueryString += f'''\n  FILTER(?name = "{mentions}") .'''
-    if or_mentions[0]!= '?mentions':
-        length = len(or_mentions)
-        baseQueryString += f'''\n   FILTER( '''
-        for i in range(len(or_mentions)):
-            print(f"mentions at index {i}: {or_mentions[i]}")
-            baseQueryString += f'''  ?name = "{or_mentions[i]}"   '''
-            if i != length-1: 
-                baseQueryString += f'''  || '''
-        baseQueryString += f'''   ) .'''
 
     baseQueryString += f'\n}}'
     baseQueryString += f'\n GROUP BY ?number'
@@ -655,7 +779,217 @@ def competencyquestion1():
     return baseQueryString
 
 
+# Latest Competancy Questions:
 
+#how many times has {name} narrated hadith
+def competencyquestion2():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?narrator_name (COUNT(?narrator2_name) AS ?heard_count)
+WHERE {
+    ?Narrator :hasName ?narrator_name.
+    ?Narrator :heardFrom ?Narrator2.
+    ?Narrator2 :hasName ?narrator2_name.
+    
+    FILTER(?narrator_name="سفيان")
+}
+GROUP BY ?narrator_name
+ORDER BY DESC(?heard_count)
+
+    '''
+
+   
+
+
+    return baseQueryString
+#No of Hadiths in each Theme:
+def competencyquestion3():
+    baseQueryString = '''
+#No of Hadiths in each Theme:
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select ?Theme_Name ?Hadis_count(count( ?Hadis ) as ?Hadis_count)
+where {
+?Theme rdf:type :Theme.
+?Theme :hasName ?Theme_Name.
+?Hadis :hasTheme ?Theme.
+?Hadis rdf:type :Hadith.
+}group by ?Theme_Name
+    '''
+
+   
+
+
+    return baseQueryString
+
+#hadith narrated by ibn abbas
+def competencyquestion4():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT Distinct ?no  ?name
+WHERE {
+    ?Hadith_no rdf:type :Hadith .
+    ?Hadith_no :hasTheme ?Theme .
+    ?Hadith_no :hasHadithNo ?no .
+    
+
+     ?NarratorName :hasName ?name.
+    ?NarratorName :hasName "ابن عباس" .
+    ?NarratorName :hasNarratorType ?narratortitle .
+
+}
+
+    '''
+
+   
+
+
+    return baseQueryString
+
+#most heard from narrators
+def competencyquestion5():
+    baseQueryString = '''
+           #write a query to display names of most heard from narrators with count
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+            SELECT ?narrator_name (COUNT(?narrator2_name) AS ?heard_count)
+            WHERE {
+                ?Narrator :hasName ?narrator_name.
+                ?Narrator :heardFrom ?Narrator2.
+                ?Narrator2 :hasName ?narrator2_name.
+            }
+            GROUP BY ?narrator_name
+            ORDER BY DESC(?heard_count)
+
+    '''
+
+   
+
+
+    return baseQueryString
+# What is the Theme of Hadith 189
+def competencyquestion6():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?HadithNo ?Theme
+where {
+    ?HadithNo rdf:type :Hadith.
+    ?HadithNo :hasHadithNo "189".
+    ?HadithNo :hasTheme ?Theme.
+}
+'''
+
+    return baseQueryString
+
+# What is the Name of Surah 12? 
+def competencyquestion7():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?Name
+where {
+    ?Surah rdf:type :Surah.
+    ?Surah :hasSurahNo '12'.
+    ?Surah :hasName ?Name.
+}
+'''
+    return baseQueryString
+
+# What are the names of narrators and narrator they heard hadith from? 
+def competencyquestion8():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select *
+where {
+    ?Narrator :hasName ?name1.
+    ?Narrator :heardFrom ?Narrator2.
+    ?Narrator2 :hasName ?name2.
+}
+'''
+    return baseQueryString
+
+# What is the text of Verse 3 in Surah 12? 
+def competencyquestion9():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?Text
+WHERE {
+    ?Surah rdf:type :Surah.
+    ?Surah :hasSurahNo '12'.
+    ?Surah :containsVerse ?Verse.
+    ?Verse :hasVerseNo '3'.
+    ?Verse :hasText ?Text.
+}
+'''
+    return baseQueryString
+
+# What are all the names mentioned with their count in all Hadith? 
+def competencyquestion10():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?person_name (COUNT(?person_name) as ?mention_count)
+WHERE {
+    ?Hadith rdf:type :Hadith.
+    ?Hadith :hasText ?text.
+    ?Hadith :mentions ?name.
+    ?name :hasName ?person_name.
+}
+GROUP BY ?person_name
+ORDER BY DESC(?mention_count)
+'''
+    return baseQueryString
+
+# What hadith follows what hadith? 
+def competencyquestion11():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?hadith_no ?follows
+WHERE {
+    ?Hadith rdf:type :Hadith.
+    ?Hadith :hasHadithNo ?hadith_no.
+    ?Hadith :follows ?follows.
+    ?follows :hasHadithNo ?text.
+}
+'''
+    return baseQueryString
+
+# Finding all verses which have used the word مِنْ
+def competencyquestion12():
+    baseQueryString = '''
+PREFIX : <http://www.tafsirtabari.com/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?no ?name ?Text
+where {
+  ?Surah rdf:type :Surah.
+    ?Surah :hasSurahNo ?no.
+    ?Surah :hasName ?name.
+    ?Surah :containsVerse ?Verse.
+    ?Verse :hasText ?Text.
+    FILTER(CONTAINS(?Text,  'مِنْ'))
+}
+'''
+    return baseQueryString
+
+
+# End of Latest Comp Questions
 
 if __name__ == "__main__":
     prefix = "http://www.tafsirtabari.com/ontology"
@@ -696,18 +1030,25 @@ if __name__ == "__main__":
     query = constructHadithSparQLQueryString(theme='lugha')"""
     # query = constructHadithSparQLQueryString()
 
-    query = constructVerseSparQLQueryString(verseNo=258)
-    themes = ["lugha", "kalam"]
-    or_themes = ["sufism"]
-    mentions = ["عثمان بن سعيد","محمد بن العلاء"]
-    query = constructCommentarySparQLQueryString(mentions=mentions)
-    #query = constructHadithSparQLQueryString(theme=themes, or_narrator=or_narrator)
+    #query = constructVerseSparQLQueryString(verseNo=258)
+
+    #query = constructCommentarySparQLQueryString(theme='asbab')
+    query = constructHadithSparQLQueryString(narrator='عثمان بن سعيد')
     #query = getNarratorChain(hadith_number="120")
+    
+    #query=FederatedQuery_2(information="http://dbpedia.org/resource/Muhammad")
+    query=FederatedQuery_2(information="http://dbpedia.org/resource/Amina_bint_Wahb")
     print(query)
     results = []
     
-    #get_query = urllib.parse.quote(query)
-    #result = Sparql_Endpoint(get_query,prefix)
+    get_query = urllib.parse.quote(query)
+    result = Sparql_Endpoint(get_query,prefix)
     #print(result)
-    print("finish")
-    print("le fin")
+"""    abstracts = []
+
+for results in result["results"]["bindings"]:
+    abstract = results["abstract"]["value"]
+    abstracts.append(abstract)
+
+print(abstracts)"""
+print("finish")

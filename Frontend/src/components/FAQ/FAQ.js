@@ -6,26 +6,26 @@ import Footer from '../Footer/Footer';
 const FAQ = () => {
   const questionsSet1 = [
     { question: 'Which Quranic Verse Mentions "ابن عباس"', query: 'competency_question1' },
-    { question: 'What is the chain of narrators for hadith h135', query: 'competency_question2' },
-    { question: 'Which Quranic verse discusses the theme "Kalam"', query: 'competency_question3' },
+    { question: 'How many times has سفيان narrated hadith', query: 'competency_question2' },
+    { question: 'No of Hadiths in each Theme"', query: 'competency_question3' },
   ];
 
   const questionsSet2 = [
-    { question: 'What is the book location for the verse: 1:2', query: 'competency_question4' },
-    { question: 'List Hadith are narrated by "ابن عباس"', query: 'competency_question5' },
-    { question: 'How many hadith narrated by a rawi', query: 'competency_question6' },
+    { question: 'List Hadith Numbers narrated by "ابن عباس"', query: 'competency_question4' },
+    { question: 'List names of most heard from narrators with count', query: 'competency_question5' },
+    { question: 'Theme of Hadith 189', query: 'competency_question6' },
   ];
 
   const questionsSet3 = [
-    { question: 'List of narrators by the number of their narrations', query: 'competency_question7' },
-    { question: 'What verses are used as a reference in the commentary of the verse 1:2', query: 'competency_question8' },
-    { question: 'Explain the topic "اهل_المعرفه"', query: 'competency_question9' },
+    { question: 'What is the name of Surah 12', query: 'competency_question7' },
+    { question: 'Who narrated a hadith and from whom', query: 'competency_question8' },
+    { question: 'What is the text of Verse 3 in Surah 12?', query: 'competency_question9' },
   ];
 
   const questionsSet4 = [
-    { question: 'What has been said about a certain Person محمد', query: 'competency_question10' },
-    { question: 'Which RAWI narrated most hadiths about اهل_المعرفه', query: 'competency_question11' },
-    { question: 'Number of hadith by TOPIC narrated by "ابن عباس"', query: 'competency_question12' },
+    { question: 'What are all the names mentioned with their count in all Hadith?', query: 'competency_question10' },
+    { question: 'What hadith follows what hadith?', query: 'competency_question11' },
+    { question: '# Finding all verses which have used the word مِنْ', query: 'competency_question12' },
   ];
 
   const [result, setResult] = useState(null);
@@ -79,6 +79,26 @@ const FAQ = () => {
       case 'competency_question2':
         return renderQuestion2Table();
       // Add cases for other questions if needed
+      case 'competency_question3':
+        return renderQuestion3Table();
+      case 'competency_question4':
+        return renderQuestion4Table();
+      case 'competency_question5':
+        return renderQuestion5Table();
+      case 'competency_question6':
+        return renderQuestion6Table();
+      case 'competency_question7':
+        return renderQuestion7Table();
+      case 'competency_question8':
+        return renderQuestion8Table();
+      case 'competency_question9':
+        return renderQuestion9Table();  
+      case 'competency_question10':
+        return renderQuestion10Table();      
+      case 'competency_question11':
+        return renderQuestion11Table();     
+      case 'competency_question12':
+        return renderQuestion12Table();   
       default:
         return null;
     }
@@ -129,6 +149,300 @@ const FAQ = () => {
   
 
   const renderQuestion2Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 2:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Narrator Name</th>
+                <th>Total Hadith Heard Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.narrator_name ? item.narrator_name.value : '-'}</td>
+                  <td>{item.heard_count ? item.heard_count.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+  
+  const renderQuestion3Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 3:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Theme Name</th>
+                <th>Total Hadith Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.Theme_Name ? item.Theme_Name.value : '-'}</td>
+                  <td>{item.Hadis_count ? item.Hadis_count.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion4Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 4:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name ? item.name.value : '-'}</td>
+                  <td>{item.no ? item.no.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion5Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 5:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Narrator Name</th>
+                <th>Total Hadith Heard Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.narrator_name ? item.narrator_name.value : '-'}</td>
+                  <td>{item.heard_count ? item.heard_count.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion6Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 6:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Hadith No</th>
+                <th>Theme</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{getHadithNo(item.HadithNo.value)}</td>
+                  <td>{getTheme(item.Theme.value)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+  
+  // Function to extract the Hadith No from the URI
+  const getHadithNo = (uri) => {
+    return uri.substring(uri.lastIndexOf('#') + 1);
+  };
+  
+  // Function to extract the Theme from the URI
+  const getTheme = (uri) => {
+    return uri.substring(uri.lastIndexOf('#') + 1);
+  };
+  
+
+  const renderQuestion7Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 7:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Surah Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.Name ? item.Name.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion8Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 8:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Narrator Name</th>
+                <th>Heard From</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name1 ? item.name1.value : '-'}</td>
+                  <td>{item.name2 ? item.name2.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion9Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 9:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Text</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.Text ? item.Text.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion10Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 10:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Person Name</th>
+                <th>Number of times mentioned</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.person_name ? item.person_name.value : '-'}</td>
+                  <td>{item.mention_count ? item.mention_count.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion11Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 11:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>Hadith No</th>
+                <th>Follows</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.hadith_no ? item.hadith_no.value : '-'}</td>
+                  <td>{getHadithNo(item.follows.value)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+
+  const renderQuestion12Table = () => {
+    return (
+      result && (
+        <div className="result-container">
+          <h3>Result for competency Question 12:</h3>
+          <table ref={tableRef}>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Text</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.no ? item.no.value : '-'}</td>
+                  <td>{item.name ? item.name.value : '-'}</td>
+                  <td>{item.Text ? item.Text.value : '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    );
+  };
+  const renderQuestion13Table = () => {
     // return (
     //   // Render table for competency_question2
     // );

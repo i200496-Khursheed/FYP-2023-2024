@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import './HadithQueryResults.css';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import '../../fonts.css';
 
 const ROWS_TO_SHOW_INITIAL = 5;
 const ITEMS_PER_PAGE = 1; // Number of items to display per page
@@ -129,7 +130,7 @@ const HadithQueryResults = () => {
   };
   
   
-
+  // style={{ fontFamily: 'UthmanTN' }}
   
   const renderTableData = () => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -151,20 +152,40 @@ const HadithQueryResults = () => {
             </button>          
           </tr>
           <tr>
-            <th>Chapters</th>
-            <td>{data.Chapters?.value}</td>
+            <th>Chapters</th> 
+            <td >{data.Chapters?.value}</td>
           </tr>
           <tr>
-            <th>NarratorNames</th>
-            <td>{data.NarratorNames?.value.split(',').map(name => name.trim()).join('  ,  ')}</td>
-          </tr>
+          <th>NarratorNames</th>
+          <td>
+            {data.NarratorNames?.value.split(',').map((name, index) => (
+              <span
+                key={index}
+                className="narrator-name"
+                onClick={() => handleNarratorNameClick(name.trim())}
+              >
+                {name.trim()}
+              </span>
+            )).reduce((prev, curr) => [prev, ', ', curr])}
+          </td>
+        </tr>
           <tr>
             <th>NarratorTypes</th>
             <td>{data.NarratorTypes?.value}</td>
           </tr>
           <tr>
             <th>Refers</th>
-            <td>{data.Refers?.value}</td>
+            <td>
+              {data.Refers?.value.split(',').map((refer, index) => (
+                <span
+                  key={index}
+                  className="refer-name"
+                  onClick={() => handleNarratorNameClick(refer.trim())}
+                >
+                  {refer.trim()}
+                </span>
+              )).reduce((prev, curr) => [prev, ', ', curr])}
+            </td>
           </tr>
           <tr>
             <th>Root Narrator Types</th>
@@ -172,7 +193,17 @@ const HadithQueryResults = () => {
           </tr>
           <tr>
             <th>Root Narrators</th>
-            <td>{data.RootNarrators?.value.split(',').map(name => name.trim()).join('  ,  ')}</td>
+            <td>
+              {data.RootNarrators?.value.split(',').map((rootNarrator, index) => (
+                <span
+                  key={index}
+                  className="root-narrator-name"
+                  onClick={() => handleNarratorNameClick(rootNarrator.trim())}
+                >
+                  {rootNarrator.trim()}
+                </span>
+              )).reduce((prev, curr) => [prev, ', ', curr])}
+            </td>
           </tr>
           <tr>
             <th>Sub Themes</th>
@@ -230,7 +261,7 @@ const HadithQueryResults = () => {
 
   return (
     <div>
-      <div className="back-button-VQR" onClick={() => window.history.back()}>
+      <div className="back-button-HQR" onClick={() => window.history.back()}>
         <img src={require('../../assets/back_button.png')} alt="Back Button" />
       </div>
       {resultsData && (
@@ -260,9 +291,7 @@ const HadithQueryResults = () => {
         />
         <span id="page-max-HQR">{`Max: ${maxJump}`}</span>
       </div>
-      <div className="Footer-portion-HQR">
-        <Footer />
-      </div>
+
     </div>
   );
 };

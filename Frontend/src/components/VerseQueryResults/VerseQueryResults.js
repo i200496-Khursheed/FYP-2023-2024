@@ -120,12 +120,34 @@ const VerseQueryResults = () => {
           </tr>
           <tr>
             {index === 0 && <th>Name</th>}
-            <td>{data.names?.value.split(';').map(name => name.trim()).join(' ;  ')}</td>
+            <td>
+              {data.names?.value.split(';').map((name, index) => (
+                <span
+                  key={index}
+                  className="narrator-name-VQR"
+                  onClick={() => handleNarratorNameClick(name.trim())}
+                >
+                  {name.trim()}
+                </span>
+              )).reduce((prev, curr) => [prev, ', ', curr])}
+            </td>
           </tr>
+
           <tr>
             {index === 0 && <th>Reference</th>}
-            <td>{data.references?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
+            <td>
+              {data.references?.value.split(';').map((reference, index) => (
+                <span
+                  key={index}
+                  className="narrator-name-VQR"
+                  onClick={() => handleNarratorNameClick(reference.trim())} // Define handleReferenceClick function
+                >
+                  {reference.trim()}
+                </span>
+              )).reduce((prev, curr) => [prev, ', ', curr])}
+            </td>
           </tr>
+
           <tr>
             {index === 0 && <th>Subtheme</th>}
             <td>{data.subthemes?.value.split(';').map(name => name.trim()).join('  ;  ')}</td>
@@ -202,7 +224,7 @@ const VerseQueryResults = () => {
   return (
     <div>
       <div className="verse-query-results">
-        <div className="pagination top-right">
+        <div className="pagination top-right-VQR">
           <button onClick={handlePrevPage} disabled={currentPage === 1}>
             Prev
           </button>
@@ -211,8 +233,8 @@ const VerseQueryResults = () => {
             Next
           </button>
         </div>
-        <div className="pagination top-right-2">
-          <span id="page-jump-VQR">Jump to Page:</span>
+        <div className="pagination top-right-VQR-2">
+          <span id="page-jump-VQR">Jump to:</span>
           <input
             type="number"
             value={currentPage}
@@ -234,9 +256,7 @@ const VerseQueryResults = () => {
           </div>
         )}
       </div>
-      <div className="Footer-portion-VQR">
-        <Footer />
-      </div>
+
     </div>
   );
 };

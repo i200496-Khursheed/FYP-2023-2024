@@ -225,32 +225,32 @@ const [subThemeOptions, setSubThemeOptions] = useState([]);
 
 // Commentary Number
 useEffect(() => {
-  fetch('/Drop-down-data/Commentary Dropdowns/Commentary No.txt')
-    .then((response) => response.text())
-    .then((data) => {
-      const comms = data
-        .split('\n')
-        .map((commentaryNo) => commentaryNo.trim())
-        .filter((commentaryNo) => commentaryNo !== '') // Remove empty lines, if any
-        .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
-        .map((sortedCommentaryNo) => ({
-          value: sortedCommentaryNo,
-          label: sortedCommentaryNo,
-        }));
-      setCommentaryNoOptions(comms);
-      setFilteredCommentaryNumbers(comms.slice(0, 11));
-    })
-    .catch((error) => {
-      console.error('Error fetching and sorting commentary numbers:', error);
-    });
-}, []);
+    // Fetch commentary numbers
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary No.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const comms = data
+          .split('\n')
+          .map((commentaryNo) => commentaryNo.trim())
+          .filter((commentaryNo) => commentaryNo !== '') // Remove empty lines, if any
+          .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
+          .map((sortedCommentaryNo) => ({
+            value: sortedCommentaryNo,
+            label: sortedCommentaryNo,
+          }));
+        setCommentaryNoOptions(comms);
+        setFilteredCommentaryNumbers(comms.slice(0, 11));
+      })
+      .catch((error) => {
+        console.error('Error fetching and sorting commentary numbers:', error);
+      });
+
 
 // Chapter No
-useEffect(() => {
-  // Fetch the text file from the public folder
-  fetch('/Drop-down-data/Commentary Dropdowns/Commentary Surah Number.txt')
-    .then((response) => response.text())
-    .then((data) => {
+    // Fetch chapter numbers
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Surah Number.txt')
+      .then((response) => response.text())
+      .then((data) => {
         const chapters = data
           .split('\n')
           .map((chapter) => chapter.trim())
@@ -262,15 +262,14 @@ useEffect(() => {
           }));
         setChapterNoOptions(chapters);
         setFilteredChapterNumber(chapters.slice(0, 11));
-    })
-    .catch((error) => {
-      console.error('Error fetching chapterNo:', error);
-    });
-}, []);
+      })
+      .catch((error) => {
+        console.error('Error fetching chapterNo:', error);
+      });
 
 // VerseNo
-useEffect(() => {
-  fetch('/Drop-down-data/Commentary Dropdowns/Commentary Ayat Number.txt')
+    // Fetch verse numbers
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Ayat Number.txt')
     .then((response) => response.text())
     .then((data) => {
       const verses = data
@@ -288,72 +287,65 @@ useEffect(() => {
     .catch((error) => {
       console.error('Error fetching and sorting verse numbers:', error);
     });
-}, []);
+    
 
 // themes
-useEffect(() => {
+
   // Fetch the text file from the public folder
-  fetch('/Drop-down-data/Commentary Dropdowns/Commentary Theme.txt')
-    .then((response) => response.text())
-    .then((data) => {
-      // Split the file content by lines and start from line 2
-      const themes = data.split('\n').slice(1).map((theme) => {
-        // Remove the leading colon from each theme
-        const trimmedTheme = theme.trim();
-        const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
-        return { value: themeWithoutColon, label: themeWithoutColon };
+    // Fetch themes
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Theme.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const themes = data.split('\n').slice(1).map((theme) => {
+          const trimmedTheme = theme.trim();
+          const themeWithoutColon = trimmedTheme.startsWith(':') ? trimmedTheme.substring(1) : trimmedTheme;
+          return { value: themeWithoutColon, label: themeWithoutColon };
+        });
+        setThemeOptions(themes);
+        setFilteredThemes(themes.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching themes:', error);
       });
-      setThemeOptions(themes);
-      setFilteredThemes(chapters.slice(0, 8));
-    })
-    .catch((error) => {
-      console.error('Error fetching themes:', error);
-    });
-}, []);
+
 
 // Fetch mentioned persons from the text file
-useEffect(() => {
-  fetch('/Drop-down-data/Commentary Dropdowns/Commentary Mentions.txt')
-    .then((response) => response.text())
-    .then((data) => {
-      // Split the file content by lines
-      const lines = data.split('\n');
-      // Process each line to extract the full name
-      const mentionedPersons = lines.map((line) => {
-        const fullName = line.trim();
-        return { value: fullName, label: fullName };
-      });
-      // Set the options in state
-      setMentionsOptions(mentionedPersons);
-      setFilteredMentions(chapters.slice(0, 8));
 
-    })
-    .catch((error) => {
-      console.error('Error fetching mentioned persons:', error);
-    });
-}, []);
+    // Fetch mentioned persons
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Mentions.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const lines = data.split('\n');
+        const mentionedPersons = lines.map((line) => {
+          const fullName = line.trim();
+          return { value: fullName, label: fullName };
+        });
+        setMentionsOptions(mentionedPersons);
+        setFilteredMentions(mentionedPersons.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching mentioned persons:', error);
+      });
+
 
 // Fetch sub theme from the text file
-useEffect(() => {
-  fetch('/Drop-down-data/Commentary Dropdowns/Commentary Sub-themes.txt')
-    .then((response) => response.text())
-    .then((data) => {
-      // Split the file content by lines
-      const lines = data.split('\n');
-      // Process each line to extract the full name
-      const subthemes = lines.map((line) => {
-        const subtheme = line.trim();
-        return { value: subtheme, label: subtheme };
-      });
-      // Set the options in state
-      setSubThemeOptions(subthemes);
-      setFilteredSubThemes(chapters.slice(0, 8));
 
-    })
-    .catch((error) => {
-      console.error('Error fetching sub themes:', error);
-    });
-}, []);
+    // Fetch sub themes
+    fetch('/Drop-down-data/Commentary Dropdowns/Commentary Sub-themes.txt')
+      .then((response) => response.text())
+      .then((data) => {
+        const lines = data.split('\n');
+        const subthemes = lines.map((line) => {
+          const subtheme = line.trim();
+          return { value: subtheme, label: subtheme };
+        });
+        setSubThemeOptions(subthemes);
+        setFilteredSubThemes(subthemes.slice(0, 8));
+      })
+      .catch((error) => {
+        console.error('Error fetching sub themes:', error);
+      });
+  }, []);
 
 //end
 
@@ -377,7 +369,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('hadith')}
             checked={selectedOption === 'hadith'}
           />
-          <span> <p>Hadith</p> </span>
+          <span> <p id="rH">Hadith</p> </span>
         </label>
         <label className={`radio-button-commentary ${selectedOption === 'verse' ? 'selected' : ''}`}>
           <input
@@ -387,7 +379,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('verse')}
             checked={selectedOption === 'verse'}
           />
-          <span> <p>Verse</p> </span>
+          <span> <p id="rV">Verse</p> </span>
         </label>
         <label className={`radio-button-commentary ${selectedOption === 'commentary' ? 'selected' : ''}`}>
           <input
@@ -397,7 +389,7 @@ useEffect(() => {
             onChange={() => handleRadioChange('commentary')}
             checked={selectedOption === 'commentary'}
           />
-          <span> <p>Commentary</p> </span>
+          <span> <p id="rC">Commentary</p> </span>
         </label>
       </div>
 
