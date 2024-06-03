@@ -64,7 +64,19 @@
   background-color: silver;
 }
 
-.details-table-VQR th,
+.details-table-VQR th
+{
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  /* font-size: 15px; */
+  font-size: 14px;
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+}
+
 .details-table-VQR td {
   padding: 8px;
   text-align: center;
@@ -74,7 +86,7 @@
   /* font-family: 'Noto Sans Arabic', sans-serif; */
   font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
   font-weight: bold;
-  line-height: 2.5;
+  line-height: 1.5;
 }
 
 .details-table-VQR th {

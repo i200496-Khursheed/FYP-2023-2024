@@ -18,6 +18,156 @@ const CommentaryQueryBuilder = () => {
     mentions: '',
   });
 
+  const [resetKey, setResetKey] = useState(0);
+
+// mapping surah and ayat numbers
+const chapterVerseCounts = {
+  1: 7,
+  2: 286,
+  3: 200,
+  4: 176,
+  5: 120,
+  6: 165,
+  7: 206,
+  8: 75,
+  9: 129,
+  10: 109,
+  11: 123,
+  12: 111,
+  13: 43,
+  14: 52,
+  15: 99,
+  16: 128,
+  17: 111,
+  18: 110,
+  19: 98,
+  20: 135,
+  21: 112,
+  22: 78,
+  23: 118,
+  24: 64,
+  25: 77,
+  26: 227,
+  27: 93,
+  28: 88,
+  29: 69,
+  30: 60,
+  31: 34,
+  32: 30,
+  33: 73,
+  34: 54,
+  35: 45,
+  36: 83,
+  37: 182,
+  38: 88,
+  39: 75,
+  40: 85,
+  41: 54,
+  42: 53,
+  43: 89,
+  44: 59,
+  45: 37,
+  46: 35,
+  47: 38,
+  48: 29,
+  49: 18,
+  50: 45,
+  51: 60,
+  52: 49,
+  53: 62,
+  54: 55,
+  55: 78,
+  56: 96,
+  57: 29,
+  58: 22,
+  59: 24,
+  60: 13,
+  61: 14,
+  62: 11,
+  63: 11,
+  64: 18,
+  65: 12,
+  66: 12,
+  67: 30,
+  68: 52,
+  69: 52,
+  70: 44,
+  71: 28,
+  72: 28,
+  73: 20,
+  74: 56,
+  75: 40,
+  76: 31,
+  77: 50,
+  78: 40,
+  79: 46,
+  80: 42,
+  81: 29,
+  82: 19,
+  83: 36,
+  84: 25,
+  85: 22,
+  86: 17,
+  87: 19,
+  88: 26,
+  89: 30,
+  90: 20,
+  91: 15,
+  92: 21,
+  93: 11,
+  94: 8,
+  95: 8,
+  96: 19,
+  97: 5,
+  98: 8,
+  99: 8,
+  100: 11,
+  101: 11,
+  102: 8,
+  103: 3,
+  104: 9,
+  105: 5,
+  106: 4,
+  107: 7,
+  108: 3,
+  109: 6,
+  110: 3,
+  111: 5,
+  112: 4,
+  113: 5,
+  114: 6
+};
+
+const resetFields = () => {
+  setData({
+    commno: '',
+    chapterNo: '',
+    verseNo: '',
+    theme: '',
+    subtheme: '',
+    narrators: [{ title: '', name: '' }],
+    mentions: '',
+  });
+  setLimitValue(0);
+  setCommentaryNumberInputValue('');
+  setChapterNumberInputValue('');
+  setVerseNumberInputValue('');
+  setThemeInputValue('');
+  setSubThemeInputValue('');
+  setMentionsInputValue('');
+
+  // Reset filtered options
+  setFilteredCommentaryNumbers(commentaryNoOptions.slice(0, 11));
+  setFilteredChapterNumber(chapterNoOptions.slice(0, 11));
+  setFilteredVerseNumber(verseNoOptions.slice(0, 11));
+  setFilteredThemes(themeOptions.slice(0, 8));
+  setFilteredSubThemes(subThemeOptions.slice(0, 8));
+  setFilteredMentions(mentionsOptions.slice(0, 8));
+
+  // Increment the reset key to force re-render
+  setResetKey(prevKey => prevKey + 1);
+};
+
   const handleRadioChange = (option) => {
     setSelectedOption(option);
     switch (option) {
@@ -57,10 +207,21 @@ const CommentaryQueryBuilder = () => {
   };
 
   const handleChapterNoChange = (selectedOption) => {
+    const selectedChapter = selectedOption.value;
     setData({
       ...data,
-      chapterNo: selectedOption.value,
+      chapterNo: selectedChapter,
     });
+  
+    // Get the maximum verse number for the selected chapter
+    const maxVerseNumber = chapterVerseCounts[selectedChapter];
+  
+    // Filter the verse numbers based on the selected chapter
+    const filteredVerses = verseNoOptions.filter(
+      (verse) => parseInt(verse.value) <= maxVerseNumber
+    );
+  
+    setFilteredVerseNumber(filteredVerses.slice(0, 11));
   };
 
   const handleCommentaryNoChange = (selectedOption) => {
@@ -196,10 +357,11 @@ const [filteredChapterNumber, setFilteredChapterNumber] = useState([]);
 const handleChapterNumberInputChange = (inputValue) => {
   setChapterNumberInputValue(inputValue);
   const filteredOptions = chapterNoOptions.filter((option) =>
-    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+    option.label.toLowerCase().includes(inputValue.toLowerCase())
   );
   setFilteredChapterNumber(filteredOptions.slice(0, 11));
 };
+
 
 /* Commentary Ayat Number Filter Selection */
 const [verseNumberInputValue, setVerseNumberInputValue] = useState('');
@@ -207,11 +369,18 @@ const [filteredVerseNumber, setFilteredVerseNumber] = useState([]);
 
 const handleVerseNumberInputChange = (inputValue) => {
   setVerseNumberInputValue(inputValue);
-  const filteredOptions = verseNoOptions.filter((option) =>
-    option.label.toLowerCase().startsWith(inputValue.toLowerCase())
+
+  // Get the maximum verse number for the selected chapter
+  const maxVerseNumber = chapterVerseCounts[data.chapterNo];
+
+  const filteredOptions = verseNoOptions.filter(
+    (option) => option.label.toLowerCase().startsWith(inputValue.toLowerCase()) &&
+                parseInt(option.value) <= maxVerseNumber
   );
+  
   setFilteredVerseNumber(filteredOptions.slice(0, 11));
 };
+
 
 // Fetch from txt
 const [commentaryNoOptions, setCommentaryNoOptions] = useState([]);
@@ -253,13 +422,14 @@ useEffect(() => {
       .then((data) => {
         const chapters = data
           .split('\n')
-          .map((chapter) => chapter.trim())
-          .filter((chapter) => chapter !== '') // Remove empty lines, if any
-          .sort((a, b) => parseInt(a) - parseInt(b)) // Sort in ascending order
-          .map((sortedChapter) => ({
-            value: sortedChapter,
-            label: sortedChapter,
-          }));
+          .map((chapter) => {
+            const [number, name] = chapter.split(' ');
+            return {
+              value: number.trim(),
+              label: `${number.trim()} ${name.trim()}`,
+            };
+          })
+          .filter((chapter) => chapter.value !== ''); // Remove empty lines, if any
         setChapterNoOptions(chapters);
         setFilteredChapterNumber(chapters.slice(0, 11));
       })
@@ -392,11 +562,16 @@ useEffect(() => {
           <span> <p id="rC">Commentary</p> </span>
         </label>
       </div>
+      
+      {/* Reset button */}
+      <div className="reset-button-container">
+        <span className="reset-button" onClick={resetFields}>Reset Fields</span>
+      </div>
 
       <div className="query-box-commentary">
       <div className="search-text-commentary">Find Commentary About:</div>
       <div className="dropdown-container-commentary">
-        <div className="dropdown-commentary">
+        {/* <div className="dropdown-commentary">
             <label htmlFor="surah_number">Commentary Number</label>
             <Select 
               options={filteredCommentaryNumbers}
@@ -405,11 +580,13 @@ useEffect(() => {
               onInputChange={handleCommentaryNumberInputChange}
               onChange={handleCommentaryNoChange} 
             />
-        </div>
+        </div> */}
         
         <div className="dropdown-commentary">
             <label htmlFor="theme">Which has Theme</label>
             <Select 
+              key={resetKey} // Add this line
+
               options={filteredThemes} 
               inputValue={themeInputValue}
               isSearchable={true}
@@ -421,6 +598,8 @@ useEffect(() => {
         <div className="dropdown-commentary">
             <label htmlFor="sub_theme">Which has the Sub-Theme</label>
             <Select 
+              key={resetKey} // Add this line
+
               options={filteredSubThemes}
               inputValue={subThemeInputValue} 
               isSearchable={true} 
@@ -435,6 +614,8 @@ useEffect(() => {
           <div className="dropdown">
             <label htmlFor="mentions">Mentions</label>
             <Select 
+              key={resetKey} // Add this line
+
               options={filteredMentions} 
               inputValue={mentionsInputValue} 
               isSearchable={true} 
@@ -448,22 +629,26 @@ useEffect(() => {
             <div className="search-text-commentary-2">Which References the Verse:</div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="surah_number">Surah Number</label>
-                <Select 
-                  options={filteredChapterNumber}
-                  inputValue={chapterNumberInputValue}  
-                  isSearchable={true}
-                  onInputChange={handleChapterNumberInputChange} 
-                  onChange={handleChapterNoChange} 
-                />
+                <Select
+                  key={resetKey} // Add this line
+
+                options={filteredChapterNumber}
+                inputValue={chapterNumberInputValue}
+                isSearchable={true}
+                onInputChange={handleChapterNumberInputChange}
+                onChange={handleChapterNoChange}
+              />
             </div>
             <div className="dropdown-commentary-2">
                 <label htmlFor="ayat_number">Ayat Number</label>
-                <Select 
-                  options={filteredVerseNumber} 
-                  inputValue={verseNumberInputValue}  
-                  isSearchable={true} 
-                  onInputChange={handleVerseNumberInputChange} 
-                  onChange={handleVerseNoChange} 
+                <Select
+                  key={resetKey} // Add this line
+
+                  options={filteredVerseNumber}
+                  inputValue={verseNumberInputValue}
+                  isSearchable={true}
+                  onInputChange={handleVerseNumberInputChange}
+                  onChange={handleVerseNoChange}
                 />
             </div>
         </div>

@@ -6,6 +6,14 @@ import './HadithQueryBuilder.css';
 import Footer from '../Footer/Footer';
 import { Oval as Loader } from 'react-loader-spinner';
 
+
+const initialDataState = {
+  theme: '',
+  hadith_number: '',
+  narrators: [{ title: '', name: '' }],
+  mentions: '',
+};
+
 const narratorTitleOptions = [
   { value: 'sahabi', label: 'sahabi' },
   { value: 'rawi', label: 'rawi' },
@@ -16,12 +24,7 @@ const narratorTitleOptions = [
 const HadithQueryBuilder = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('hadith');
-  const [data, setData] = useState({
-    theme: '',
-    hadith_number: '',
-    narrators: [{ title: '', name: '' }],
-    mentions: '',
-  });
+  const [data, setData] = useState(initialDataState);
 
   const [loading, setLoading] = useState(false);
   const [limitValue, setLimitValue] = useState(0);
@@ -288,7 +291,33 @@ const SendDataToBackend = () => {
     setNarratorLogic(updatedLogic);
   };
   
+  const [resetKey, setResetKey] = useState(0);
   
+  const handleReset = () => {
+    setSelectedOption('hadith');
+    setData(initialDataState);
+    setLimitValue(0);
+    setNarratorLogic(Array(initialDataState.narrators.length).fill('AND'));
+  
+    // Reset input values for Select components
+    setThemeInputValue('');
+    setHadithNumberInputValue('');
+    setNarratorNameInputValue('');
+    setMentionsInputValue('');
+  
+    // Reset filtered options
+    setFilteredThemes(themeOptions.slice(0, 8));
+    setFilteredHadithNumbers(hadithNumberOptions.slice(0, 11));
+    setFilteredNarratorNames(narratorNameOptions.slice(0, 8));
+    setFilteredMentions(mentionsOptions.slice(0, 8));
+
+    // Increment the reset key to force re-render
+    setResetKey(prevKey => prevKey + 1);
+  };
+  
+  
+  
+
 // end
 
 return (
@@ -333,12 +362,20 @@ return (
       </label>
     </div>
 
+      {/* Reset button */}
+      <div className="reset-button-container">
+        <span className="reset-button" onClick={handleReset}>Reset Fields</span>
+      </div>
+
+
     <div className="query-box">
       <div className="search-text">Search for Hadith with:</div>
       <div className="dropdown-container">
           <div className="dropdown">
             <label htmlFor="theme">Theme</label>
             <Select
+              key={resetKey} // Add this line
+
               options={filteredThemes}
               inputValue={themeInputValue}
               isSearchable={true}
@@ -349,6 +386,8 @@ return (
           <div className="dropdown">
             <label htmlFor="hadith_number">Hadith Number</label>
             <Select
+              key={resetKey} // Add this line
+
               options={filteredHadithNumbers}
               inputValue={hadithNumberInputValue}
               isSearchable={true}
@@ -392,6 +431,8 @@ return (
             <div className="dropdown">
               <label htmlFor={`narrator_title_${index}`}>Narrator Title</label>
               <Select
+                key={resetKey} // Add this line
+
                 options={narratorTitleOptions}
                 isSearchable={true}
                 onChange={(selectedOption) =>
@@ -402,6 +443,8 @@ return (
             <div className="dropdown">
               <label htmlFor={`narrator_name_${index}`}>Narrator Name</label>
               <Select
+                key={resetKey} // Add this line
+
                 options={filteredNarratorNames}
                 inputValue={narratorNameInputValue}
                 isSearchable={true}
@@ -429,6 +472,8 @@ return (
         <div className="dropdown">
           <label htmlFor="mentions">Mentions</label>
           <Select
+              key={resetKey} // Add this line
+
               options={filteredMentions}
               inputValue={MentionsInputValue}
               isSearchable={true}

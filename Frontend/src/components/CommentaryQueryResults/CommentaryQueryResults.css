@@ -61,7 +61,20 @@
   border-collapse: collapse;
 }
 
-.details-table-CQR th,
+.details-table-CQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  /* font-size: 15px;  */
+  font-size: 14px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  /* line-height: 2.5; */
+  line-height: 2.0;
+  word-spacing: 3.5px;
+}
+
 .details-table-CQR td {
   padding: 2px;
   text-align: center;
@@ -72,7 +85,7 @@
   font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
   font-weight: bold;
   /* line-height: 2.5; */
-  line-height: 2.0;
+  line-height: 1.5;
   word-spacing: 3.5px;
 }
 
