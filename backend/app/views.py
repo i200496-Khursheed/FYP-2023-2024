@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString, constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
+from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString_fullgraph, constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
 
 class ReactView(APIView):
     print('sadsada')
@@ -19,7 +19,7 @@ class ReactView(APIView):
 def query_hadith(request):
     print('backend/POST')
     print(request.body)
-    if request.method == 'POST':  # Change to POST
+    if request.method == 'POST':
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
@@ -39,16 +39,16 @@ def query_hadith(request):
         applyLimit = data.get('applyLimit', True)
         limit = data.get('limit', '')
 
-        #print('narrator', narrator)
-        query = constructHadithSparQLQueryString(versetext, chapterNo, verseNo, theme, mentions, subtheme,
-                                                     hadith_number, RootNarrator, narrator, narratortitle,
-                                                     applyLimit, limit)
+        query = constructHadithSparQLQueryString_fullgraph(
+            theme=theme, mentions=mentions, hadith_number=hadith_number,
+            narrator=narrator, narratortitle=narratortitle,
+            applyLimit=applyLimit, limit=limit
+        )
       
         prefix = "http://www.tafsirtabari.com/ontology"
         get_query = urllib.parse.quote(query)
         print(query)
         result = Sparql_Endpoint(get_query, prefix)
-        # print("idhar", result)
         print("Theme selected is:", theme)
         return JsonResponse({'result': result})
     else:

@@ -569,7 +569,7 @@ useEffect(() => {
       </div>
 
       <div className="query-box-commentary">
-      <div className="search-text-commentary">Find Commentary About:</div>
+      <div className="search-text-commentary">Find Commentary:</div>
       <div className="dropdown-container-commentary">
         {/* <div className="dropdown-commentary">
             <label htmlFor="surah_number">Commentary Number</label>
