@@ -54,7 +54,81 @@ def query_hadith(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
 
+@csrf_exempt
+def query_hadith(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
 
+        # Get values from the request data or use default values
+        theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
+        hadith_number = data['hadith_number'] if 'hadith_number' in data and data['hadith_number'] != '' else '?hadith_number'
+        versetext = data['versetext'] if 'versetext' in data and data['versetext'] != '' else '?vtext'
+        chapterNo = data['chapterNo'] if 'chapterNo' in data and data['chapterNo'] != '' else '?chapterNo'
+        verseNo = data['verseNo'] if 'verseNo' in data and data['verseNo'] != '' else '?verseNo'
+        mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
+        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
+        RootNarrator = data['RootNarrator'] if 'RootNarrator' in data and data['RootNarrator'] != '' else '?root_narrator'
+        narrator = data['narrators'][0]['name'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('name') != '' else '?narrator'
+        narratortitle = data['narrators'][0]['title'] if 'narrators' in data and data['narrators'] and data['narrators'][0].get('title') != '' else 'narrator-title'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+
+        query = constructHadithSparQLQueryString_fullgraph(
+            theme=theme, mentions=mentions, hadith_number=hadith_number,
+            narrator=narrator, narratortitle=narratortitle,
+            applyLimit=applyLimit, limit=limit
+        )
+      
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+        print("Theme selected is:", theme)
+        return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+@csrf_exempt
+def query_hadith2(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        Hadith_IRI = data['Hadith_IRI'] if 'Hadith_IRI' in data and data['Hadith_IRI'] != '' else '?Hadith_IRI'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+
+        query = constructHadithSparQLQueryString_fullgraph_2(
+            HADITH_IRI=Hadith_IRI,
+            applyLimit=applyLimit, limit=limit
+        )
+      
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+       query2 = constructHadithSparQLQueryString_fullgraph_3(
+            HADITH_IRI=Hadith_IRI,
+            applyLimit=applyLimit, limit=limit
+        )
+      
+        prefix2 = "http://www.tafsirtabari.com/ontology"
+        get_query2 = urllib.parse.quote(query2)
+        print(query2)
+        result2 = Sparql_Endpoint(get_query2, prefix2)
+        return JsonResponse({'result': result, 'result2': result2})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
 #Verse
 @csrf_exempt
 def query_verse(request):

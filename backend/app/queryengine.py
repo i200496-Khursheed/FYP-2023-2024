@@ -629,7 +629,7 @@ def constructHadithSparQLQueryString_fullgraph2(HADITH_IRI,applyLimit=True, limi
        
        ?chapter
         ?Verse_Text ?Verse_No WHERE {{
-  BIND({HADITH_IRI} AS ?HadithNo1)
+  BIND(<{HADITH_IRI}> AS ?HadithNo1)
 
   OPTIONAL {{
   ?HadithNo1 :hasHadithText ?text.
@@ -647,6 +647,48 @@ def constructHadithSparQLQueryString_fullgraph2(HADITH_IRI,applyLimit=True, limi
 }}
   GROUP BY ?HadithNo1 ?chapter
         ?Verse_Text ?Verse_No
+ 
+
+
+ 
+    '''
+
+
+
+
+
+
+    
+        
+    
+
+    if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
+        baseQueryString += f'''
+        LIMIT {limit}
+        '''
+        
+
+    return baseQueryString
+
+def constructHadithSparQLQueryString_fullgraph3(HADITH_IRI,applyLimit=True, limit=""):
+    baseQueryString = f'''
+           
+
+            PREFIX : <http://www.tafsirtabari.com/ontology#>
+            PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT ?HadithNo1 ?RootNarrator
+       
+ WHERE {{
+  BIND(<{HADITH_IRI}> AS ?HadithNo1)
+  ?HadithNo1 :containsNarratorChain ?Narrators.
+  ?Narrators :hasRootNarratorSegment ?Root.
+  ?Root :refersTo ?RootPerson .
+  ?RootPerson :hasName ?RootNarrator
+
+
+ 
+}}
  
 
 
@@ -1556,7 +1598,7 @@ if __name__ == "__main__":
     #query = constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI=":C_007_SS_002.001.008")
     #query = constructCommentarySparQLQueryString_fullgraph3(Commentary_IRI=":C_007_SS_002.001.008")
     
-    #query = constructHadithSparQLQueryString_fullgraph2(HADITH_IRI=':HD_35307')
+    query = constructHadithSparQLQueryString_fullgraph2(HADITH_IRI='http://www.tafsirtabari.com/ontology#HD_35599')
     #query = getNarratorChain(hadith_number="120")
     
     #query=FederatedQuery_2(information="http://dbpedia.org/resource/Muhammad")
