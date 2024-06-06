@@ -1183,9 +1183,9 @@ def constructVerseSparQLQueryString_fullgraph3(VERSE_IRI,theme="?theme",referenc
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT Distinct ?Verse ?hadithno  (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR=",") AS ?Theme) 
+SELECT Distinct ?Verse ?hadithno  (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR=",") AS ?Hadith-Theme) 
                 (GROUP_CONCAT(DISTINCT ?name; SEPARATOR=",") AS ?narrators)  ?hadithtext WHERE {{
-   BIND(<#V002:003> as ?Verse).
+   BIND(<{VERSE_IRI}> as ?Verse).
   ?Verse :containsVerseFragment ?versefragment.
   ?Surah rdf:type :Surah.
   ?Surah :containsVerse ?Verse.
