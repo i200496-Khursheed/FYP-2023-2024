@@ -617,7 +617,7 @@ SELECT ?HadithNo1
 
 
 
-def constructHadithSparQLQueryString_fullgraph2(HADITH_IRI,applyLimit=True, limit=""):
+def constructHadithSparQLQueryString_fullgraph_2(HADITH_IRI,applyLimit=True, limit=""):
     baseQueryString = f'''
            
             PREFIX : <http://www.tafsirtabari.com/ontology#>
@@ -670,7 +670,7 @@ def constructHadithSparQLQueryString_fullgraph2(HADITH_IRI,applyLimit=True, limi
 
     return baseQueryString
 
-def constructHadithSparQLQueryString_fullgraph3(HADITH_IRI,applyLimit=True, limit=""):
+def constructHadithSparQLQueryString_fullgraph_3(HADITH_IRI,applyLimit=True, limit=""):
     baseQueryString = f'''
            
 

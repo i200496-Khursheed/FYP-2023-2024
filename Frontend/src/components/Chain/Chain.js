@@ -24,75 +24,114 @@ const Chain = () => {
   };
 
   const narrators = [
-    { name: 'Narrator A' },
-    { name: 'Narrator B' },
-    { name: 'Narrator C' },
-    { name: 'Narrator D' },
-    { name: 'Narrator E' },
-    { name: 'Narrator F' },
-    { name: 'Narrator G' },
-    { name: 'Narrator H' },
-    { name: 'Narrator I' },
-    { name: 'Narrator J' },
-    { name: 'Narrator K' },
-    { name: 'Narrator L' },
+    { name: 'Narrator A' },  { name: 'Narrator O' },
+    { name: 'Narrator B' },  { name: 'Narrator P' },
+    { name: 'Narrator C' },  { name: 'Narrator Q' },
+    { name: 'Narrator D' },  { name: 'Narrator R' },
+    { name: 'Narrator E' },  { name: 'Narrator S' },
+    { name: 'Narrator F' },  { name: 'Narrator T' },
+    { name: 'Narrator G' },  { name: 'Narrator U' },
+    { name: 'Narrator H' },  { name: 'Narrator V' },
+    { name: 'Narrator I' },  { name: 'Narrator W' },
+    { name: 'Narrator J' },  { name: 'Narrator X' },
+    { name: 'Narrator K' },  { name: 'Narrator Y' },
+    { name: 'Narrator L' },  { name: 'Narrator Z' },
     { name: 'Narrator M' },
     { name: 'Narrator N' },
     // Add more narrators as needed
   ];
 
+  useEffect(() => {
+    setTimeout(() => {
+      calculateLinePositions();
+    }, 0);
+    window.addEventListener('resize', calculateLinePositions);
+  
+    return () => {
+      window.removeEventListener('resize', calculateLinePositions);
+    };
+  }, [isExpanded]);
+  
+
+  
   const calculateLinePositions = () => {
     const container = document.querySelector('.chain-container');
-
+  
     if (!container) {
+      console.log("Container not found!");
       return; // Exit if container is null
     }
-
+  
     const links = document.querySelectorAll('.link-line');
-
+  
     // Check if links NodeList is empty
     if (!links.length) {
+      console.log("No links found!");
       return;
     }
-
+  
+    console.log("Container:", container);
+    console.log("Links:", links);
+  
     const containerRect = container.getBoundingClientRect();
-
+  
     narrators.forEach((narrator, index) => {
       const block = document.getElementById(`narrator-block-${index}`);
       if (!block) {
+        console.log("Block not found for index:", index);
         return; // Exit if block is null
       }
-
+  
       const blockRect = block.getBoundingClientRect();
-
+  
       const link = links[index];
-
+  
+      if (!link) {
+        console.log("Link not found for index:", index);
+        return; // Exit if link is null
+      }
+  
       // Calculate top and height based on the position of the next block
       const nextBlock = document.getElementById(`narrator-block-${index + 1}`);
       const nextBlockRect = nextBlock ? nextBlock.getBoundingClientRect() : null;
-
+  
       const top = blockRect.bottom;
       const height = nextBlockRect ? nextBlockRect.top - blockRect.top : 0;
-
+  
+      console.log("Link:", link);
+  
       link.style.top = `${top}px`;
       link.style.height = `${height}px`;
     });
   };
+  
+  
 
   console.log("RESULTS DATA:", resultsData); // Log the resultsData here
 
   useEffect(() => {
-    if (
-      resultsData &&
-      resultsData.result &&
-      resultsData.result.results &&
-      resultsData.result.results.bindings
-    ) {
-      const textValue = resultsData.result.results.bindings[0].Text.value;
-      const rootNarrator = resultsData.result.results.bindings[0]?.RootNarrator.value;
+    if (resultsData && resultsData.result && resultsData.result.results && resultsData.result.results.bindings && resultsData.result.results.bindings.length > 0) {
+      let textValue, rootNarrator;
+  
+      // Check if the 'Text' property exists in the first binding
+      if (resultsData.result.results.bindings[0].Text) {
+        textValue = resultsData.result.results.bindings[0].Text.value;
+        rootNarrator = resultsData.result.results.bindings[0]?.RootNarrator.value;
+      } else if (resultsData.result.results.bindings[0]['?Text']) {
+        // Handle the case for decimal-based values with different property names
+        textValue = resultsData.result.results.bindings[0]['?Text'].value;
+        rootNarrator = resultsData.result.results.bindings[0]['?RootNarrator'].value;
+      } else {
+        console.error('Unknown data structure:', resultsData);
+        return;
+      }
+  
       setDisplayText(parseDisplayText(textValue, uniqueNarratorNames, rootNarrator));
     }
   }, [resultsData, uniqueNarratorNames]);
+  
+  
+  
   
 useEffect(() => {
     const uniqueNames = resultsData && resultsData.result && resultsData.result.results &&

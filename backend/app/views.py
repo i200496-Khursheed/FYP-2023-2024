@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString_fullgraph, constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
+from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString_fullgraph, constructHadithSparQLQueryString_fullgraph_2, constructHadithSparQLQueryString_fullgraph_3,constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
 
 class ReactView(APIView):
     print('sadsada')
@@ -117,7 +117,7 @@ def query_hadith2(request):
         get_query = urllib.parse.quote(query)
         print(query)
         result = Sparql_Endpoint(get_query, prefix)
-       query2 = constructHadithSparQLQueryString_fullgraph_3(
+        query2 = constructHadithSparQLQueryString_fullgraph_3(
             HADITH_IRI=Hadith_IRI,
             applyLimit=applyLimit, limit=limit
         )
