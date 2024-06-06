@@ -191,13 +191,13 @@
 /* Add animation for clickable names */
 .narrator-name-CQR {
   cursor: pointer;
-  color: blue; /* Change color to your preference */
+  color: darkblue; /* Change color to your preference */
   text-decoration: underline;
 }
 
 /* Increase font size and change color on hover */
 .narrator-name-CQR:hover {
-  color: darkblue; /* Change color to your preference */
+  color: blue; /* Change color to your preference */
 }
 
 

@@ -195,6 +195,128 @@
 }
 
 
+/* VerseQueryResults.css */
+
+/* New table */
+
+/* Pagination for New Table */
+
+.details-table-new-VQR .new-pagination {
+  position: absolute;
+  top: 200px; /* Adjust the top position as needed */
+  right: -81%; /* Adjust the right position as needed */
+}
+
+.details-table-new-VQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-table-new-VQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-VQR {
+  font-size: 13px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-VQR {
+  font-size: 13px;
+  margin: 10px;
+}
+
+.details-table-new-VQR {
+  position: relative;
+  bottom: 15px; 
+  width: 100%; 
+  left: 0%; 
+  margin-left: 20%; 
+  max-height: 200vh;
+}
+
+.details-table-new-VQR table {
+  width: 147%;
+  border-collapse: collapse;
+}
+
+.details-table-new-VQR th {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+  width: 350px; /* Adjust the width as needed */
+}
+
+.details-table-new-VQR th {
+  background-color: #211a70;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-new-VQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 210px; /* Adjust the width as needed */
+}
+
+.details-table-new-VQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+}
+
+/* Style for the "More Info" button */
+.more-info-button {
+  background-color: #035722;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+}
+
+.more-info-button:hover {
+  background-color: #45a049; /* Darker background color on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
+}
+
+
+
 /* Responsiveness CSS */
 
 @media (max-width: 1600px) 

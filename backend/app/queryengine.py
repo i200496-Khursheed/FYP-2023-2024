@@ -1132,7 +1132,7 @@ def constructVerseSparQLQueryString_fullgraph2(VERSE_IRI,
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT Distinct ?Verse ?commno ?commtext   (GROUP_CONCAT(DISTINCT ?themename; SEPARATOR=",") AS ?Theme) 
+SELECT Distinct ?Verse ?commno ?commtext   (GROUP_CONCAT(DISTINCT ?themename; SEPARATOR=",") AS ?CommentaryTheme) 
                 (GROUP_CONCAT(DISTINCT ?reference; SEPARATOR=",") AS ?reference_people)  WHERE {{
    BIND(<{VERSE_IRI}> as ?Verse).
   ?Verse :containsVerseFragment ?versefragment.
@@ -1177,13 +1177,13 @@ SELECT Distinct ?Verse ?commno ?commtext   (GROUP_CONCAT(DISTINCT ?themename; SE
 
     return baseQueryString
 
-def constructVerseSparQLQueryString_fullgraph3(VERSE_IRI,theme="?theme",reference="?reference",applyLimit=True, limit=""):
+def constructVerseSparQLQueryString_fullgraph3(VERSE_IRI,hadithTheme="?hadithTheme",narrator="?narrator",applyLimit=True, limit=""):
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT Distinct ?Verse ?hadithno  (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR=",") AS ?Hadith-Theme) 
+SELECT Distinct ?Verse ?hadithno  (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR=",") AS ?HadithTheme) 
                 (GROUP_CONCAT(DISTINCT ?name; SEPARATOR=",") AS ?narrators)  ?hadithtext WHERE {{
    BIND(<{VERSE_IRI}> as ?Verse).
   ?Verse :containsVerseFragment ?versefragment.
@@ -1209,15 +1209,15 @@ SELECT Distinct ?Verse ?hadithno  (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR
 
     '''
     
-    if theme != '?theme':
+    if hadithTheme != '?hadithTheme':
        
-        baseQueryString += f'''\n FILTER(?hadithTheme = '{theme}')'''
+        baseQueryString += f'''\n FILTER(?hadithTheme = '{hadithTheme}')'''
 
 
 
 
-    if reference != '?reference':
-        baseQueryString += f'''\n     FILTER(?name = "{reference}").''' 
+    if narrator != '?narrator':
+        baseQueryString += f'''\n     FILTER(?name = "{narrator}").''' 
     
     baseQueryString += f'\n}}'
     baseQueryString += f'''\n  Group by ?hadithtext ?Verse ?hadithno'''
@@ -1234,7 +1234,7 @@ def constructVerseSparQLQueryString_fullgraph4(VERSE_IRI,applyLimit=True, limit=
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT Distinct ?Verse  (GROUP_CONCAT(DISTINCT ?page; SEPARATOR=",") AS ?pages) ?volume ?edition  WHERE {{
+SELECT Distinct ?Verse  (GROUP_CONCAT(DISTINCT ?page; SEPARATOR=", ") AS ?pages) ?volume ?edition  WHERE {{
    BIND(<{VERSE_IRI}> as ?Verse).
   ?Verse :containsVerseFragment ?versefragment.
   ?Surah rdf:type :Surah.
@@ -1269,7 +1269,7 @@ PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT Distinct ?Verse  (GROUP_CONCAT(DISTINCT ?subtheme; SEPARATOR=",") as ?subthemes)   WHERE {{
+SELECT Distinct ?Verse  (GROUP_CONCAT(DISTINCT ?subtheme; SEPARATOR="  ,  ") as ?subthemes)   WHERE {{
    BIND(<{VERSE_IRI}> as ?Verse).
   ?Verse :containsVerseFragment ?versefragment.
   ?Surah rdf:type :Surah.

@@ -8,19 +8,6 @@ import { Oval as Loader } from 'react-loader-spinner';
 
 
 // Verse Contents
-
-const VerseQueryBuilder = () => {
-  const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState('verse');
-  const [data, setData] = useState({
-    chapterNo: '',
-    verseNo: '',
-    theme: '',
-    //hadithTheme: '',
-    narrator: [{ hadithTheme: '', name: '' }],
-    reference: '',
-  });
-
 // mapping surah and ayat numbers
 const chapterVerseCounts = {
   1: 7,
@@ -138,6 +125,18 @@ const chapterVerseCounts = {
   113: 5,
   114: 6
 };
+
+const VerseQueryBuilder = () => {
+  const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState('verse');
+  const [data, setData] = useState({
+    chapterNo: '',
+    verseNo: '',
+    theme: '',
+    //hadithTheme: '',
+    narrator: [{ hadithTheme: '', name: '' }],
+    reference: '',
+  });
 
 const [resetKey, setResetKey] = useState(0);
 const initialDataState = {
@@ -271,65 +270,74 @@ const handleReset = () => {
     });
   };
 
-  const SendDataToBackend = () => {
-    // Check if any field is selected
-    if (
-      data.chapterNo === '' &&
-      data.verseNo === '' &&
-      data.reference === '' &&
-      data.theme === '' &&
-      data.narrator.every((narrator) => narrator.hadithTheme === '' && narrator.name === '')
-    ) {
-      // If no field is selected, show alert
-      alert('Please select at least one option');
-      return;
-    }
-  
-    // Include narrator logic in the JSON data
-    const updatedNarrators = data.narrator.map((narrator, index) => ({
-      ...narrator,
-      narratorLogic: narratorLogic[index] // Include narrator logic for each narrator
-    }));
 
-    const requestData = {
-      ...data,
-      narrator: updatedNarrators, // Include updated narrators array with logic
-      applyLimit: true,
-      limit: limitValue
-    };
-  
-    console.log("POST");
-    console.log(data.hadithTheme); // Add this line
-    const url = 'http://127.0.0.1:8000/api/query_verse/';
-    setLoading(true);
-  
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestData), // Only include the relevant data in the request
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log('Success:', responseData);
-  
-        if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
-          const results = responseData.result.results.bindings;
-          console.log('Results:', results);
-  
-          navigate('/verse-query-results', { state: { resultsData: results } });
-        } else {
-          console.error('Results or bindings not found in response data.');
-        }
-      })
-      .catch((error) => {
-        //console.error('Error:', error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+const SendDataToBackend = () => {
+  // Check if any field is selected
+  if (
+    data.chapterNo === '' &&
+    data.verseNo === '' &&
+    data.reference === '' &&
+    data.theme === '' &&
+    data.narrator.every((narrator) => narrator.hadithTheme === '' && narrator.name === '')
+  ) {
+    // If no field is selected, show alert
+    alert('Please select at least one option');
+    return;
+  }
+
+  // Include narrator logic in the JSON data
+  const updatedNarrators = data.narrator.map((narrator, index) => ({
+    ...narrator,
+    narratorLogic: narratorLogic[index] // Include narrator logic for each narrator
+  }));
+
+  const requestData = {
+    ...data,
+    narrator: updatedNarrators, // Include updated narrators array with logic
+    applyLimit: true,
+    limit: limitValue
   };
+
+  console.log("POST");
+  console.log(data.hadithTheme); // Add this line
+  const url = 'http://127.0.0.1:8000/api/query_verse/';
+  setLoading(true);
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData), // Only include the relevant data in the request
+  })
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log('Success:', responseData);
+
+      if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
+        const results = responseData.result.results.bindings;
+        console.log('Results:', results);
+
+        // Pass selected fields and results data to the results page
+        navigate('/verse-query-results', {
+          state: { 
+            resultsData: results,
+            selectedFields: data // Pass the selected fields to the results page
+          }
+        });
+      } else {
+        console.error('Results or bindings not found in response data.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+};
+
   
 
   const [loading, setLoading] = useState(false);

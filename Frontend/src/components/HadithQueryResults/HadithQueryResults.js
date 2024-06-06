@@ -82,7 +82,6 @@ const HadithQueryResults = () => {
     }
 };
 
-
   const sendHadithNumberToDifferentBackend = (hadithNo) => {
     const extractedNumber = extractHadithNumber(hadithNo);
     if (!extractedNumber) {
@@ -271,8 +270,6 @@ const HadithQueryResults = () => {
     setMoreInfoButtonLabel('More Info');
   };
   
-  
-
   const handleJumpToPage = (pageNumber) => {
     const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
     setCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
