@@ -177,20 +177,23 @@ def query_verse2(request):
         theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
         hadithTheme = data['hadithTheme'] if 'hadithTheme' in data and data['hadithTheme'] != '' else '?hadithTheme'
         reference = data['reference'] if 'reference' in data and data['reference'] != '' else '?reference'
-        narrator = data['narrator'][0]['name'] if 'narrator' in data and data['narrator'] and data['narrator'][0].get('name') != '' else '?narrator'
+        narrator = data['name'] if 'name' in data and data['name'] and data['name'] != '' else '?narrator'
         
         applyLimit = data.get('applyLimit', True)
         limit = data.get('limit', '')
         
+        print("Reference is: ",reference)
+        print("Narrator is: ",narrator)
+
         # print(hadithTheme)
         # print(request.body)
-        print(hadithTheme)
+        #print(hadithTheme)
         query = constructVerseSparQLQueryString_fullgraph2(Verse_IRI,theme,reference,
                                                  applyLimit, limit)
         
         prefix = "http://www.tafsirtabari.com/ontology"
         get_query = urllib.parse.quote(query)
-        print(query)
+        #print(query)
         result = Sparql_Endpoint(get_query, prefix)
 
         query2 = constructVerseSparQLQueryString_fullgraph3(Verse_IRI,hadithTheme, 
@@ -198,21 +201,23 @@ def query_verse2(request):
         
         prefix2 = "http://www.tafsirtabari.com/ontology"
         get_query2 = urllib.parse.quote(query2)
-        print(query2)
+        #print(query2)
         result2 = Sparql_Endpoint(get_query2, prefix2)
 
+        #print("Hello this is result 2: ", result2)
+        #print("Query for result 2 is: ", query2)
         query3 = constructVerseSparQLQueryString_fullgraph4(Verse_IRI,applyLimit, limit)
         
         prefix3 = "http://www.tafsirtabari.com/ontology"
         get_query3 = urllib.parse.quote(query3)
-        print(query3)
+        #print(query3)
         result3 = Sparql_Endpoint(get_query3, prefix3)
 
         query4 = constructVerseSparQLQueryString_fullgraph5(Verse_IRI, applyLimit, limit)
         
         prefix4 = "http://www.tafsirtabari.com/ontology"
         get_query4 = urllib.parse.quote(query4)
-        print(query4)
+        #print(query4)
         result4 = Sparql_Endpoint(get_query4, prefix4)
         # Use your Sparql_Endpoint function to query the endpoint
         
