@@ -6,7 +6,6 @@ import './HadithQueryBuilder.css';
 import Footer from '../Footer/Footer';
 import { Oval as Loader } from 'react-loader-spinner';
 
-
 const initialDataState = {
   theme: '',
   hadith_number: '',
@@ -22,6 +21,7 @@ const narratorTitleOptions = [
 ];
 
 const HadithQueryBuilder = () => {
+
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('hadith');
   const [data, setData] = useState(initialDataState);
@@ -51,6 +51,14 @@ const HadithQueryBuilder = () => {
   /* Hadith Mentions Filter Selection */
   const [MentionsInputValue, setMentionsInputValue] = useState('');
   const [filteredMentions, setFilteredMentions] = useState([]);
+
+  // Add useEffect with empty dependency array to reset state on component mount
+  useEffect(() => {
+    setData(initialDataState);
+    setLimitValue(0);
+    setNarratorLogic(Array(initialDataState.narrators.length).fill('AND'));
+  }, []);
+
 
   const handleRadioChange = (option) => {
     setSelectedOption(option);
@@ -97,14 +105,14 @@ const HadithQueryBuilder = () => {
   /* Narrator Name */
   const handleNarratorChange = (index, type, value) => {
     const updatedNarrators = [...data.narrators];
-    const title = value === 'any' ? '' : value;
+    const title = value === 'any' ? '' : value; // Treat 'any' as empty
     updatedNarrators[index][type] = title;
     setData({
       ...data,
       narrators: updatedNarrators,
     });
-  };
-
+  };  
+  
   const handleNarratorNameInputChange = (inputValue) => {
     setNarratorNameInputValue(inputValue);
     const filteredOptions = narratorNameOptions.filter((option) =>
@@ -162,14 +170,14 @@ const SendDataToBackend = () => {
   // Include narrator logic in the JSON data
   const updatedNarrators = data.narrators.map((narrator, index) => ({
     ...narrator,
-    narratorLogic: narratorLogic[index] // Include narrator logic for each narrator
+    narratorLogic: narratorLogic[index], // Include narrator logic for each narrator
   }));
 
   const requestData = {
     ...data,
     narrators: updatedNarrators, // Include updated narrators array with logic
     applyLimit: true,
-    limit: limitValue
+    limit: limitValue,
   };
 
   // Proceed with sending data to backend
@@ -183,29 +191,35 @@ const SendDataToBackend = () => {
     },
     body: JSON.stringify(requestData),
   })
-  .then((response) => response.json())
-  .then((responseData) => {
-    console.log('Success:', responseData);
-    if (
-      responseData.result &&
-      responseData.result.results &&
-      responseData.result.results.bindings
-    ) {
-      const results = responseData.result.results.bindings;
-      console.log('Results for new is :', results);
-      navigate('/hadith-query-results', { state: { resultsData: results } });
-    } else {
-      console.error('Results or bindings not found in response data.');
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  })
-  .finally(() => {
-    setLoading(false);
-  });
-};
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log('Success:', responseData);
+      if (
+        responseData.result &&
+        responseData.result.results &&
+        responseData.result.results.bindings
+      ) {
+        const results = responseData.result.results.bindings;
+        console.log('Results for new is :', results);
+        navigate('/hadith-query-results', { state: { resultsData: results } });
 
+        // Refresh the page before navigating to the result page
+        window.location.reload();
+      } else {
+        console.error('Results or bindings not found in response data.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .finally(() => {
+      // Reset data after successful query
+      setData(initialDataState);
+      setLimitValue(0);
+      setNarratorLogic(Array(initialDataState.narrators.length).fill('AND'));
+      setLoading(false);
+    });
+};
 
 
   const incrementValue = () => {
@@ -293,30 +307,31 @@ const SendDataToBackend = () => {
   
   const [resetKey, setResetKey] = useState(0);
   
-  const handleReset = () => {
-    setSelectedOption('hadith');
-    setData(initialDataState);
-    setLimitValue(0);
-    setNarratorLogic(Array(initialDataState.narrators.length).fill('AND'));
-  
-    // Reset input values for Select components
-    setThemeInputValue('');
-    setHadithNumberInputValue('');
-    setNarratorNameInputValue('');
-    setMentionsInputValue('');
-  
-    // Reset filtered options
-    setFilteredThemes(themeOptions.slice(0, 8));
-    setFilteredHadithNumbers(hadithNumberOptions.slice(0, 11));
-    setFilteredNarratorNames(narratorNameOptions.slice(0, 8));
-    setFilteredMentions(mentionsOptions.slice(0, 8));
+const handleReset = () => {
+  setSelectedOption('hadith');
+  setData(initialDataState);
+  setLimitValue(0);
+  setNarratorLogic(Array(initialDataState.narrators.length).fill('AND'));
 
-    // Increment the reset key to force re-render
-    setResetKey(prevKey => prevKey + 1);
-  };
-  
-  
-  
+  // Reset input values for Select components
+  setThemeInputValue('');
+  setHadithNumberInputValue('');
+  setNarratorNameInputValue('');
+  setMentionsInputValue('');
+
+  // Reset filtered options
+  setFilteredThemes(themeOptions.slice(0, 8));
+  setFilteredHadithNumbers(hadithNumberOptions.slice(0, 11));
+  setFilteredNarratorNames(narratorNameOptions.slice(0, 8));
+  setFilteredMentions(mentionsOptions.slice(0, 8));
+
+  // Reset the loading state
+  setLoading(false);
+
+  // Increment the reset key to force re-render
+  setResetKey(prevKey => prevKey + 1);
+};
+
 
 // end
 

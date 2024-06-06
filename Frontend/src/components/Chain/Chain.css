@@ -664,10 +664,10 @@
 
 @media (max-width: 1360px) 
 {
-  .show-chain-button {
+  .hadith-query-results-chain .show-chain-button {
     cursor: pointer;
     position: absolute;
-    bottom: 8%;
+    bottom: -15%;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(to right, #4639E3, #381f6c);
@@ -701,7 +701,7 @@
     transition: background-color 0.3s, box-shadow 0.3s;
   }
 
-  .container-with-stroke {
+  .hadith-query-results-chain .container-with-stroke {
     margin-top: -5%;
     right: 10%;
     display: flex;

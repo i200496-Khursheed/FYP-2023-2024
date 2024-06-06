@@ -248,20 +248,29 @@ const HadithQueryResults = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
   
+    // Reset the page number of the second table to 1
+    setNewCurrentPage(1);
+  
     // Hide the new table and reset the more info button label
     setIsMoreInfoVisible(false);
     setMoreInfoButtonLabel('More Info');
-    setNewCurrentPage(1);
   };
+  
   
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    
+    // Update the maxJump state only for the main table
     setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
   
+    // Reset the page number of the second table to 1
+    setNewCurrentPage(1);
+
     // Hide the new table and reset the more info button label
     setIsMoreInfoVisible(false);
     setMoreInfoButtonLabel('More Info');
   };
+  
   
 
   const handleJumpToPage = (pageNumber) => {
@@ -314,43 +323,37 @@ const HadithQueryResults = () => {
   };
 
   const handleNewNextPage = () => {
-    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
-    const nextPage = Math.min(newCurrentPage + 1, totalPages);
-    
-    // Check if there are results available for the next page
-    const startIndex = (nextPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const hasNextResults = newQueryResults.result && newQueryResults.result.bindings.slice(startIndex, endIndex).length > 0;
-    
-    if (hasNextResults) {
-      setNewCurrentPage(nextPage);
-    }
-    
-    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+    const totalPages = Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE);
+    setNewCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setNewMaxJump(totalPages);
   };
-  
   
   const handleNewPrevPage = () => {
+    const totalPages = Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE);
     setNewCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+    setNewMaxJump(totalPages);
   };
-
+  
   const handleJumpToNewPage = (pageNumber) => {
-    const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
-    const newPage = Math.min(Math.max(pageNumber, 1), totalPages);
-    
-    // Check if there are results available for the new page
-    const startIndex = (newPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const hasResults = newQueryResults.result && newQueryResults.result.bindings.slice(startIndex, endIndex).length > 0;
-    
-    if (hasResults) {
-      setNewCurrentPage(newPage);
-    }
-    
-    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+    const totalPages = Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE);
+    setNewCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
+    setMaxJump(totalPages);
   };
+  
+  // Update useEffect to calculate newMaxJump based on the total number of results available in the backend
+  useEffect(() => {
+    if (newQueryResults?.result) {
+      // Use the total count of results available in the backend to calculate newMaxJump
+      const totalCount = newQueryResults.result.bindings.length;
+      setNewMaxJump(Math.ceil(totalCount / ITEMS_PER_PAGE));
+    }
+  }, [newQueryResults]);
 
+  
+  // Update useEffect to calculate maxJump based on resultsData length
+  useEffect(() => {
+    setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  }, [resultsData]);
   
   // Define a variable to store the RootNarrator fetched initially
   let rootNarrator = '';
