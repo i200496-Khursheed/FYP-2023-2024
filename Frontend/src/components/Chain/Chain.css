@@ -182,7 +182,7 @@
 }
 
 .hadith-query-results-chain .container-with-stroke {
-  margin-top: -5%;
+  margin-top: 2%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -194,7 +194,7 @@
   transition: background-color 0.3s, box-shadow 0.3s; /* Adding transition effects */
   position: relative;
   overflow: hidden; /* Hide overflow to contain the dynamic border animation */
-  margin-left: 25%;
+  margin-left: 0%;
   width: 800px;
 
 }

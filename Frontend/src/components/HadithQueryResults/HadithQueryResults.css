@@ -96,6 +96,21 @@
   text-transform: uppercase;
 }
 
+.details-table-new-HQR th,
+.details-table--new-HQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 200px; /* Adjust the width as needed */
+}
+
+
 /* Style for the "More Info" button */
 .more-info-button {
   background-color: #035722;

@@ -3,7 +3,7 @@ import './Graph.css'; // Import your CSS file
 
 const Graph = () => {
   // Construct the URL with parameters to navigate to the visual graph options
-  const graphDBUrl = 'http://khursheed:7200/graphs-visualizations'; // Example URL
+  const graphDBUrl = 'http://HafuzTunn:7200/graphs-visualizations'; // Example URL
   // Add any necessary parameters to navigate to the visual graph options
   const params = new URLSearchParams({
     option: 'visual', // Example parameter to specify visual graph options
