@@ -874,8 +874,8 @@ WHERE {{
         baseQueryString += f'''
         LIMIT {limit}
         '''
-    else:
-        baseQueryString += f'\n limit 5'
+    # else:
+    #     baseQueryString += f'\n limit 5'
     return baseQueryString
 
 def constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI, subtheme="?subtheme", 

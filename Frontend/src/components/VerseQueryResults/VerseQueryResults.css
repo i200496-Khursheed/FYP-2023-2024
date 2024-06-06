@@ -96,6 +96,31 @@
   text-transform: uppercase;
 }
 
+.details-table-VQR th {
+  width: 20%; /* Set a smaller width for th */
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  background-color: #211a70;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.details-table-VQR td {
+  width: 80%; /* Set a larger width for td */
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  font-size: 20px;
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
 .pagination.top-right-VQR {
   position: absolute;
   top: 350px;

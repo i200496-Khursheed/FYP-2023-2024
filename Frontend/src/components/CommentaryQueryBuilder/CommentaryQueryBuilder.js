@@ -239,7 +239,6 @@ const resetFields = () => {
   };
 
   const SendDataToBackend = () => {
-
     // Check if any field is selected
     if (
       data.commno === '' &&
@@ -254,12 +253,17 @@ const resetFields = () => {
       alert('Please select at least one option');
       return;
     }
-
-
+  
+    // Check if sub-theme is selected without a theme
+    if (data.subtheme !== '' && data.theme === '') {
+      alert('Please select a theme before selecting a sub-theme');
+      return;
+    }
+  
     console.log("POST")
     const url = 'http://127.0.0.1:8000/api/query_commentary/';
     setLoading(true);
-
+  
     fetch(url, {
       method: 'POST',
       headers: {
@@ -270,11 +274,11 @@ const resetFields = () => {
       .then((response) => response.json())
       .then((responseData) => {
         console.log('Success:', responseData);
-
+  
         if (responseData.result && responseData.result.results && responseData.result.results.bindings) {
           const results = responseData.result.results.bindings;
           console.log('Results:', results);
-
+  
           navigate('/commentary-query-results', { state: { resultsData: results } });
         } else {
           console.error('Results or bindings not found in response data.');
@@ -286,7 +290,7 @@ const resetFields = () => {
       .finally(() => {
         setLoading(false);
       });
-  };
+  };  
 
   const [loading, setLoading] = useState(false);
   const [limitValue, setLimitValue] = useState(0);
