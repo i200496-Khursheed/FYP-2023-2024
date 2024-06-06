@@ -7,7 +7,7 @@ import urllib.parse
 
 def Sparql_Endpoint(query: str, prefix: str = "") -> dict:
     x = requests.get( 
-        'http://khursheed:7200/repositories/completekg?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
+        'http://HafuzTunn:7200/repositories/fyp-2?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
         headers={
             'Accept' : 'application/sparql-results+json', 
             'Host' : 'localhost:7200'
@@ -1177,7 +1177,7 @@ SELECT Distinct ?Verse ?commno ?commtext   (GROUP_CONCAT(DISTINCT ?themename; SE
 
     return baseQueryString
 
-def constructVerseSparQLQueryString_fullgraph3(VERSE_IRI,applyLimit=True, limit=""):
+def constructVerseSparQLQueryString_fullgraph3(VERSE_IRI,theme="?theme",reference="?reference",applyLimit=True, limit=""):
     baseQueryString = f'''
             PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -1206,8 +1206,21 @@ SELECT Distinct ?Verse ?hadithno  (GROUP_CONCAT(DISTINCT ?hadithTheme; SEPARATOR
 
     
 
-}} Group by ?hadithtext ?Verse ?hadithno
+
     '''
+    
+    if theme != '?theme':
+       
+        baseQueryString += f'''\n FILTER(?hadithTheme = '{theme}')'''
+
+
+
+
+    if reference != '?reference':
+        baseQueryString += f'''\n     FILTER(?name = "{reference}").''' 
+    
+    baseQueryString += f'\n}}'
+    baseQueryString += f'''\n  Group by ?hadithtext ?Verse ?hadithno'''
     if applyLimit and limit is not None and limit != '' and int(limit) >= 1:
         baseQueryString += f'''
         LIMIT {limit}
@@ -1592,13 +1605,13 @@ if __name__ == "__main__":
     # query = constructHadithSparQLQueryString()
 
     #query = constructVerseSparQLQueryString_fullgraph(chapterNo='2')
-    #query = constructVerseSparQLQueryString_fullgraph4(VERSE_IRI="#V002:008")
+    query = constructVerseSparQLQueryString_fullgraph3(VERSE_IRI="#V002:008",theme="kalam", reference='ابن مسعود')
 
     #query = constructCommentarySparQLQueryString_fullgraph(theme='lugha')
     #query = constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI=":C_007_SS_002.001.008")
     #query = constructCommentarySparQLQueryString_fullgraph3(Commentary_IRI=":C_007_SS_002.001.008")
     
-    query = constructHadithSparQLQueryString_fullgraph2(HADITH_IRI='http://www.tafsirtabari.com/ontology#HD_35599')
+    #query = constructHadithSparQLQueryString_fullgraph2(HADITH_IRI='http://www.tafsirtabari.com/ontology#HD_35599')
     #query = getNarratorChain(hadith_number="120")
     
     #query=FederatedQuery_2(information="http://dbpedia.org/resource/Muhammad")

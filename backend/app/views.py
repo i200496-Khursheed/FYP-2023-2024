@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 
-from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructHadithSparQLQueryString_fullgraph, constructHadithSparQLQueryString_fullgraph_2, constructHadithSparQLQueryString_fullgraph_3,constructVerseSparQLQueryString, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
+from .queryengine import FederatedQuery, Sparql_Endpoint, competencyquestion1, constructCommentarySparQLQueryString, constructCommentarySparQLQueryString_fullgraph, constructCommentarySparQLQueryString_fullgraph2, constructCommentarySparQLQueryString_fullgraph3, constructHadithSparQLQueryString_fullgraph, constructHadithSparQLQueryString_fullgraph_2, constructHadithSparQLQueryString_fullgraph_3,constructVerseSparQLQueryString_fullgraph,constructVerseSparQLQueryString_fullgraph2,constructVerseSparQLQueryString_fullgraph3,constructVerseSparQLQueryString_fullgraph4,constructVerseSparQLQueryString_fullgraph5, getNarratorChain, FederatedQuery_2,FederatedQuery_3,FederatedQuery1_2 ,FederatedQuery1_3, competencyquestion2, competencyquestion3, competencyquestion4, competencyquestion5, competencyquestion6, competencyquestion7, competencyquestion8, competencyquestion9, competencyquestion10, competencyquestion11, competencyquestion12
 
 class ReactView(APIView):
     print('sadsada')
@@ -143,21 +143,14 @@ def query_verse(request):
         # Get values from the request data or use default values
         chapterNo = data['chapterNo'] if 'chapterNo' in data and data['chapterNo'] != '' else '?chapterNo'
         verseNo = data['verseNo'] if 'verseNo' in data and data['verseNo'] != '' else '?verseNo'
-        theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
-        hadithTheme = data['hadithTheme'] if 'hadithTheme' in data and data['hadithTheme'] != '' else '?hadithTheme'
-        reference = data['reference'] if 'reference' in data and data['reference'] != '' else '?reference'
-        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
-        hadith_number = data['hadith_number'] if 'hadith_number' in data and data['hadith_number'] != '' else '?hadith_number'
-        narrator = data['narrator'][0]['name'] if 'narrator' in data and data['narrator'] and data['narrator'][0].get('name') != '' else '?narrator'
-        commno = data['commno'] if 'commno' in data and data['commno'] != '' else '?commno'
+        
         applyLimit = data.get('applyLimit', True)
         limit = data.get('limit', '')
         
         # print(hadithTheme)
         # print(request.body)
-        print(hadithTheme)
-        query = constructVerseSparQLQueryString(chapterNo, verseNo, theme, hadithTheme, reference, subtheme, hadith_number,
-                                                narrator, commno, applyLimit, limit)
+       
+        query = constructVerseSparQLQueryString_fullgraph(chapterNo, verseNo, applyLimit, limit)
         
         prefix = "http://www.tafsirtabari.com/ontology"
         get_query = urllib.parse.quote(query)
@@ -168,6 +161,65 @@ def query_verse(request):
         return JsonResponse({'result': result})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+@csrf_exempt
+def query_verse2(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        # Get values from the request data or use default values
+        Verse_IRI = data['Verse_IRI'] if 'Verse_IRI' in data and data['Verse_IRI'] != '' else '?Verse_IRI'
+        theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
+        hadithTheme = data['hadithTheme'] if 'hadithTheme' in data and data['hadithTheme'] != '' else '?hadithTheme'
+        reference = data['reference'] if 'reference' in data and data['reference'] != '' else '?reference'
+        narrator = data['narrator'][0]['name'] if 'narrator' in data and data['narrator'] and data['narrator'][0].get('name') != '' else '?narrator'
+        
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+        
+        # print(hadithTheme)
+        # print(request.body)
+        print(hadithTheme)
+        query = constructVerseSparQLQueryString_fullgraph2(Verse_IRI,theme,reference,
+                                                 applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        query2 = constructVerseSparQLQueryString_fullgraph3(Verse_IRI,hadithTheme, 
+                                                narrator,  applyLimit, limit)
+        
+        prefix2 = "http://www.tafsirtabari.com/ontology"
+        get_query2 = urllib.parse.quote(query2)
+        print(query2)
+        result2 = Sparql_Endpoint(get_query2, prefix2)
+
+        query3 = constructVerseSparQLQueryString_fullgraph4(Verse_IRI,applyLimit, limit)
+        
+        prefix3 = "http://www.tafsirtabari.com/ontology"
+        get_query3 = urllib.parse.quote(query3)
+        print(query3)
+        result3 = Sparql_Endpoint(get_query3, prefix3)
+
+        query4 = constructVerseSparQLQueryString_fullgraph5(Verse_IRI, applyLimit, limit)
+        
+        prefix4 = "http://www.tafsirtabari.com/ontology"
+        get_query4 = urllib.parse.quote(query4)
+        print(query4)
+        result4 = Sparql_Endpoint(get_query4, prefix4)
+        # Use your Sparql_Endpoint function to query the endpoint
+        
+        return JsonResponse({'result': result, 'result2': result2, 'result3': result3, 'result4': result4})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
 
 
 #commentary
@@ -187,12 +239,11 @@ def query_commentary(request):
         verseNo = data['verseNo'] if 'verseNo' in data and data['verseNo'] != '' else '?V_no'
         theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
         mentions = data['mentions'] if 'mentions' in data and data['mentions'] != '' else '?mentions'
-        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
         applyLimit = data.get('applyLimit', True)
         limit = data.get('limit', '')
        
         print(theme)
-        query = constructCommentarySparQLQueryString(commno, chapterNo, verseNo, theme, mentions, subtheme,
+        query = constructCommentarySparQLQueryString_fullgraph(commno, chapterNo, verseNo, theme, mentions,
                                                      applyLimit, limit)
         
         prefix = "http://www.tafsirtabari.com/ontology"
@@ -204,6 +255,46 @@ def query_commentary(request):
         print(query)
 
         return JsonResponse({'result': result})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
+
+
+@csrf_exempt
+def query_commentary2(request):
+    print('backend/POST')
+    print(request.body)
+    if request.method == 'POST':  # Change to POST
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON in the request body'}, status=400)
+
+        Commentary_IRI = data['Commentary_IRI'] if 'Commentary_IRI' in data and data['Commentary_IRI'] != '' else '?Commentary_IRI'
+        subtheme = data['subtheme'] if 'subtheme' in data and data['subtheme'] != '' else '?subtheme'
+        applyLimit = data.get('applyLimit', True)
+        limit = data.get('limit', '')
+       
+        print(subtheme)
+        query = constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI, subtheme,
+                                                     applyLimit, limit)
+        
+        prefix = "http://www.tafsirtabari.com/ontology"
+        get_query = urllib.parse.quote(query)
+        #print(query)
+        result = Sparql_Endpoint(get_query, prefix)
+
+        query2 = constructCommentarySparQLQueryString_fullgraph3(Commentary_IRI,
+                                                     applyLimit, limit)
+        
+        prefix2 = "http://www.tafsirtabari.com/ontology"
+        get_query2 = urllib.parse.quote(query2)
+        #print(query)
+        result2 = Sparql_Endpoint(get_query2, prefix2)
+        # Use your Sparql_Endpoint function to query the endpoint
+        
+        print(query2)
+
+        return JsonResponse({'result': result , 'result': result2})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
 

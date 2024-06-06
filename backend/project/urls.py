@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from app.views import ReactView, chain_narrators, query_hadith, query_hadith2, query_verse, query_commentary, query_federated, competency_question1, query_federated2, competency_question2, competency_question3, competency_question4, competency_question5, competency_question6, competency_question7, competency_question8, competency_question9,competency_question10, competency_question11, competency_question12
+from app.views import ReactView, chain_narrators, query_hadith, query_hadith2, query_verse, query_commentary,query_verse2, query_commentary2, query_federated, competency_question1, query_federated2, competency_question2, competency_question3, competency_question4, competency_question5, competency_question6, competency_question7, competency_question8, competency_question9,competency_question10, competency_question11, competency_question12
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -8,6 +8,10 @@ urlpatterns = [
     path('api/query_hadith/', query_hadith, name='query_hadith'),
     path('api/query_hadith2/', query_hadith2, name='query_hadith2'),
 
+    path('api/query_verse/', query_verse, name='query_verse'),
+    path('api/query_commentary/', query_commentary, name='query_commentary'),
+    path('api/query_commentary2/', query_commentary2, name='query_commentary2'),
+    path('api/query_verse2/', query_verse2, name='query_verse2'),
     path('api/query_verse/', query_verse, name='query_verse'),
     path('api/query_commentary/', query_commentary, name='query_commentary'),
     path('api/query_federated/', query_federated, name='query_federated'),

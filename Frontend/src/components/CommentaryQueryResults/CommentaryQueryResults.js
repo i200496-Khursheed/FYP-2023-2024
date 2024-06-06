@@ -64,17 +64,17 @@ const CommentaryQueryResults = () => {
           </tr>
           <tr>
             <th>Surah Number</th>
-            <td>{data.chapter_nos?.value}</td>
+            <td>{data.chapter_no?.value}</td>
           </tr>
           <tr>
             <th>Verse Number</th>
-            <td>{data.V_nos?.value}</td>
+            <td>{data.V_no?.value}</td>
           </tr>
-          {data.V_Texts?.value && (
+          {data.V_Text?.value && (
           <tr>
             {index === 0 && <th>Verse Text</th>}
             <td>
-              {isVTextsExpanded ? parseText(data.V_Texts?.value, data.person_names?.value) : `${data.V_Texts?.value.slice(0, 100)}...`}
+              {isVTextsExpanded ? parseText(data.V_Text?.value, data.names?.value) : `${data.V_Text?.value.slice(0, 100)}...`}
               {data.V_Texts?.value && (
                 <button className="view-more-button" onClick={toggleVTextsExpansion}>
                   {isVTextsExpanded ? 'View less' : 'View more'}
@@ -83,12 +83,12 @@ const CommentaryQueryResults = () => {
             </td>
           </tr>
         )}
-          {data.Texts?.value && (
+          {data.Text?.value && (
           <tr>
             {index === 0 && <th>Text</th>}
             <td>
-              {isTextsExpanded ? parseText(data.Texts?.value, data.person_names?.value) : `${data.Texts?.value.slice(0, 100)}...`}
-              {data.Texts?.value && (
+              {isTextsExpanded ? parseText(data.Text?.value, data.names?.value) : `${data.Text?.value.slice(0, 100)}...`}
+              {data.Text?.value && (
                 <button className="view-more-button" onClick={toggleTextsExpansion}>
                   {isTextsExpanded ? 'View less' : 'View more'}
                 </button>
@@ -120,7 +120,7 @@ const CommentaryQueryResults = () => {
         <tr>
           <th>Person Names</th>
           <td>
-            {data.person_names?.value.split(',').map((name, i) => (
+            {data.names?.value.split(',').map((name, i) => (
               <React.Fragment key={i}>
                 <span
                   className="narrator-name-CQR"
@@ -140,7 +140,7 @@ const CommentaryQueryResults = () => {
           </tr>
           <tr>
             <th>Theme Names</th>
-            <td>{data.theme_names?.value}</td>
+            <td>{data.themes?.value}</td>
           </tr>
           <tr>
             <th>Volumes</th>

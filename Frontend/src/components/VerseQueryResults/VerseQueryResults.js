@@ -58,11 +58,11 @@ const VerseQueryResults = () => {
           </tr>
           <tr>
             {index === 0 && <th>Surah Name</th>}
-            <td>{data.Surahnames?.value}</td>
+            <td>{data.Surahname?.value}</td>
           </tr>
           <tr>
             {index === 0 && <th>Text</th>}
-            <td>{data.Texts?.value}</td>
+            <td>{data.Text?.value}</td>
           </tr>
           {/* Render the commentary text with "View more" button */}
           {data.commtexts?.value && (
