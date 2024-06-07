@@ -279,7 +279,12 @@ const resetFields = () => {
           const results = responseData.result.results.bindings;
           console.log('Results:', results);
   
-          navigate('/commentary-query-results', { state: { resultsData: results } });
+          navigate('/commentary-query-results', { 
+            state: { 
+              resultsData: results, 
+              selectedFields: data // Pass the selected fields to the results page
+            } 
+          });
         } else {
           console.error('Results or bindings not found in response data.');
         }

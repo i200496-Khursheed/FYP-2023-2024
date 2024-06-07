@@ -283,6 +283,8 @@ def query_commentary2(request):
         query = constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI, subtheme,
                                                      applyLimit, limit)
         
+        #print(query)
+        
         prefix = "http://www.tafsirtabari.com/ontology"
         get_query = urllib.parse.quote(query)
         #print(query)
@@ -297,9 +299,12 @@ def query_commentary2(request):
         result2 = Sparql_Endpoint(get_query2, prefix2)
         # Use your Sparql_Endpoint function to query the endpoint
         
-        print(query2)
+        #print(query2)
 
-        return JsonResponse({'result': result , 'result': result2})
+        print('Result is: ', result)
+        print('Query 2 is:', query2)
+
+        return JsonResponse({'result': result , 'result2': result2})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for this endpoint'})
 

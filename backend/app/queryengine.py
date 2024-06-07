@@ -884,9 +884,9 @@ def constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI, subtheme="?s
 PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-SELECT   (GROUP_CONCAT(DISTINCT ?subtheme; SEPARATOR=",") AS ?subthemes)
+SELECT   (GROUP_CONCAT(DISTINCT ?subtheme; SEPARATOR=" ,  ") AS ?subthemes)
 WHERE {{
-    BIND({Commentary_IRI} as ?Commentary)
+    BIND(<{Commentary_IRI}> as ?Commentary)
   ?Commentary rdf:type :Commentary.
      OPTIONAL {{
 
@@ -927,9 +927,9 @@ def constructCommentarySparQLQueryString_fullgraph3(Commentary_IRI,
 PREFIX : <http://www.tafsirtabari.com/ontology#>
 PREFIX W3:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-SELECT DISTINCT  ?volume ?edition (GROUP_CONCAT(DISTINCT ?page; SEPARATOR=",") AS ?pages)
+SELECT DISTINCT  ?volume ?edition (GROUP_CONCAT(DISTINCT ?page; SEPARATOR=", ") AS ?pages)
 WHERE {{
-    BIND({Commentary_IRI} as ?Commentary)
+    BIND(<{Commentary_IRI}> as ?Commentary)
   ?Commentary rdf:type :Commentary.
      OPTIONAL {{
     ?Commentary :hasBookLocation ?BL.
@@ -1605,9 +1605,10 @@ if __name__ == "__main__":
     # query = constructHadithSparQLQueryString()
 
     #query = constructVerseSparQLQueryString_fullgraph(chapterNo='2')
-    query = constructVerseSparQLQueryString_fullgraph3(VERSE_IRI="#V002:008",theme="kalam", reference='ابن مسعود')
+    #query = constructVerseSparQLQueryString_fullgraph3(VERSE_IRI="#V002:008",theme="kalam", reference='ابن مسعود')
 
-    #query = constructCommentarySparQLQueryString_fullgraph(theme='lugha')
+    #
+    query = constructCommentarySparQLQueryString_fullgraph(theme='lugha')
     #query = constructCommentarySparQLQueryString_fullgraph2(Commentary_IRI=":C_007_SS_002.001.008")
     #query = constructCommentarySparQLQueryString_fullgraph3(Commentary_IRI=":C_007_SS_002.001.008")
     

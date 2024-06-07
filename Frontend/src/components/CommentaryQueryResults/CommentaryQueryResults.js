@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ const ITEMS_PER_PAGE = 1; // Number of items to display per page
 
 const CommentaryQueryResults = () => {
   const location = useLocation();
-  const { resultsData } = location.state || {};
+  const { resultsData, selectedFields } = location.state || {}; // Extract selectedFields
 
   const navigate = useNavigate();
 
@@ -48,6 +48,157 @@ const CommentaryQueryResults = () => {
     setIsVTextsExpanded(!isVTextsExpanded);
   };
 
+
+  // -- Complete Graph -- //
+
+    // State for More Info button
+    const [isMoreInfoVisible, setIsMoreInfoVisible] = useState(false);
+    const [moreInfoButtonLabel, setMoreInfoButtonLabel] = useState('More Info');
+  
+    const [newQueryResults, setNewQueryResults] = useState([]);
+    const [newCurrentPage, setNewCurrentPage] = useState(1);
+    const [newMaxJump, setNewMaxJump] = useState(0);
+  
+
+    const handleMoreInfoClick = (Commentary) => {
+      if (isMoreInfoVisible) {
+        setIsMoreInfoVisible(false);
+        setMoreInfoButtonLabel('More Info');
+      } else {
+        sendToQuery2(Commentary);
+      }
+    };
+    
+    const sendToQuery2 = (Commentary) => {
+      console.log('Sending Commentary IRI to Query2:', Commentary);
+  
+      // Extract individual fields from selectedFields
+      const { subtheme } = selectedFields || {};
+
+
+      // Prepare the data to send to the backend
+      const requestData = {
+        Commentary_IRI: Commentary, // Include the original comm IRI without modification
+        subtheme: subtheme || '?subtheme',
+      };
+      
+      console.log("Request data is: ", requestData); // Debugging line
+  
+      // Make a POST request to the backend API
+      fetch('http://127.0.0.1:8000/api/query_commentary2/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+          // Handle the response data here, maybe update the state or navigate to a new page
+          console.log('Query2 response:', responseData);
+  
+          // Update the state with new query results
+          setNewQueryResults({
+              result: responseData.result.results,
+              result2: responseData.result2.results,
+          });
+          setNewMaxJump(Math.ceil(responseData.result.results.length / ITEMS_PER_PAGE));
+          setIsMoreInfoVisible(true);
+          setMoreInfoButtonLabel('Less Info');
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+  };
+  
+  
+  function addSpaceAfterCommas(text) {
+    return text.replace(/,/g, ', '); // Replace each comma with a comma followed by a space
+  }
+  
+  // Modify the renderNewQueryResults function to display the stored RootNarrator
+  const renderNewQueryResults = () => {
+    const startIndex = (newCurrentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+  
+    return (
+      <React.Fragment>
+        {Object.keys(newQueryResults).map((resultKey, resultIndex) => {
+          // Skip rendering 'result', 'RESULT2', 'RESULT3'
+          //if (['result', 'result2'].includes(resultKey)) return null;
+  
+          const resultData = newQueryResults[resultKey];
+          
+          return (
+            <React.Fragment key={resultIndex}>
+              {/* Render the result table rows */}
+              {resultData && resultData.bindings.slice(startIndex, endIndex).map((data, index) => (
+                <React.Fragment key={`${resultKey}-${index}`}>
+                  {/* Render rows for each field in the result */}
+                  {Object.keys(data).map((field, fieldIndex) => (
+                    // Skip rendering the 'verse' field and check if the field value is empty before rendering th and td
+                    field !== 'Commentary IRI' && data[field].value && (
+                      <tr key={`${resultKey}-${index}-${fieldIndex}`}>
+                        <th>{field}</th>
+                        <td style={{ padding: '10px', lineHeight: '20px', fontSize: '17px' }}>
+                          {/* Apply addSpaceAfterCommas function here */}
+                          {field === 'PAGES' || field === 'SUBTHEMES' ? addSpaceAfterCommas(data[field].value) : data[field].value}
+                        </td>
+                      </tr>
+                    )
+                  ))}
+                </React.Fragment>
+              ))}
+            </React.Fragment>
+          );
+        })}
+      </React.Fragment>
+    );
+  };
+  
+  const handleNewNextPage = () => {
+    const totalPages = Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE);
+    setNewCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    setNewMaxJump(totalPages);
+  };
+  
+  const handleNewPrevPage = () => {
+    const totalPages = Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE);
+    setNewCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    setNewMaxJump(totalPages);
+  };
+  
+  const handleJumpToNewPage = (pageNumber) => {
+    const totalPages = Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE);
+    setNewCurrentPage((prevPage) => Math.min(Math.max(pageNumber, 1), totalPages));
+    setMaxJump(totalPages);
+  };
+  
+    // Update useEffect to calculate newMaxJump based on the total number of results available in the backend
+    useEffect(() => {
+      if (newQueryResults?.result) {
+        // Use the total count of results available in the backend to calculate newMaxJump
+        const totalCount = newQueryResults.result.bindings.length;
+        setNewMaxJump(Math.ceil(totalCount / ITEMS_PER_PAGE));
+      }
+    }, [newQueryResults]);
+  
+  
+    // Update useEffect to calculate maxJump based on resultsData length
+    useEffect(() => {
+      setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+    }, [resultsData]);
+  
+    // New useEffect hook to update newMaxJump when newQueryResults.result changes
+    useEffect(() => {
+      if (newQueryResults.result) {
+        setNewMaxJump(Math.ceil(newQueryResults.result.bindings.length / ITEMS_PER_PAGE));
+      }
+    }, [newQueryResults]);
+    
+  // END
+
+
   const renderTableData = () => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -62,6 +213,14 @@ const CommentaryQueryResults = () => {
             </th>
             <td>{data.number?.value}</td>
           </tr>
+
+          <tr>
+            <th>Commentary IRI</th>
+            <td>
+              {data.Commentary?.value.split('#')[1]}
+            </td>
+          </tr>
+
           <tr>
             <th>Surah Number</th>
             <td>{data.chapter_no?.value}</td>
@@ -70,90 +229,67 @@ const CommentaryQueryResults = () => {
             <th>Verse Number</th>
             <td>{data.V_no?.value}</td>
           </tr>
-          {data.V_Text?.value && (
-          <tr>
-            {index === 0 && <th>Verse Text</th>}
-            <td>
-              {isVTextsExpanded ? parseText(data.V_Text?.value, data.names?.value) : `${data.V_Text?.value.slice(0, 100)}...`}
-              {data.V_Texts?.value && (
-                <button className="view-more-button" onClick={toggleVTextsExpansion}>
-                  {isVTextsExpanded ? 'View less' : 'View more'}
-                </button>
-              )}
-            </td>
-          </tr>
-        )}
-          {data.Text?.value && (
-          <tr>
-            {index === 0 && <th>Text</th>}
-            <td>
-              {isTextsExpanded ? parseText(data.Text?.value, data.names?.value) : `${data.Text?.value.slice(0, 100)}...`}
-              {data.Text?.value && (
-                <button className="view-more-button" onClick={toggleTextsExpansion}>
-                  {isTextsExpanded ? 'View less' : 'View more'}
-                </button>
-              )}
-            </td>
-          </tr>
-        )}
-          <tr>
-            <th>Section Chapter</th>
-            <td>{data.sec_chps?.value}</td>
-          </tr>
-          <tr>
-            <th>Section Number</th>
-            <td>{data.sec_nos?.value}</td>
-          </tr>
-          {data.sec_texts?.value && (
-          <tr>
-            {index === 0 && <th>Section Text</th>}
-            <td>
-              {isSecTextsExpanded ? parseText(data.sec_texts?.value, data.person_names?.value) : `${data.sec_texts?.value.slice(0, 100)}...`}
-              {data.sec_texts?.value && (
-                <button className="view-more-button" onClick={toggleSecTextsExpansion}>
-                  {isSecTextsExpanded ? 'View less' : 'View more'}
-                </button>
-              )}
-            </td>
-          </tr>
-        )}
-        <tr>
-          <th>Person Names</th>
-          <td>
-            {data.names?.value.split(',').map((name, i) => (
-              <React.Fragment key={i}>
-                <span
-                  className="narrator-name-CQR"
-                  onClick={() => handleNarratorNameClick(name.trim())}
-                >
-                  {name.trim()}
-                </span>
-                {i !== data.person_names?.value.split(',').length - 1 && ', '}
-              </React.Fragment>
-            ))}
-          </td>
-        </tr>
+            {data.V_Text?.value && (
+            <tr>
+              {index === 0 && <th>Cited Verse</th>}
+              <td>
+                {isVTextsExpanded ? parseText(data.V_Text?.value, data.names?.value) : `${data.V_Text?.value.slice(0, 100)}...`}
+                {data.V_Texts?.value && (
+                  <button className="view-more-button" onClick={toggleVTextsExpansion}>
+                    {isVTextsExpanded ? 'View less' : 'View more'}
+                  </button>
+                )}
+              </td>
+            </tr>
+          )}
+            {data.Text?.value && (
+            <tr>
+              {index === 0 && <th>Text</th>}
+              <td>
+                {isTextsExpanded ? parseText(data.Text?.value, data.names?.value) : `${data.Text?.value.slice(0, 100)}...`}
+                {data.Text?.value && (
+                  <button className="view-more-button" onClick={toggleTextsExpansion}>
+                    {isTextsExpanded ? 'View less' : 'View more'}
+                  </button>
+                )}
+              </td>
+            </tr>
+          )}
 
           <tr>
-            <th>Subthemes</th>
-            <td>{data.subthemes?.value}</td>
+            <th>Person Names</th>
+            <td>
+              {data.names?.value.split(',').map((name, i) => (
+                <React.Fragment key={i}>
+                  <span
+                    className="narrator-name-CQR"
+                    onClick={() => handleNarratorNameClick(name.trim())}
+                  >
+                    {name.trim()}
+                  </span>
+                  {i !== data.person_names?.value.split(',').length - 1 && ', '}
+                </React.Fragment>
+              ))}
+            </td>
           </tr>
+
           <tr>
             <th>Theme Names</th>
             <td>{data.themes?.value}</td>
           </tr>
+
           <tr>
-            <th>Volumes</th>
-            <td>{data.volumes?.value}</td>
+            <th>More Information</th>
+            <td>
+              <button
+                className="more-info-button"
+                onClick={() => handleMoreInfoClick(data.Commentary?.value)}
+              >
+                {moreInfoButtonLabel}
+              </button>
+            </td>
           </tr>
-          <tr>
-            <th>Editions</th>
-            <td>{data.editions?.value}</td>
-          </tr>
-          <tr>
-            <th>Pages</th>
-            <td>{data.pages?.value}</td>
-          </tr>
+
         </React.Fragment>
       ))
     );
@@ -163,11 +299,27 @@ const CommentaryQueryResults = () => {
     const totalPages = Math.ceil(resultsData?.length / ITEMS_PER_PAGE);
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  
+    // Reset the page number of the second table to 1
+    setNewCurrentPage(1);
+  
+    // Hide the new table and reset the more info button label
+    setIsMoreInfoVisible(false);
+    setMoreInfoButtonLabel('More Info');
   };
 
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    
+    // Update the maxJump state only for the main table
     setMaxJump(Math.ceil(resultsData?.length / ITEMS_PER_PAGE));
+  
+    // Reset the page number of the second table to 1
+    setNewCurrentPage(1);
+
+    // Hide the new table and reset the more info button label
+    setIsMoreInfoVisible(false);
+    setMoreInfoButtonLabel('More Info');
   };
 
   const handleJumpToPage = (pageNumber) => {
@@ -213,10 +365,9 @@ const CommentaryQueryResults = () => {
     return textWithClickableNames;
   };
 
-
   return (
     <div>
-      <div className="back-button-VQR" onClick={() => window.history.back()}>
+      <div className="back-button-CQR" onClick={() => window.history.back()}>
         <img src={require('../../assets/back_button.png')} alt="Back Button" />
       </div>
       {resultsData && (
@@ -226,6 +377,37 @@ const CommentaryQueryResults = () => {
           </table>
         </div>
       )}
+
+
+      {isMoreInfoVisible && newQueryResults && newQueryResults.result && newQueryResults.result.bindings.length > 0 && (
+        <div className="details-table-new-CQR">
+          <table>
+            <tbody>{renderNewQueryResults()}</tbody>
+          </table>
+          <div className="pagination new-pagination">
+            <button className="new-pagination-button" onClick={handleNewPrevPage} disabled={newCurrentPage === 1}>
+              Prev (More)
+            </button>
+            <span>{`Page ${newCurrentPage}`}</span>
+            <button className="new-pagination-button" onClick={handleNewNextPage} disabled={newCurrentPage * ITEMS_PER_PAGE >= newQueryResults.result.length}>
+              Next (More)
+            </button>
+            <div className="jump-to-max-container">
+              <span id="page-jump-new-CQR">Jump to :</span>
+              <input
+                type="number"
+                value={newCurrentPage}
+                onChange={(e) => handleJumpToNewPage(Number(e.target.value))}
+                min={1}
+                max={newMaxJump}
+              />
+              <span id="page-max-new-CQR">{`Max: ${newMaxJump}`}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       <div className="pagination top-right-CQR">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Prev

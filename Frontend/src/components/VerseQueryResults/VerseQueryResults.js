@@ -56,7 +56,7 @@ const VerseQueryResults = () => {
         narrator: narrator && narrator[0] && narrator[0].name ? narrator[0].name : '?narrator',
         hadithTheme: narrator && narrator[0] && narrator[0].hadithTheme ? narrator[0].hadithTheme : '?hadithTheme'
     };
-    console.log("narrator" , narrator)
+
     console.log("Request data is: ", requestData); // Debugging line
 
     // Make a POST request to the backend API
