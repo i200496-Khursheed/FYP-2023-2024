@@ -249,7 +249,7 @@
 
 .details-table-new-CQR {
   position: relative;
-  bottom: -15px; 
+  bottom: -25px; 
   width: 79%; 
   left: 0%; 
   margin-left: 6%; 
@@ -395,11 +395,134 @@
 }
 }
 
-@media (max-width: 1366px) 
+@media (max-width: 1366px)
 {
+
+/* CommentaryQueryResults.css */
+
+/* New table */
+
+/* Pagination for New Table */
+
+.details-table-new-CQR .new-pagination {
+  position: absolute;
+  top: 200px; /* Adjust the top position as needed */
+  right: -19%; /* Adjust the right position as needed */
+  margin: -125px 0px 0px 0px;
+}
+
+.details-table-new-CQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: -5px;
+}
+
+.details-table-new-CQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-CQR {
+  font-size: 13px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-CQR {
+  font-size: 13px;
+  margin: 10px;
+}
+
+.details-table-new-CQR {
+  position: relative;
+  bottom: 10px; 
+  width: 79%; 
+  left: 0%; 
+  margin-left: 6%; 
+  max-height: 200vh;
+}
+
+.details-table-new-CQR table {
+  width: 95%; /* Adjust as needed */
+  border-collapse: collapse;
+}
+
+
+.details-table-new-CQR th {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+}
+
+.details-table-new-CQR th {
+  background-color: #211a70;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-new-CQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 254px; /* Adjust the width as needed */
+}
+
+.details-table-new-CQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+}
+
+/* Style for the "More Info" button */
+.more-info-button {
+  background-color: #035722;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+}
+
+.more-info-button:hover {
+  background-color: #45a049; /* Darker background color on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
+}
+
   .details-table-CQR {
     position: relative;
-    bottom: -15px; 
+    bottom: 35px; 
     max-height: 800px; 
     overflow: auto; 
     width: 76%; 
@@ -408,21 +531,21 @@
     max-height: 110vh;
   }
 
-.pagination.top-right-VQR {
+.pagination.top-right-CQR {
   position: absolute;
   top: 350px;
   right: 2%;
   font-size: 16px;
 }
 
-.pagination.top-right-VQR-2 {
+.pagination.top-right-CQR-2 {
   position: absolute;
   top: 400px;
   right: 1%;
 }
 
 /* Prev and Next buttons */
-.pagination button {
+.oldTable .pagination button {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -434,19 +557,201 @@
   margin: 2px 10px;
   cursor: pointer;
   border-radius: 4px;
+  margin: 10px;
+  margin-top: -30px;
 }
 
-.pagination button:hover {
+.pagination .top-right-CQR-2 .pagination button:hover {
   background-color: #45a049;
 }
 
-#page-jump-VQR{
-  margin: 10px;
+.oldTable #page-jump-CQR{
+  margin: 20px;
   font-size: 16px;
-
 }
 
-#page-max-VQR{
+.oldTable #page-max-CQR{
+  font-size: 16px;
+  margin: 10px;
+}
+}
+
+@media (max-width: 1360px) 
+{
+
+/* CommentaryQueryResults.css */
+
+/* New table */
+
+/* Pagination for New Table */
+
+.details-table-new-CQR .new-pagination {
+  position: absolute;
+  top: 200px; /* Adjust the top position as needed */
+  right: -19%; /* Adjust the right position as needed */
+  margin: -125px 0px 0px 0px;
+}
+
+.details-table-new-CQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: -5px;
+}
+
+.details-table-new-CQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-CQR {
+  font-size: 13px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-CQR {
+  font-size: 13px;
+  margin: 10px;
+}
+
+.details-table-new-CQR {
+  position: relative;
+  bottom: 10px; 
+  width: 79%; 
+  left: 0%; 
+  margin-left: 6%; 
+  max-height: 200vh;
+}
+
+.details-table-new-CQR table {
+  width: 95%; /* Adjust as needed */
+  border-collapse: collapse;
+}
+
+
+.details-table-new-CQR th {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+}
+
+.details-table-new-CQR th {
+  background-color: #211a70;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-new-CQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 254px; /* Adjust the width as needed */
+}
+
+.details-table-new-CQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+}
+
+/* Style for the "More Info" button */
+.more-info-button {
+  background-color: #035722;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+}
+
+.more-info-button:hover {
+  background-color: #45a049; /* Darker background color on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
+}
+
+  .details-table-CQR {
+    position: relative;
+    bottom: 35px; 
+    max-height: 800px; 
+    overflow: auto; 
+    width: 76%; 
+    left: 6%; 
+    margin-left: 0; 
+    max-height: 110vh;
+  }
+
+.pagination.top-right-CQR {
+  position: absolute;
+  top: 350px;
+  right: 2%;
+  font-size: 16px;
+}
+
+.pagination.top-right-CQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 1%;
+}
+
+/* Prev and Next buttons */
+.oldTable .pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 10px;
+  margin-top: -30px;
+}
+
+.pagination .top-right-CQR-2 .pagination button:hover {
+  background-color: #45a049;
+}
+
+.oldTable #page-jump-CQR{
+  margin: 20px;
+  font-size: 16px;
+}
+
+.oldTable #page-max-CQR{
   font-size: 16px;
   margin: 10px;
 }

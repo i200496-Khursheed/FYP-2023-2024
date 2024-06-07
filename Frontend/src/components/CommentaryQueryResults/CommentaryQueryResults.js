@@ -407,7 +407,7 @@ const CommentaryQueryResults = () => {
         </div>
       )}
 
-
+    <div className="oldTable">
       <div className="pagination top-right-CQR">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Prev
@@ -428,8 +428,8 @@ const CommentaryQueryResults = () => {
         />
         <span id="page-max-CQR">{`Max: ${maxJump}`}</span>
       </div>
-
     </div>
+  </div>
   );
 };
 

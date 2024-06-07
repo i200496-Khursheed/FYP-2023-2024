@@ -340,6 +340,131 @@
 @media (max-width: 1680px) 
 {
   
+  /* Second table CSS */
+
+  /* Pagination for New Table */
+
+.details-table-new-HQR .new-pagination {
+  position: absolute;
+  top: 150px; /* Adjust the top position as needed */
+  right: 0px; /* Adjust the right position as needed */
+}
+
+.details-table-new-HQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-table-new-HQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 11px;
+  margin-top: 20px;
+}
+
+#page-jump-new-HQR {
+  font-size: 11px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-HQR {
+  font-size: 11px;
+  margin: 10px;
+}
+
+.details-table-new-HQR {
+  position: relative;
+  bottom: -10px; 
+  width: 100%; 
+  left: 0%; 
+  margin-left: 0; 
+  max-height: 200vh;
+}
+
+/* New Table */
+.details-table-new-HQR table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.details-table-new-HQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+}
+
+.details-table-new-HQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+
+}
+
+.details-table-new-HQR th {
+  background-color: #211a70;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-new-HQR th,
+.details-table--new-HQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 200px; /* Adjust the width as needed */
+}
+
+
+/* Style for the "More Info" button */
+.more-info-button {
+  background-color: #035722;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+}
+
+.more-info-button:hover {
+  background-color: #45a049; /* Darker background color on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
+}
+
+  /* END */
+
   .details-table-HQR table {
     width: 95%;
     border-collapse: collapse;
@@ -361,7 +486,7 @@
 }
 
 /* Prev and Next buttons */
-.pagination button {
+.oldTable .pagination button {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -369,24 +494,23 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 10px;
   margin: 2px 10px;
   cursor: pointer;
   border-radius: 4px;
 }
 
-.pagination button:hover {
+.oldTable .pagination button:hover {
   background-color: #45a049;
 }
 
-#page-jump-HQR{
+.oldTable #page-jump-HQR{
   margin: 3px;
-  font-size: 16px;
-
+  font-size: 12px;
 }
 
-#page-max-HQR{
-  font-size: 16px;
+.oldTable #page-max-HQR{
+  font-size: 12px;
   margin: 3px;
 }
 }
@@ -502,28 +626,71 @@
 @media (max-width: 1366px) 
 {
   
+  /* Pagination for New Table */
+
+.details-table-new-HQR .new-pagination {
+  position: absolute;
+  top: 200px; /* Adjust the top position as needed */
+  right: 2%; /* Adjust the right position as needed */
+}
+
+.details-table-new-HQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-table-new-HQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-HQR {
+  font-size: 14px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-HQR {
+  font-size: 14px;
+  margin: 10px;
+}
+
+
   .details-table-HQR table {
-    width: 95%;
+    width: 88%;
     border-collapse: collapse;
     border: 2px solid #ddd;
   
   }
 
-.pagination.top-right-HQR {
+.oldTable .pagination.top-right-HQR {
   position: absolute;
   top: 350px;
   right: 2%;
-  font-size: 16px;
+  font-size: 13px;
 }
 
-.pagination.top-right-HQR-2 {
+.oldTable .pagination.top-right-HQR-2 {
   position: absolute;
   top: 400px;
   right: 1%;
+  font-size: 13px;
 }
 
 /* Prev and Next buttons */
-.pagination button {
+.oldTable .pagination button {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -531,7 +698,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 13px;
   margin: 2px 10px;
   cursor: pointer;
   border-radius: 4px;
@@ -541,14 +708,111 @@
   background-color: #45a049;
 }
 
-#page-jump-HQR{
+.oldTable #page-jump-HQR{
   margin: 3px;
-  font-size: 16px;
+  font-size: 13px;
 
 }
 
-#page-max-HQR{
-  font-size: 16px;
+.oldTable #page-max-HQR{
+  font-size: 13px;
+  margin: 3px;
+}
+}
+
+@media (max-width: 1360px) 
+{
+  
+  /* Pagination for New Table */
+
+.details-table-new-HQR .new-pagination {
+  position: absolute;
+  top: 200px; /* Adjust the top position as needed */
+  right: 2%; /* Adjust the right position as needed */
+}
+
+.details-table-new-HQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-table-new-HQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-HQR {
+  font-size: 14px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-HQR {
+  font-size: 14px;
+  margin: 10px;
+}
+
+
+  .details-table-HQR table {
+    width: 88%;
+    border-collapse: collapse;
+    border: 2px solid #ddd;
+  
+  }
+
+.oldTable .pagination.top-right-HQR {
+  position: absolute;
+  top: 350px;
+  right: 2%;
+  font-size: 13px;
+}
+
+.oldTable .pagination.top-right-HQR-2 {
+  position: absolute;
+  top: 400px;
+  right: 1%;
+  font-size: 13px;
+}
+
+/* Prev and Next buttons */
+.oldTable .pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  margin: 2px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}
+
+.oldTable #page-jump-HQR{
+  margin: 3px;
+  font-size: 13px;
+
+}
+
+.oldTable #page-max-HQR{
+  font-size: 13px;
   margin: 3px;
 }
 }

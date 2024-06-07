@@ -437,74 +437,131 @@
 }
 }
 
-@media (max-width: 1400px) 
+@media (max-width: 1366px) 
 {
   
-  .details-table-VQR {
-    overflow-x: hidden;
-    position: relative;
-    bottom: 45px;
-    max-height: 653px;
-    overflow: auto;
-    left: 55%;
-    max-height: 190vh;
-    width: 130%; 
-  }
 
-  .details-table-VQR table {
-    width: 94%;
-    border-collapse: collapse;
-    margin: 4%;
-    margin-top: 1%;
-  }
-  
-.pagination.top-right-VQR {
+  /* VerseQueryResults.css */
+
+/* New table */
+
+/* Pagination for New Table */
+
+.details-table-new-VQR .new-pagination {
   position: absolute;
-  top: 350px;
-  right: 2%;
-  font-size: 16px;
+  top: 200px; /* Adjust the top position as needed */
+  right: -33%; /* Adjust the right position as needed */
 }
 
-.pagination.top-right-VQR-2 {
-  position: absolute;
-  top: 400px;
-  right: 1%;
-}
-
-/* Prev and Next buttons */
-.pagination button {
-  background-color: #4caf50;
+.details-table-new-VQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
   color: white;
   border: none;
   padding: 5px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  margin: 2px 10px;
+  font-size: 13px;
   cursor: pointer;
   border-radius: 4px;
 }
 
-.pagination button:hover {
-  background-color: #45a049;
+.details-table-new-VQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
 }
 
-#page-jump-VQR{
-  margin: 10px;
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-VQR {
   font-size: 16px;
-
+  margin: 10px 10px 10px 50px;
 }
 
-#page-max-VQR{
+#page-max-new-VQR {
   font-size: 16px;
   margin: 10px;
 }
+
+.details-table-new-VQR {
+  position: relative;
+  bottom: 15px; 
+  width: 120%; 
+  left: 0%; 
+  margin-left: 35%; 
+  max-height: 200vh;
 }
 
-@media (max-width: 1366px) 
-{
-  
+.details-table-new-VQR table {
+  width: 104%;
+  border-collapse: collapse;
+}
+
+.details-table-new-VQR th {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+  width: 350px; /* Adjust the width as needed */
+}
+
+.details-table-new-VQR th {
+  background-color: #211a70;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-new-VQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 210px; /* Adjust the width as needed */
+}
+
+.details-table-new-VQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+}
+
+/* Style for the "More Info" button */
+.more-info-button {
+  background-color: #035722;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+}
+
+.more-info-button:hover {
+  background-color: #45a049; /* Darker background color on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
+}
+
+
   .details-table-VQR {
     overflow-x: hidden;
     position: relative;
@@ -517,7 +574,7 @@
   }
 
   .details-table-VQR table {
-    width: 94%;
+    width: 96%;
     border-collapse: collapse;
     margin: 2%;
     margin-top: 1%;
@@ -570,6 +627,128 @@
 @media (max-width: 1360px) 
 {
   
+
+  /* VerseQueryResults.css */
+
+/* New table */
+
+/* Pagination for New Table */
+
+.details-table-new-VQR .new-pagination {
+  position: absolute;
+  top: 200px; /* Adjust the top position as needed */
+  right: -33%; /* Adjust the right position as needed */
+}
+
+.details-table-new-VQR .new-pagination-button {
+  background-color: darkblue; /* Change to your desired background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-table-new-VQR .new-pagination-button:hover {
+  background-color: rgb(39, 39, 205);
+}
+
+.jump-to-max-container {
+  position: absolute; /* Change to relative */
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+#page-jump-new-VQR {
+  font-size: 16px;
+  margin: 10px 10px 10px 50px;
+}
+
+#page-max-new-VQR {
+  font-size: 16px;
+  margin: 10px;
+}
+
+.details-table-new-VQR {
+  position: relative;
+  bottom: 15px; 
+  width: 120%; 
+  left: 0%; 
+  margin-left: 35%; 
+  max-height: 200vh;
+}
+
+.details-table-new-VQR table {
+  width: 104%;
+  border-collapse: collapse;
+}
+
+.details-table-new-VQR th {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 2.5;
+  word-spacing: 1.5px;
+  width: 350px; /* Adjust the width as needed */
+}
+
+.details-table-new-VQR th {
+  background-color: #211a70;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.details-table-new-VQR th{
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 14px; 
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  word-spacing: 2.5px;
+  /* Add width property to limit the width of the column */
+  width: 210px; /* Adjust the width as needed */
+}
+
+.details-table-new-VQR td {
+  padding: 2px;
+  text-align: center;
+  border: 2px solid #ddd;
+  font-size: 20px; 
+  /* font-family: 'Noto Sans Arabic', sans-serif; */
+  font-family: 'UthmanTN', 'Noto Sans Arabic', sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  /* word-spacing: 0.5px; */
+  word-spacing: 1.5px;
+}
+
+/* Style for the "More Info" button */
+.more-info-button {
+  background-color: #035722;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+}
+
+.more-info-button:hover {
+  background-color: #45a049; /* Darker background color on hover */
+  transform: scale(1.05); /* Add scale transform on hover */
+}
+
+
   .details-table-VQR {
     overflow-x: hidden;
     position: relative;
