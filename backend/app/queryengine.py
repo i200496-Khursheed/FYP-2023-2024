@@ -7,7 +7,7 @@ import urllib.parse
 
 def Sparql_Endpoint(query: str, prefix: str = "") -> dict:
     x = requests.get( 
-        'http://khursheed:7200/repositories/completekg?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
+        'http://HafuzTunn:7200/repositories/fyp-2?query='+query+'&format=application%2Fsparql-results%2Bjson&timeout=0',
         headers={
             'Accept' : 'application/sparql-results+json', 
             'Host' : 'localhost:7200'
