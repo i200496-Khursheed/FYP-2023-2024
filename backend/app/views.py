@@ -177,7 +177,7 @@ def query_verse2(request):
         theme = data['theme'] if 'theme' in data and data['theme'] != '' else '?theme'
         hadithTheme = data['hadithTheme'] if 'hadithTheme' in data and data['hadithTheme'] != '' else '?hadithTheme'
         reference = data['reference'] if 'reference' in data and data['reference'] != '' else '?reference'
-        narrator = data['name'] if 'name' in data and data['name'] and data['name'] != '' else '?narrator'
+        narrator = data['narrator'] if 'narrator' in data and data['narrator'] and data['narrator'] != '' else '?narrator'
         
         applyLimit = data.get('applyLimit', True)
         limit = data.get('limit', '')
