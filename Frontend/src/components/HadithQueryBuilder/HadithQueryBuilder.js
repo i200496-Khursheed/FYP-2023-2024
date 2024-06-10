@@ -204,7 +204,7 @@ const SendDataToBackend = () => {
         navigate('/hadith-query-results', { state: { resultsData: results } });
 
         // Refresh the page before navigating to the result page
-        window.location.reload();
+        //window.location.reload();
       } else {
         console.error('Results or bindings not found in response data.');
       }

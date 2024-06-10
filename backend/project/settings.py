@@ -59,6 +59,8 @@ REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'https://main.d24f1e6l28ve8d.amplifyapp.com',
+    # add other allowed origins if necessary
 ]
 
 
